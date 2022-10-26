@@ -1,20 +1,19 @@
 import { EthAddress } from "../../shared/types";
 import airdropConfig from "../config/airdropConfig";
-import eligibleAddresses from "../config/airdropConfig";
 
-const isEligibleAddress = (
+const isEntitledToMoreThanMinimum = (
   address: EthAddress
-): address is keyof typeof eligibleAddresses.airdrop =>
-  address in eligibleAddresses.airdrop;
+): address is keyof typeof airdropConfig.activeAccounts =>
+  address in airdropConfig.activeAccounts;
 
 export const getEligibility = (
   address: string
 ): { isEligible: boolean; tokenAmount: number } => {
-  if (!isEligibleAddress(address)) {
-    return { isEligible: false, tokenAmount: 10 };
+  if (!isEntitledToMoreThanMinimum(address)) {
+    return { isEligible: false, tokenAmount: airdropConfig.minAmount };
   }
 
-  const amount = eligibleAddresses.airdrop[address];
+  const amount = airdropConfig.activeAccounts[address];
 
-  return { isEligible: true, tokenAmount: airdropConfig.minAmount };
+  return { isEligible: true, tokenAmount: amount };
 };

@@ -5,7 +5,7 @@ export default {
   // we are restricting to claiming for 4 addresses per person maximum.
   minAmount: 5,
   // These addresses are eligible to more tokens.
-  airdrop: {
+  activeAccounts: {
     "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": 8488,
     "0x70997970c51812dc3a010c7d01b50e0d17dc79c8": 5473,
     "0x3a5e2bEe2f7D50242ABCE4dBCEdCc87664BD38d7": 166,
