@@ -1535,6 +1535,11 @@ ethers@^5.5.1:
     "@ethersproject/web" "5.5.1"
     "@ethersproject/wordlists" "5.5.0"
 
+express-joi-validation@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/express-joi-validation/-/express-joi-validation-5.0.1.tgz#ded03f35ba5d95b57da6ebe22b2b6d2e4ab074c4"
+  integrity sha512-BztcU64addcAdxys2j42pZVSnJjEyFaLxNko7YSYDUuEBtKq2XnhzYZuy9ex9Q+Fdhef+NwLXhX1djwZmShCLg==
+
 express-mongo-sanitize@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/express-mongo-sanitize/-/express-mongo-sanitize-2.2.0.tgz#c8c2d45e137f213950f70bf586704e0db5cfe356"
