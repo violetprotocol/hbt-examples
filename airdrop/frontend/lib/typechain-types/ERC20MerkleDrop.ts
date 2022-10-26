@@ -26,6 +26,7 @@ export interface ERC20MerkleDropInterface extends utils.Interface {
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
+    "isClaimed(uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "redeem(address,uint256,bytes32[])": FunctionFragment;
     "root()": FunctionFragment;
@@ -52,6 +53,10 @@ export interface ERC20MerkleDropInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isClaimed",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -85,6 +90,7 @@ export interface ERC20MerkleDropInterface extends utils.Interface {
     functionFragment: "increaseAllowance",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "isClaimed", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "root", data: BytesLike): Result;
@@ -101,10 +107,12 @@ export interface ERC20MerkleDropInterface extends utils.Interface {
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
+    "Claimed(address,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
@@ -114,6 +122,13 @@ export type ApprovalEvent = TypedEvent<
 >;
 
 export type ApprovalEventFilter = TypedEventFilter<ApprovalEvent>;
+
+export type ClaimedEvent = TypedEvent<
+  [string, BigNumber],
+  { claimant: string; amount: BigNumber }
+>;
+
+export type ClaimedEventFilter = TypedEventFilter<ClaimedEvent>;
 
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber],
@@ -178,12 +193,17 @@ export interface ERC20MerkleDrop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    isClaimed(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
     redeem(
-      account: string,
+      recipient: string,
       amount: BigNumberish,
-      proof: BytesLike[],
+      merkleProof: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -235,12 +255,14 @@ export interface ERC20MerkleDrop extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  isClaimed(index: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
   redeem(
-    account: string,
+    recipient: string,
     amount: BigNumberish,
-    proof: BytesLike[],
+    merkleProof: BytesLike[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -292,12 +314,14 @@ export interface ERC20MerkleDrop extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    isClaimed(index: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
     name(overrides?: CallOverrides): Promise<string>;
 
     redeem(
-      account: string,
+      recipient: string,
       amount: BigNumberish,
-      proof: BytesLike[],
+      merkleProof: BytesLike[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -332,6 +356,12 @@ export interface ERC20MerkleDrop extends BaseContract {
       spender?: string | null,
       value?: null
     ): ApprovalEventFilter;
+
+    "Claimed(address,uint256)"(
+      claimant?: string | null,
+      amount?: null
+    ): ClaimedEventFilter;
+    Claimed(claimant?: string | null, amount?: null): ClaimedEventFilter;
 
     "Transfer(address,address,uint256)"(
       from?: string | null,
@@ -374,12 +404,17 @@ export interface ERC20MerkleDrop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    isClaimed(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     redeem(
-      account: string,
+      recipient: string,
       amount: BigNumberish,
-      proof: BytesLike[],
+      merkleProof: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -435,12 +470,17 @@ export interface ERC20MerkleDrop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    isClaimed(
+      index: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     redeem(
-      account: string,
+      recipient: string,
       amount: BigNumberish,
-      proof: BytesLike[],
+      merkleProof: BytesLike[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

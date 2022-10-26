@@ -7,12 +7,12 @@ import hre from "hardhat";
 
 async function main() {
 	// We get the contract to deploy
-	const TodoList = await hre.ethers.getContractFactory("TodoList");
-	const todoList = await TodoList.deploy("Hello, Builders!");
+	const MockHBT = await hre.ethers.getContractFactory("MockHBT");
+  const mockHBT = await MockHBT.deploy();
 
-	await todoList.deployed();
+  await mockHBT.deployed();
 
-	console.log("TodoList deployed to:", todoList.address);
+  console.log("Mock HBT deployed to:", mockHBT.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
