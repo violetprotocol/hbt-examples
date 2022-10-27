@@ -184,3 +184,10 @@ text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10
 	dark:bg-green-700 dark:border-gray-600 dark:text-slate-100
 	dark:hover:bg-green-600;
 }
+
+.eligible-address-input {
+	@apply bg-white text-zinc-800 focus:outline-none
+	focus:shadow-lg border border-gray-300 rounded-lg py-2 px-4
+	block appearance-none leading-normal;
+	width: 28rem;
+}

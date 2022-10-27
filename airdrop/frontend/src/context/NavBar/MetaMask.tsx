@@ -1,13 +1,14 @@
 import { useContext, Dispatch, SetStateAction } from "react";
 import { Web3Context } from "../Web3Context";
 import { Web3Provider } from "@ethersproject/providers";
-import { ERC20, ERC20__factory } from "lib/typechain-types/index";
-import { toast } from "react-toastify";
+import { MockHBT, MockHBT__factory } from "lib/typechain-types/index";
+import { ethers } from "ethers";
+import { displayToast, toastInfo } from "src/utils/toast";
 
 declare let window: any;
 
 export interface Web3 {
-  contract: ERC20;
+  contract: MockHBT;
   provider: Web3Provider;
   account: string;
   setWeb3?: Dispatch<SetStateAction<Web3>>;
@@ -51,7 +52,35 @@ export const MetaMask = () => {
         const signer = provider.getSigner(address);
         const account = signer._address;
 
-        const contract = ERC20__factory.connect(contractAddress, signer);
+        let code;
+        try {
+          code = await signer.provider.getCode(contractAddress, "latest");
+          if (code == "0x") {
+            console.error(
+              `There is no code at ${contractAddress}. Please verify that the HBT contract was deployed at this address.`
+            );
+            displayToast(
+              "The HBT contract address provided does not correspond to a smart contract.",
+              {
+                type: "error",
+              }
+            );
+          }
+        } catch (error) {
+          console.log("error", error);
+        }
+
+        const contract = new ethers.Contract(
+          contractAddress,
+          MockHBT__factory.abi,
+          signer
+        ) as MockHBT;
+
+        console.log(
+          `Contract connected: ${
+            contract.address
+          } on chain ${chainId} with signer ${await contract.signer.getAddress()}`
+        );
 
         setWeb3 &&
           setWeb3((prev: Web3) => ({
@@ -79,16 +108,7 @@ export const MetaMask = () => {
       ) : (
         <button
           className="blue-btn"
-          onClick={() =>
-            toast.info(`Your wallet address is: ${account}`, {
-              autoClose: 3000,
-              position: "top-center",
-              style: {
-                width: 520,
-              },
-              theme: "colored",
-            })
-          }
+          onClick={() => displayToast(`Your wallet address is: ${account}`)}
         >
           Wallet Connected
         </button>
