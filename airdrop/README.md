@@ -24,3 +24,9 @@ Once the app is running, you can view at:
 - Frontend <http://localhost:3000>
 - Backend <http://localhost:5000>
 
+## Testing Locally
+### Deploy a mock version of the Humanbound Tokens contract
+
+```
+npx hardhat run --network localhost scripts/deploy.ts
+```
