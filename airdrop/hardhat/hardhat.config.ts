@@ -13,16 +13,37 @@ import '@typechain/ethers-v5';
 import 'hardhat-gas-reporter';
 import 'hardhat-contract-sizer';
 import 'solidity-coverage';
+import { BigNumber } from "ethers";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
-	const accounts = await hre.ethers.getSigners();
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
 
-	for (const account of accounts) {
-		console.log(account.address);
-	}
+  for (const account of accounts) {
+    console.log(account.address);
+  }
 });
+
+task("fund", "Get some ETH on your local test network")
+  .addParam("to", "The recipient's address")
+  .setAction(async (taskArgs, hre) => {
+    const { ethers } = hre;
+    const [firstSigner] = await ethers.getSigners();
+    const to = taskArgs.to;
+    const res = await firstSigner.sendTransaction({
+      value: BigNumber.from(ethers.utils.parseEther("1")),
+      to,
+    });
+    console.log(res);
+    const balance = await ethers.provider.getBalance(to);
+
+    console.log(
+      "New balance of recipient: ",
+      ethers.utils.formatEther(balance),
+      "ETH"
+    );
+  });
 
 const INFURA_KEY = process.env.INFURA_API_KEY;
 const PRIVATE_KEY =
