@@ -48,7 +48,7 @@ export const Web3Provider: React.FC = ({ children }) => {
       window.ethereum.removeListener("accountsChanged", newAccount);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  };, [account, provider]);
+  }, [account, provider]);
 
   return (
     <Web3Context.Provider
