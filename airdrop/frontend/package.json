@@ -19,7 +19,9 @@
 		"react-dom": "17.0.2",
 		"react-loader-spinner": "^5.0.9",
 		"react-toastify": "^8.0.3",
-		"react-toggle-dark-mode": "^1.0.4"
+		"react-toggle-dark-mode": "^1.0.4",
+		"siwe": "^1.1.6",
+		"ts-loader": "^9.4.1"
 	},
 	"devDependencies": {
 		"@tailwindcss/typography": "^0.5.0",
