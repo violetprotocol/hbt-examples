@@ -51,7 +51,7 @@ export default function Mint() {
       );
     }
 
-    if (hbtBalance._isBigNumber && hbtBalance.lt(0)) {
+    if (hbtBalance._isBigNumber && hbtBalance.gt(0)) {
       return <p>{account} already owns an HBT</p>;
     }
   };
