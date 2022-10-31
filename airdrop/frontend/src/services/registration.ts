@@ -35,10 +35,27 @@ export const registerAddress = async ({
       }
       if (data?.error) {
         console.error("Error during registration", data);
-        if (data.error == BackendErrors.NOT_SIGNED_IN) {
-          displayToast(
-            "Your Sign-In With Ethereum session expired. Please sign-in again."
-          );
+        switch (data.error) {
+          case BackendErrors.NOT_SIGNED_IN:
+            displayToast(
+              "Your Sign-In With Ethereum session expired. Please sign-in again."
+            );
+            break;
+          case BackendErrors.INVALID_SIGNATURE_PROVIDED:
+            displayToast(
+              "The signature provided to sign-in with the address holding an HBT was invalid."
+            );
+          case BackendErrors.NOT_AN_HBT_OWNER:
+            displayToast(
+              "The address you used to sign-in does not own an HBT."
+            );
+          case BackendErrors.QUOTA_REACHED:
+            displayToast(
+              "Quota reached: You cannot register another address for the airdrop"
+            );
+          default:
+            displayToast("Oooops, something went wrong!");
+            break;
         }
         return;
       }

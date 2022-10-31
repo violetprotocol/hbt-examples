@@ -50,7 +50,7 @@ router.post(
       });
 
       if (hasRegisterSucceeded(result)) {
-        return res.status(200).json({
+        return res.status(201).json({
           registeredAddress: result.address,
         });
       }
@@ -59,7 +59,10 @@ router.post(
         switch (result.error) {
           case BackendErrors.INVALID_SIGNATURE_PROVIDED:
             return res.status(400).send(result);
-          // TODO: handle other errors
+          case BackendErrors.NOT_AN_HBT_OWNER:
+            return res.status(403).send(result);
+          case BackendErrors.QUOTA_REACHED:
+            return res.status(200).send(result);
           default:
             console.error(result);
             return res.status(500).send();
