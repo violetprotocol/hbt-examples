@@ -40,19 +40,22 @@ export const registerAddress = async ({
             displayToast(
               "Your Sign-In With Ethereum session expired. Please sign-in again."
             );
-            break;
+            return;
           case BackendErrors.INVALID_SIGNATURE_PROVIDED:
             displayToast(
               "The signature provided to sign-in with the address holding an HBT was invalid."
             );
+            return;
           case BackendErrors.NOT_AN_HBT_OWNER:
             displayToast(
               "The address you used to sign-in does not own an HBT."
             );
+            return;
           case BackendErrors.QUOTA_REACHED:
             displayToast(
               "Quota reached: You cannot register another address for the airdrop"
             );
+            return;
           default:
             displayToast("Oooops, something went wrong!");
             break;

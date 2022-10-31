@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { getEligility } from "src/services/eligibility";
+import { sharedConfig } from "../../shared";
 
 const INITIAL_MESSAGE = "Enter your address above";
 const INVALID_ADDRESS = "Please enter a valid address";
@@ -9,7 +10,7 @@ export default function Eligible() {
   const [inputValue, setinputValue] = useState("");
   const [addressToCheck, setAddressToCheck] = useState("");
   const [message, setMessage] = useState(INITIAL_MESSAGE);
-  const [displayClaimButton, setDisplayClaimButton] = useState(false);
+  const [displayRegisterButton, setDisplayRegisterButton] = useState(false);
   const router = useRouter();
 
   const handleAddressToCheck = (event: React.FormEvent<HTMLInputElement>) => {
@@ -17,7 +18,7 @@ export default function Eligible() {
     setinputValue(value);
     if (value.length != 42 && message != INVALID_ADDRESS) {
       setMessage(INVALID_ADDRESS);
-      setDisplayClaimButton(false);
+      setDisplayRegisterButton(false);
     } else if (value.length == 42) {
       setAddressToCheck(value);
       setMessage("");
@@ -36,7 +37,7 @@ export default function Eligible() {
             setMessage(
               `🎉🎉🎉 Congratulations! This address is entitled to ${amount} tokens! 🎉🎉🎉`
             );
-            setDisplayClaimButton(true);
+            setDisplayRegisterButton(true);
           }
         },
         (error) => {
@@ -69,9 +70,16 @@ export default function Eligible() {
           {message}
         </label>
       </form>
-      {displayClaimButton && (
+      {displayRegisterButton && (
         <div className="mt-8">
-          <h3>Register this address for the airdrop</h3>
+          <h3 className="text-xl mb-4">
+            Register this address to claim the airdrop:
+          </h3>
+          <h4>
+            ⚠️ You can only register{" "}
+            {sharedConfig.maximumNumberOfAddressesOneCanRegister} addresses.
+            Pick them wisely! ⚠️
+          </h4>
           <button className="green-btn mt-4" onClick={onRegisterClick}>
             Register
           </button>

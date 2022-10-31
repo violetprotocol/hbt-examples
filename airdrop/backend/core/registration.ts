@@ -3,6 +3,7 @@ import {
   BackendErrors,
   EthAddress,
   getRegistrationMessage,
+  sharedConfig,
 } from "../../shared";
 import hbtRepository from "../repositories/hbt.repository";
 import { getHBTId } from "./hbt";
@@ -61,7 +62,7 @@ export const register = async ({
   if (
     hbt &&
     hbt.numberOfRegisteredAddresses ===
-      aidropConfig.maximumNumberOfAddressesOneCanRegister
+      sharedConfig.maximumNumberOfAddressesOneCanRegister
   ) {
     return {
       error: BackendErrors.QUOTA_REACHED,

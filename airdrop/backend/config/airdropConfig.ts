@@ -4,9 +4,6 @@ export default {
   // Any address is eligible to this minimum amount, since
   // we are restricting to claiming for 4 addresses per person maximum.
   minAmount: 5,
-  // Maximum number of addresses someone is allowed to register
-  // for the airdrop.
-  maximumNumberOfAddressesOneCanRegister: 3,
   // These addresses are eligible to more tokens.
   activeAccounts: {
     "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": 8488,
