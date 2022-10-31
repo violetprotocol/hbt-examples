@@ -15,7 +15,7 @@ export function validateClaim(claim: IClaim) {
 }
 
 // Model
-export const Address = mongoose.model<IClaim>(
+export const Claim = mongoose.model<IClaim>(
   "Claims",
   new mongoose.Schema({
     address: { type: String, length: 42, required: true, unique: true },
