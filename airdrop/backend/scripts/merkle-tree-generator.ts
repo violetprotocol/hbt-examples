@@ -15,7 +15,7 @@ mongoose
   .catch((err) => console.error("FAILED to connect to MongoDB: " + err));
 
 // Output file path
-const outputPath: string = path.join(__dirname, "../../hardhat/merkle.json");
+const outputPath: string = path.join(__dirname, "../../shared/merkle.json");
 
 // Object containing the list of addresses and how much tokens they can claim
 // { "0x2fe4" : 562, ...}

@@ -27,6 +27,13 @@ Once the app is running, you can view at:
 ## Testing Locally
 ### Deploy a mock version of the Humanbound Tokens contract
 
+In the `hardhat` folder run:
 ```
-npx hardhat run --network localhost scripts/deploy.ts
+npx hardhat run --network localhost scripts/deploy-mock-hbt.ts
+```
+
+After having generated the merkle tree, deploy the airdrop contract with:
+
+```
+npx hardhat run --network localhost scripts/deploy-merkle-drop.ts
 ```
