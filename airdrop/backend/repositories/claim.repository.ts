@@ -1,5 +1,5 @@
 import { Model, HydratedDocument } from "mongoose";
-import { IClaim } from "../../shared";
+import { EthAddress, IClaim } from "../../shared";
 import { Claim } from "../models/claim";
 
 class ClaimRepository {
@@ -15,6 +15,10 @@ class ClaimRepository {
 
   async find(params: Partial<IClaim>) {
     return await this.model.find(params).exec();
+  }
+
+  async findByAddress(address: EthAddress) {
+    return await this.model.findOne({ address }).exec();
   }
 }
 

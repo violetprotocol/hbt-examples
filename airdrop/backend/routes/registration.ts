@@ -6,10 +6,15 @@ import {
   createValidator,
 } from "express-joi-validation";
 import Joi from "joi";
-import { BackendErrors, EthAddress } from "../../shared/types";
+import { BackendErrors, EthAddress, Registration } from "../../shared/types";
 import { signedInWithEthereum } from "../middleware/siwe";
 import { ethAddressSchema } from "../models/address";
-import { hasRegisterSucceeded, register } from "../core/registration";
+import {
+  getRegisteredAddress,
+  hasRegisterSucceeded,
+  register,
+} from "../core/registration";
+import claimRepository from "../repositories/claim.repository";
 
 interface RegisterAddressRequestSchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: {
@@ -75,4 +80,32 @@ router.post(
   }
 );
 
+interface RegisteredAddressRequestSchema extends ValidatedRequestSchema {
+  [ContainerTypes.Params]: {
+    address: EthAddress;
+  };
+}
+const registeredAddressSchema = Joi.object({
+  address: ethAddressSchema,
+});
+
+router.get(
+  "/:address",
+  validator.params(registeredAddressSchema),
+  async (
+    req: ValidatedRequest<RegisteredAddressRequestSchema>,
+    res: Response<Registration>
+  ): Promise<void> => {
+    const address = req.params.address;
+    try {
+      const registration: Registration = await getRegisteredAddress(address);
+      res.status(200).json(registration);
+      return;
+    } catch (error) {
+      console.error(error);
+      res.status(500);
+      return;
+    }
+  }
+);
 export default router;

@@ -38,7 +38,7 @@ const port = process.env.PORT || 5000;
 
 app.use("/eligible", eligibleRouter);
 app.use("/siwe", siweRouter);
-app.use("/register", registerRouter);
+app.use("/registration", registerRouter);
 
 app.listen(port, () =>
   console.log(

@@ -40,3 +40,9 @@ export interface HumanboundContractMetadata {
   address: string;
   fromBlock?: number;
 }
+
+export type Registration = {
+  isRegistered: boolean;
+  address?: string;
+  amount?: number;
+};

@@ -117,3 +117,13 @@ export const register = async ({
     };
   }
 };
+
+export const getRegisteredAddress = async (address: EthAddress) => {
+  const claim = await claimRepository.findByAddress(address);
+
+  if (!claim) {
+    return { isRegistered: false };
+  }
+
+  return { isRegistered: true, address: claim.address, amount: claim.amount };
+};

@@ -2,7 +2,7 @@ import { Signer } from "ethers";
 import { BACKEND_ENDPOINTS } from "src/config/endpoints";
 import { displayToast } from "src/utils/toast";
 import { getRegistrationMessage } from "../../../shared/config/registrationMessage";
-import { BackendErrors } from "../../../shared/types";
+import { BackendErrors, EthAddress, Registration } from "../../../shared/types";
 
 export type RegisterAddressParams = {
   addressToRegister: string;
@@ -65,5 +65,20 @@ export const registerAddress = async ({
     })
     .catch((error) => {
       console.error("Error:", error);
+    });
+};
+
+export const isAddressRegistered = async (
+  address: EthAddress
+): Promise<Registration> => {
+  return fetch(BACKEND_ENDPOINTS.isRegistered(address), {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error("Error querying if address is registered:", error);
     });
 };

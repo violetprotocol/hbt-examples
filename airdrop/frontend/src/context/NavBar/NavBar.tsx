@@ -9,26 +9,32 @@ export const NavBar = () => {
 	const { asPath: path } = useRouter();
 
 	return (
-		<>
-			<ToastContainer />
-			<header
-				className="flex justify-around items-center py-3
+    <>
+      <ToastContainer />
+      <header
+        className="flex justify-around items-center py-3
 				border-b-2 border-gray-100 dark:border-gray-700"
-			>
-				<nav>
-					<ul className="flex justify-around text-center">
-						<li className={path === "/" ? "active-nav" : "nav-item"}>
-							<Link href="/">Home</Link>
-						</li>
-					</ul>
-				</nav>
-				<div className="flex items-center">
-					<MetaMask />
-					<div className="ml-5">
-						<DarkModeToggle />
-					</div>
-				</div>
-			</header>
-		</>
-	);
+      >
+        <nav>
+          <ul className="flex justify-around text-center">
+            <li className={path === "/" ? "active-nav" : "nav-item"}>
+              <Link href="/">Home</Link>
+            </li>
+            <li className={path === "/eligible" ? "active-nav" : "nav-item"}>
+              <Link href="/eligible">Register</Link>
+            </li>
+            <li className={path === "/claim" ? "active-nav" : "nav-item"}>
+              <Link href="/claim">Claim</Link>
+            </li>
+          </ul>
+        </nav>
+        <div className="flex items-center">
+          <MetaMask />
+          <div className="ml-5">
+            <DarkModeToggle />
+          </div>
+        </div>
+      </header>
+    </>
+  );
 };

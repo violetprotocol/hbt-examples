@@ -83,7 +83,9 @@ export default function Register() {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl my-4">Airdrop registration</h1>
+      <h1 className="text-2xl my-4">
+        Complete your registration for the airdrop
+      </h1>
       <p className="mb-6">
         Address to register:{" "}
         <span className="text-green-500">{addressToRegister}</span>
