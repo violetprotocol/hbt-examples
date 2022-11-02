@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
-import Steps, { Step, StepStatus } from "src/components/steps";
+import Steps, { Step, StepStatus } from "src/components/Steps";
 import { Web3Context } from "src/context/Web3Context";
 import { useSiwe } from "src/hooks/useSiwe";
 import { registerAddress } from "src/services/registration";
