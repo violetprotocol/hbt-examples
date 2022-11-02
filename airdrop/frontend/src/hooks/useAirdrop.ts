@@ -65,6 +65,14 @@ export const useAidrop = () => {
     getRegistration();
   }, [getRegistration]);
 
+  useEffect(() => {
+    if (account) {
+      getRegistration();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
+
   const checkIfClaimed = useCallback(async () => {
     const index = (registration as RegistrationRegistered)?.index;
 

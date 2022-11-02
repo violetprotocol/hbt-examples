@@ -1,7 +1,9 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import Steps, { Step, StepStatus } from "src/components/Steps";
 import { Web3Context } from "src/context/Web3Context";
+import { isAddressRegistered } from "src/services/registration";
 import { useSiwe } from "src/hooks/useSiwe";
 import { registerAddress } from "src/services/registration";
 import { displayToast } from "src/utils/toast";
@@ -26,14 +28,26 @@ export default function Register() {
   const router = useRouter();
   const { address: addressToRegister } = router.query;
   const [steps, setSteps] = useState(stepsInitialState);
-  const isFirstStep = steps[0].status == StepStatus.IN_PROGRESS;
-  const isSecondStep = steps[1].status == StepStatus.IN_PROGRESS;
-  const isLastStep = steps[1].status == StepStatus.COMPLETE;
   const [
     isConnectedWithAddressToRegister,
     setIsConnectedWithAddressToRegister,
   ] = useState<boolean | null>(null);
+  const [isAddressAlreadyRegistered, setIsAddressAlreadyRegistered] = useState<
+    boolean | null
+  >(null);
   const [registeredAddress, setRegisteredAddress] = useState("");
+
+  const isFirstStep = steps[0].status == StepStatus.IN_PROGRESS;
+  const isSecondStep = steps[1].status == StepStatus.IN_PROGRESS;
+  const isLastStep = steps[1].status == StepStatus.COMPLETE;
+
+  useEffect(() => {
+    if (typeof addressToRegister == "string") {
+      isAddressRegistered(addressToRegister).then((res) =>
+        setIsAddressAlreadyRegistered(res.isRegistered)
+      );
+    }
+  }, [addressToRegister]);
 
   const onSignIn = async () => {
     const result = await signInWithEthereum();
@@ -90,41 +104,50 @@ export default function Register() {
         Address to register:{" "}
         <span className="text-green-500">{addressToRegister}</span>
       </p>
-      <div className="max-w-[70%] border-2 p-4 rounded-lg m-auto flex items-center">
-        <div className="min-w-[40%]">
-          <Steps steps={steps} />
+      {isAddressAlreadyRegistered ? (
+        <p>This address is already registered for the airdrop!</p>
+      ) : (
+        <div className="max-w-[70%] border-2 p-4 rounded-lg m-auto flex items-center">
+          <div className="min-w-[40%]">
+            <Steps steps={steps} />
+          </div>
+          <div className="w-[70%]">
+            {isFirstStep && (
+              <div>
+                {signer ? (
+                  <button className="green-btn" onClick={onSignIn}>
+                    Sign in
+                  </button>
+                ) : (
+                  "Please connect an address which owns a Humanbound Token."
+                )}
+              </div>
+            )}
+            {isSecondStep && (
+              <div>
+                {isConnectedWithAddressToRegister ? (
+                  <button className="green-btn" onClick={onRegister}>
+                    Register
+                  </button>
+                ) : (
+                  <p>Please connect with {addressToRegister}</p>
+                )}
+              </div>
+            )}
+            {isLastStep && registeredAddress && (
+              <>
+                <p>
+                  <span className="text-green-500">{registeredAddress}</span>{" "}
+                  has been registered for the airdrop! 🎉
+                </p>
+                <Link href="/eligible" className="underline mt-6">
+                  Register another address
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-        <div className="w-[70%]">
-          {isFirstStep && (
-            <div>
-              {signer ? (
-                <button className="green-btn" onClick={onSignIn}>
-                  Sign in
-                </button>
-              ) : (
-                "Please connect an address which owns a Humanbound Token."
-              )}
-            </div>
-          )}
-          {isSecondStep && (
-            <div>
-              {isConnectedWithAddressToRegister ? (
-                <button className="green-btn" onClick={onRegister}>
-                  Register
-                </button>
-              ) : (
-                <p>Please connect with {addressToRegister}</p>
-              )}
-            </div>
-          )}
-          {isLastStep && registeredAddress && (
-            <p>
-              <span className="text-green-500">{registeredAddress}</span> has
-              been registered for the airdrop! 🎉
-            </p>
-          )}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
