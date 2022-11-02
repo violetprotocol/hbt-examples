@@ -1,13 +1,11 @@
-import { ethers } from "ethers";
 import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
 import fs from "fs";
 import path from "path";
-import { parseUnits } from "ethers/lib/utils";
 import mongoose from "mongoose";
-import airdropConfig from "../config/airdropConfig";
 import claimRepository from "../repositories/claim.repository";
 import { EthAddress } from "../../shared";
+import { getLeaf } from "../core/merkleTree";
 
 mongoose
   .connect("mongodb://localhost:27017/hbt-airdrop")
@@ -31,13 +29,6 @@ function logErrorAndExit(error: Error): void {
 }
 
 const generateMerkleTree = async () => {
-  // Check if config contains airdrop key
-  if (airdropConfig["decimals"] === undefined) {
-    logErrorAndExit(new Error("Missing decimals param in config. Please add."));
-  }
-
-  // Collect config
-  const decimals: number = airdropConfig.decimals ?? 18;
   const allClaims = await claimRepository.find({});
   console.log("Retrieved ", allClaims.length, " addresses from the database.");
   const entries: Entries = await allClaims.reduce(
@@ -46,13 +37,13 @@ const generateMerkleTree = async () => {
   );
 
   // Generate
-  await generate(decimals, entries);
+  await generate(entries);
 };
 
-const generate = async (decimals: number, entries: Entries) => {
+const generate = async (entries: Entries) => {
   const merkleTree = new MerkleTree(
     Object.entries(entries).map(([address, amount]) =>
-      getLeaf(address, parseUnits(amount.toString(), decimals).toString())
+      getLeaf(address, amount)
     ),
     keccak256,
     { sortPairs: true }
@@ -73,15 +64,6 @@ const generate = async (decimals: number, entries: Entries) => {
   );
   console.info("Generated merkle tree and root saved to merkle.json.");
 };
-
-function getLeaf(account: string, amount: string) {
-  return Buffer.from(
-    ethers.utils
-      .solidityKeccak256(["address", "uint256"], [account, amount])
-      .slice(2),
-    "hex"
-  );
-}
 
 generateMerkleTree()
   .then(() => process.exit(0))

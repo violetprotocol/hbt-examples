@@ -3,6 +3,7 @@ import {
   BackendErrors,
   EthAddress,
   getRegistrationMessage,
+  Registration,
   sharedConfig,
 } from "../../shared";
 import hbtRepository from "../repositories/hbt.repository";
@@ -11,6 +12,7 @@ import aidropConfig from "../config/airdropConfig";
 import { getEligibility } from "./eligibility";
 import { validateClaim } from "../models/claim";
 import claimRepository from "../repositories/claim.repository";
+import { MerkleDrop } from "./merkleTree";
 
 export type RegisterResultSuccess = {
   registered: boolean;
@@ -118,12 +120,36 @@ export const register = async ({
   }
 };
 
-export const getRegisteredAddress = async (address: EthAddress) => {
+export const getRegisteredAddress = async (
+  address: EthAddress
+): Promise<Registration> => {
   const claim = await claimRepository.findByAddress(address);
 
   if (!claim) {
-    return { isRegistered: false };
+    return { isRegistered: false, address };
   }
 
-  return { isRegistered: true, address: claim.address, amount: claim.amount };
+  const merkleDrop = MerkleDrop.getMerkleDrop();
+  const merkleDetails = merkleDrop.getMerkleDetails(
+    claim.address,
+    claim.amount
+  );
+
+  const isValidProof = merkleDrop.verifyProof(
+    merkleDetails.proof,
+    merkleDetails.leaf
+  );
+
+  if (!isValidProof) {
+    throw new Error(
+      `Invalid proof found for ${address} (claim amount: ${claim?.amount}).`
+    );
+  }
+
+  return {
+    isRegistered: true,
+    address: claim.address,
+    amount: claim.amount,
+    ...merkleDetails,
+  };
 };
