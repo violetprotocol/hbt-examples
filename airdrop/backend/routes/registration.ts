@@ -14,7 +14,6 @@ import {
   hasRegisterSucceeded,
   register,
 } from "../core/registration";
-import claimRepository from "../repositories/claim.repository";
 
 interface RegisterAddressRequestSchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: {
