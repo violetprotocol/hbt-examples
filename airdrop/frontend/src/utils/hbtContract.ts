@@ -1,6 +1,7 @@
 import { ethers, Signer } from "ethers";
 import { MockHBT, MockHBT__factory } from "lib/typechain-types";
 import { verifyAddressIsASmartContract } from ".";
+import { humanboundContracts, Web3ChainReference } from "../../../shared";
 
 export type GetHBTContractParams = {
   chainId: number;
@@ -11,20 +12,8 @@ export const getHBTContract = async ({
   chainId,
   signer,
 }: GetHBTContractParams) => {
-  let contractAddress: string;
-  switch (chainId) {
-    case 1: // Mainnet
-      contractAddress = "";
-      break;
-    case 137: // Polygon Mainnet
-      contractAddress = "";
-      break;
-    case 1337: // hardhat local
-      contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-      break;
-    default:
-      contractAddress = "";
-  }
+  const contractAddress =
+    humanboundContracts[chainId as Web3ChainReference]?.address;
 
   if (!contractAddress) {
     throw new Error("Unsupported network");
@@ -40,7 +29,7 @@ export const getHBTContract = async ({
   );
 
   if (!isContract) return null;
-  
+
   const contract = new ethers.Contract(
     contractAddress,
     MockHBT__factory.abi,
@@ -48,4 +37,4 @@ export const getHBTContract = async ({
   ) as MockHBT;
 
   return contract;
-};
+};;

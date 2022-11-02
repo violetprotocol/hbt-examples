@@ -1,6 +1,7 @@
 import type { Web3 } from "./NavBar/MetaMask";
 import { createContext, useState, useEffect } from "react";
 import { getHBTContract } from "src/utils/hbtContract";
+import { MockHBT } from "lib/typechain-types";
 
 declare let window: any;
 
@@ -31,14 +32,17 @@ export const Web3Provider: React.FC = ({ children }) => {
       }
       const signer = provider.getSigner(accounts[0]);
       const chainId = await signer.getChainId();
-      if (!contract) {
-        await getHBTContract({ signer, chainId });
+      let updatedContract: MockHBT | null;
+      updatedContract = await getHBTContract({ signer, chainId });
+      if (!updatedContract) {
+        console.error("Failed to get HBT contract");
+        return;
       }
 
       setWeb3((prev: Web3) => ({
         ...prev,
         signer,
-        contract: contract.connect(signer),
+        contract: updatedContract!.connect(signer),
         account: signer._address,
       }));
     }
