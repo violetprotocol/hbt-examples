@@ -23,6 +23,7 @@ export default function Eligible() {
     if (value.length != 42 && message != INVALID_ADDRESS) {
       setMessage(INVALID_ADDRESS);
       setIsAddressEligible(false);
+      setAddressToCheck("");
     } else if (value.length == 42) {
       setAddressToCheck(value);
       setMessage("");

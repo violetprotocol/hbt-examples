@@ -21,9 +21,7 @@ const Home: NextPage = () => {
       </Head>
       {hasClaimingPeriodStarted() ? (
         <div className="text-center">
-          <h1 className="text-center text-2xl mb-12">
-            Time to claim your aidrop!
-          </h1>
+          <h1 className="text-center text-2xl mb-12">The airdrop is live!</h1>
           <button onClick={onClaimClick} className="green-btn">
             Claim
           </button>
