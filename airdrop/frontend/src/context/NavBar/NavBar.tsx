@@ -17,7 +17,7 @@ export const NavBar = () => {
 				border-b-2 border-gray-100 dark:border-gray-700"
       >
         <nav>
-          <ul className="flex justify-around text-center">
+          <ul className="nav-elements">
             <li className={path === "/" ? "active-nav" : "nav-item"}>
               <Link href="/">Home</Link>
             </li>

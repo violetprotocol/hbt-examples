@@ -25,10 +25,15 @@ export const useAidrop = () => {
   useEffect(() => {
     if (!signer) return;
 
-    const getMerkleDropContract = async (): Promise<Contract> => {
+    const getMerkleDropContract = async (): Promise<Contract | null> => {
       const contractAddress = sharedConfig.merkleDropContractAddress;
 
-      await verifyAddressIsASmartContract(contractAddress, signer);
+      const isContract = await verifyAddressIsASmartContract(
+        contractAddress,
+        signer
+      );
+
+      if (!isContract) return null;
 
       return new ethers.Contract(
         contractAddress,

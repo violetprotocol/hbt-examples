@@ -34,8 +34,13 @@ export const getHBTContract = async ({
     throw new Error("Signer has no provider");
   }
 
-  await verifyAddressIsASmartContract(contractAddress, signer);
+  const isContract = await verifyAddressIsASmartContract(
+    contractAddress,
+    signer
+  );
 
+  if (!isContract) return null;
+  
   const contract = new ethers.Contract(
     contractAddress,
     MockHBT__factory.abi,

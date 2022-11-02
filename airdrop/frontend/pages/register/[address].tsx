@@ -37,13 +37,13 @@ export default function Register() {
 
   const onSignIn = async () => {
     const result = await signInWithEthereum();
-    if (result.isSignedIn) {
+    if (result?.isSignedIn) {
       setSteps((steps) => [
         { ...steps[0], status: StepStatus.COMPLETE },
         { ...steps[1], status: StepStatus.IN_PROGRESS },
       ]);
     } else {
-      displayToast("Oops, an error occured.", { type: "error" });
+      displayToast("Oops, something went wrong.", { type: "error" });
     }
   };
 
@@ -96,7 +96,7 @@ export default function Register() {
         </div>
         <div className="w-[70%]">
           {isFirstStep && (
-            <div className="bg-sky-400">
+            <div>
               {signer ? (
                 <button className="green-btn" onClick={onSignIn}>
                   Sign in
@@ -107,7 +107,7 @@ export default function Register() {
             </div>
           )}
           {isSecondStep && (
-            <div className="bg-teal-500">
+            <div>
               {isConnectedWithAddressToRegister ? (
                 <button className="green-btn" onClick={onRegister}>
                   Register

@@ -15,14 +15,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="text-center">
-        <h1 className="text-center text-2xl mb-4">
+        <h1 className="text-center text-2xl mb-12">
           Ready to participate in this airdrop, anon?
         </h1>
-        <h2 className="text-lg mb-4">
+        <h2 className="text-lg mb-16">
           Check how many tokens your address is eligible for and register for
           the upcoming airdrop.
         </h2>
-        <button onClick={onRegisterClick} className="yellow-btn">
+        <button onClick={onRegisterClick} className="green-btn">
           Register
         </button>
       </div>

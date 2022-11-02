@@ -1,5 +1,5 @@
 import React from "react";
-import { formatToDisplayAddress } from "src/utils";
+import { formatToDisplayEthAddress } from "src/utils";
 import {
   Registration,
   isAddressNotRegistered,
@@ -40,7 +40,7 @@ export const ClaimBox = ({
           <p>
             The address you are connected with -{" "}
             <span className="text-yellow-500">
-              {formatToDisplayAddress(account)}
+              {formatToDisplayEthAddress(account)}
             </span>{" "}
             - already claimed its airdrop.
           </p>

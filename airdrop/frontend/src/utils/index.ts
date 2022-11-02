@@ -14,7 +14,7 @@ export function hasClaimingPeriodStarted() {
   return process.env.NEXT_PUBLIC_CLAIMING_PERIOD_STARTED === "true";
 }
 
-export const formatToDisplayAddress = (address: EthAddress): string =>
+export const formatToDisplayEthAddress = (address: EthAddress): string =>
   `${address.substring(0, 8)}...${address.substring(37, 42)}`;
 
 export const verifyAddressIsASmartContract = async (
@@ -36,6 +36,9 @@ export const verifyAddressIsASmartContract = async (
           type: "error",
         }
       );
+      return false;
+    } else {
+      return true;
     }
   } catch (error) {
     console.log("error", error);

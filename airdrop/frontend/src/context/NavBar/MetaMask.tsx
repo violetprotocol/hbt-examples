@@ -5,6 +5,7 @@ import { MockHBT } from "lib/typechain-types/index";
 import { Signer } from "ethers";
 import { displayToast } from "src/utils/toast";
 import { getHBTContract } from "src/utils/hbtContract";
+import { formatToDisplayEthAddress } from "src/utils";
 
 declare let window: any;
 
@@ -37,6 +38,8 @@ export const MetaMask = () => {
           signer,
         });
 
+        if (!contract) return;
+
         console.log(
           `Contract connected: ${
             contract.address
@@ -64,15 +67,15 @@ export const MetaMask = () => {
   return (
     <div className="py-3">
       {!account ? (
-        <button className="metamask-btn" onClick={enableEth}>
+        <button className="metamask-btn--not-connected" onClick={enableEth}>
           Connect Wallet
         </button>
       ) : (
         <button
-          className="blue-btn"
+          className="metamask-btn--connected"
           onClick={() => displayToast(`Your wallet address is: ${account}`)}
         >
-          Wallet Connected
+          {formatToDisplayEthAddress(account)}
         </button>
       )}
     </div>

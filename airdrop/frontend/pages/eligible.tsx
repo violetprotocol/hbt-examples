@@ -66,7 +66,6 @@ export default function Eligible() {
   return (
     <div className="text-center">
       <h1 className="text-2xl my-4">Register for the airdrop</h1>
-      <h2 className="text-xl my-4">How many tokens are you eligible for?</h2>
       <form className="flex flex-col items-center">
         <input
           className="eligible-address-input"
@@ -76,10 +75,7 @@ export default function Eligible() {
           value={inputValue}
           placeholder="0x1234"
         />
-        <label
-          className="block text-gray-200 text-lg font-bold mt-6"
-          htmlFor="address"
-        >
+        <label className="block text-lg mt-6" htmlFor="address">
           {message}
         </label>
       </form>

@@ -149,10 +149,14 @@ footer {
 	shadow dark:shadow-2xl;
 }
 
-.metamask-btn {
+.metamask-btn--not-connected {
 	@apply text-white font-bold py-2 px-6
-	rounded-3xl bg-green-500 hover:bg-green-300
+	rounded-3xl bg-blue-500 hover:bg-blue-300
 	shadow dark:shadow-2xl;
+}
+
+.metamask-btn--connected {
+	@apply text-yellow-500 font-bold py-2 px-6
 }
 
 .blue-btn {
@@ -190,4 +194,13 @@ text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10
 	focus:shadow-lg border border-gray-300 rounded-lg py-2 px-4
 	block appearance-none leading-normal;
 	width: 28rem;
+}
+
+.nav-elements {
+	@apply flex justify-around text-center;
+	
+}
+
+.nav-elements > li {
+	@apply mr-4
 }
