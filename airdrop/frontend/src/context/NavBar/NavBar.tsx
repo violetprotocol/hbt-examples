@@ -4,11 +4,12 @@ import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import { MetaMask } from "./MetaMask";
 import { DarkModeToggle } from "src/helpers/DarkModeToggle";
+import { hasClaimingPeriodStarted } from "src/utils";
 
 export const NavBar = () => {
-	const { asPath: path } = useRouter();
+  const { asPath: path } = useRouter();
 
-	return (
+  return (
     <>
       <ToastContainer />
       <header
@@ -23,9 +24,11 @@ export const NavBar = () => {
             <li className={path === "/eligible" ? "active-nav" : "nav-item"}>
               <Link href="/eligible">Register</Link>
             </li>
-            <li className={path === "/claim" ? "active-nav" : "nav-item"}>
-              <Link href="/claim">Claim</Link>
-            </li>
+            {hasClaimingPeriodStarted() && (
+              <li className={path === "/claim" ? "active-nav" : "nav-item"}>
+                <Link href="/claim">Claim </Link>
+              </li>
+            )}
           </ul>
         </nav>
         <div className="flex items-center">
