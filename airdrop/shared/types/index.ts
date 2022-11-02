@@ -41,8 +41,25 @@ export interface HumanboundContractMetadata {
   fromBlock?: number;
 }
 
-export type Registration = {
+
+export type RegistrationRegistered = {
   isRegistered: boolean;
-  address?: string;
-  amount?: number;
+  address: string;
+  amount: number;
+  leaf: any;
+  proof: string[];
+  index: number;
+};
+
+export type RegistrationNotRegistered = {
+  isRegistered: boolean;
+  address: string;
+};
+
+export type Registration = RegistrationNotRegistered | RegistrationRegistered;
+
+export const isAddressNotRegistered = (
+  registration: Registration
+): registration is RegistrationNotRegistered => {
+  return registration.isRegistered == false;
 };
