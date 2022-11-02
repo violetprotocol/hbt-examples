@@ -1,6 +1,6 @@
 import { ethers, Signer } from "ethers";
 import { MockHBT, MockHBT__factory } from "lib/typechain-types";
-import { displayToast } from "./toast";
+import { verifyAddressIsASmartContract } from ".";
 
 export type GetHBTContractParams = {
   chainId: number;
@@ -34,23 +34,7 @@ export const getHBTContract = async ({
     throw new Error("Signer has no provider");
   }
 
-  let code;
-  try {
-    code = await signer.provider.getCode(contractAddress, "latest");
-    if (code == "0x") {
-      console.error(
-        `There is no code at ${contractAddress}. Please verify that the HBT contract was deployed at this address.`
-      );
-      displayToast(
-        "The HBT contract address provided does not correspond to a smart contract.",
-        {
-          type: "error",
-        }
-      );
-    }
-  } catch (error) {
-    console.log("error", error);
-  }
+  await verifyAddressIsASmartContract(contractAddress, signer);
 
   const contract = new ethers.Contract(
     contractAddress,
