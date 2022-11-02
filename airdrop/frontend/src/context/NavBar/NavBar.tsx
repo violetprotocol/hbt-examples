@@ -21,12 +21,14 @@ export const NavBar = () => {
             <li className={path === "/" ? "active-nav" : "nav-item"}>
               <Link href="/">Home</Link>
             </li>
-            <li className={path === "/eligible" ? "active-nav" : "nav-item"}>
-              <Link href="/eligible">Register</Link>
-            </li>
-            {hasClaimingPeriodStarted() && (
+
+            {hasClaimingPeriodStarted() ? (
               <li className={path === "/claim" ? "active-nav" : "nav-item"}>
                 <Link href="/claim">Claim </Link>
+              </li>
+            ) : (
+              <li className={path === "/eligible" ? "active-nav" : "nav-item"}>
+                <Link href="/eligible">Register</Link>
               </li>
             )}
           </ul>
