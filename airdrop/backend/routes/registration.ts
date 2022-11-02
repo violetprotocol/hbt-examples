@@ -39,7 +39,6 @@ router.post(
   ) => {
     const { addressToRegister, signature } = req.body;
     const signedInAddress = req.session.siwe?.address;
-    console.log(`Registering ${addressToRegister}`);
 
     // This should already be guaranteed by the middleware
     if (!signedInAddress) {

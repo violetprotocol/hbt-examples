@@ -50,7 +50,6 @@ export const register = async ({
 
   // 2. Verify HBT ownership
   const hbtId = await getHBTId(signedInAddress);
-  console.log("hbtId", hbtId);
   if (!hbtId) {
     return {
       error: BackendErrors.NOT_AN_HBT_OWNER,
@@ -60,7 +59,6 @@ export const register = async ({
 
   // 3. Verify quota
   const hbt = await hbtRepository.findByHbtId({ hbtId });
-  console.log("hbt", hbt);
   if (
     hbt &&
     hbt.numberOfRegisteredAddresses ===
@@ -103,7 +101,7 @@ export const register = async ({
       address: addressToRegister,
       amount: eligibility.tokenAmount,
     });
-    console.log("claim", claim);
+
     return {
       registered: true,
       address: claim.address,

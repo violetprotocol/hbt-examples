@@ -16,7 +16,6 @@ export const getHBTId = async (address: EthAddress): Promise<null | string> => {
       humanboundContracts[Web3ChainReference.EIP155_HARDHAT_LOCAL].address,
       customProvider
     );
-    console.log("address", address);
     const balance = await mockHBT.balanceOf(address);
 
     if (!balance.gt(0)) {
