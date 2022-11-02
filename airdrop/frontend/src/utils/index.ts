@@ -1,4 +1,5 @@
 import { Signer } from "ethers";
+import { EthAddress } from "../../../shared";
 import { displayToast } from "./toast";
 
 export const generateRandomTokenId = () => {
@@ -12,6 +13,9 @@ export function classNames(...classes: string[]) {
 export function hasClaimingPeriodStarted() {
   return process.env.NEXT_PUBLIC_CLAIMING_PERIOD_STARTED === "true";
 }
+
+export const formatToDisplayAddress = (address: EthAddress): string =>
+  `${address.substring(0, 8)}...${address.substring(37, 42)}`;
 
 export const verifyAddressIsASmartContract = async (
   contractAddress: string,
