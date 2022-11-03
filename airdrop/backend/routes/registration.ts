@@ -6,14 +6,22 @@ import {
   createValidator,
 } from "express-joi-validation";
 import Joi from "joi";
-import { BackendErrors, EthAddress, Registration } from "../../shared/types";
+import {
+  BackendErrors,
+  EthAddress,
+  isAddressNotRegistered,
+  MerkleDetails,
+  Registration,
+  RegistrationRegistered,
+} from "../../shared/types";
 import { signedInWithEthereum } from "../middleware/siwe";
 import { ethAddressSchema } from "../models/address";
 import {
-  getRegisteredAddress,
+  getRegistration,
   hasRegisterSucceeded,
   register,
 } from "../core/registration";
+import { getMerkleDetails } from "../core/merkleTree";
 
 interface RegisterAddressRequestSchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: {
@@ -96,7 +104,7 @@ router.get(
   ): Promise<void> => {
     const address = req.params.address;
     try {
-      const registration: Registration = await getRegisteredAddress(address);
+      const registration: Registration = await getRegistration(address);
       res.status(200).json(registration);
       return;
     } catch (error) {
@@ -106,4 +114,50 @@ router.get(
     }
   }
 );
+
+interface MerkleDetailsRequestSchema extends ValidatedRequestSchema {
+  [ContainerTypes.Body]: {
+    address: EthAddress;
+    amount: number;
+  };
+}
+const merkleDetailsRequestSchema = Joi.object({
+  address: ethAddressSchema,
+  amount: Joi.number().required(),
+});
+
+router.post(
+  "/merkle-details",
+  validator.body(merkleDetailsRequestSchema),
+  async (
+    req: ValidatedRequest<MerkleDetailsRequestSchema>,
+    res: Response<MerkleDetails | { error: BackendErrors }>
+  ): Promise<void> => {
+    const address = req.body.address;
+    const amount = req.body.amount;
+    try {
+      // Verify the address and amount match what's in the DB
+      const registration: Registration = await getRegistration(address);
+      if (
+        isAddressNotRegistered(registration) ||
+        amount != (registration as RegistrationRegistered)?.amount
+      ) {
+        res.status(200).json({ error: BackendErrors.ADDRESS_NOT_REGISTERED });
+        return;
+      }
+
+      const merkleDetails = getMerkleDetails(address, amount);
+      res.status(200).json(merkleDetails);
+      return;
+    } catch (error) {
+      console.error(error);
+      res.status(500);
+      return;
+    }
+  }
+);
+
+
+
+
 export default router;
