@@ -11,7 +11,7 @@ contract ERC20MerkleDrop is ERC20 {
 
     bytes32 immutable public root;
 
-    event Claimed(address indexed claimant, uint256 amount);
+    event Claimed(address indexed claimant, uint256 amount, uint256 index);
 
     constructor(string memory name, string memory symbol, bytes32 merkleroot)
     ERC20(name, symbol)
@@ -28,7 +28,7 @@ contract ERC20MerkleDrop is ERC20 {
         require(!isClaimed(index), "ERC20MerkleDrop: Tokens already claimed");
         
         claimed.set(index);
-        emit Claimed(recipient, amount);
+        emit Claimed(recipient, amount, index);
 
         _mint(recipient, amount);
     }
