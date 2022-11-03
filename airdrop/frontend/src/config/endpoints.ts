@@ -7,4 +7,5 @@ export const BACKEND_ENDPOINTS = {
   siweVerify: baseURL + "/siwe/verify",
   register: baseURL + "/registration",
   isRegistered: (address: string) => baseURL + "/registration/" + address,
+  merkleDetails: baseURL + "/registration/merkle-details",
 };
