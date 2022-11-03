@@ -1,9 +1,13 @@
+import path from "path";
+
 export default {
   // Number of decimals of the airdrop token.
   decimals: 18,
   // Any address is eligible to this minimum amount, since
   // we are restricting to claiming for 4 addresses per person maximum.
   minAmount: 5,
+  // Output path for the Merkle tree dump
+  outputPath: path.join(__dirname, "../../shared/merkle.json"),
   // These addresses are eligible to more tokens.
   activeAccounts: {
     "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": 8488,
