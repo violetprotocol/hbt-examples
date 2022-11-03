@@ -1,24 +1,29 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import {
   isAddressNotRegistered,
-  Registration,
+  MerkleDetails,
   RegistrationRegistered,
   sharedConfig,
 } from "../../../shared";
 import { Web3Context } from "src/context/Web3Context";
-import { isAddressRegistered } from "src/services/registration";
+import { fetchMerkleDetails } from "src/services/registration";
 import { Contract, ethers } from "ethers";
 import {
   ERC20MerkleDrop,
   ERC20MerkleDrop__factory,
 } from "../../lib/typechain-types";
 import { verifyAddressIsASmartContract } from "src/utils";
+import { useIsRegistered } from "./useIsRegistered";
+import { hasAddressClaimed } from "src/services/claim";
 
 export const useAidrop = () => {
   const { account, signer } = useContext(Web3Context);
-  const [registration, setRegistration] = useState<Registration | null>(null);
+  const { registration, checkIfRegistered } = useIsRegistered(account);
   const [hasClaimed, setHasClaimed] = useState<boolean | null>(null);
   const [merkleDropContract, setMerkleDropContract] = useState<Contract | null>(
+    null
+  );
+  const [merkleDetails, setMerkleDetails] = useState<MerkleDetails | null>(
     null
   );
 
@@ -51,68 +56,95 @@ export const useAidrop = () => {
     });
   }, [signer, account]);
 
-  const getRegistration = useCallback(async () => {
-    if (!account) return;
+  useEffect(() => {
+    if (account) {
+      checkIfRegistered();
+    }
+    // Check if address is registered on first render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getMerkleDetails = useCallback(async () => {
+    if (!registration || isAddressNotRegistered(registration)) {
+      return;
+    }
+    console.log("registration", registration);
     try {
-      const registration = await isAddressRegistered(account);
-      setRegistration(registration);
+      const result = await fetchMerkleDetails(
+        (registration as RegistrationRegistered).address,
+        (registration as RegistrationRegistered).amount
+      );
+      setMerkleDetails(result);
     } catch (error) {
       console.error(error);
     }
-  }, [account]);
+  }, [registration]);
 
   useEffect(() => {
-    getRegistration();
-  }, [getRegistration]);
-
-  useEffect(() => {
-    if (account) {
-      getRegistration();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
+    getMerkleDetails();
+  }, [getMerkleDetails, registration]);
 
   const checkIfClaimed = useCallback(async () => {
-    const index = (registration as RegistrationRegistered)?.index;
+    if (!merkleDropContract || !account) return;
 
-    const hasClaimed = await (merkleDropContract as ERC20MerkleDrop).isClaimed(
-      index
+    const hasClaimed = await hasAddressClaimed(
+      merkleDropContract as ERC20MerkleDrop,
+      account
     );
-
+    if (hasClaimed == null) {
+      console.error("Failed to verify if address has claimed.");
+    }
+    console.log(account, "hasClaimed", hasClaimed);
     setHasClaimed(hasClaimed);
-  }, [registration, merkleDropContract]);
+  }, [account, merkleDropContract]);
 
   useEffect(() => {
     if (
       !registration ||
       isAddressNotRegistered(registration) ||
+      !merkleDetails ||
       !merkleDropContract
     ) {
       return;
     }
 
     checkIfClaimed();
-  }, [merkleDropContract, account, registration, checkIfClaimed]);
+
+    return () => {
+      setHasClaimed(null);
+    };
+  }, [
+    merkleDropContract,
+    account,
+    registration,
+    checkIfClaimed,
+    merkleDetails,
+  ]);
 
   const claimAirdrop = useCallback(async () => {
-    if (registration == null || isAddressNotRegistered(registration)) {
-      console.log("Trying to claim but registration is not valid.");
+    if (
+      registration == null ||
+      isAddressNotRegistered(registration) ||
+      !merkleDetails
+    ) {
+      console.log("Trying to claim without merkle proof.");
       return;
     }
-    const { address, amount, proof } = registration;
+    const { address, amount } = registration;
+    const { proof } = merkleDetails;
     console.log(
       `Redeeming with address: ${address}, amount: ${amount}, proof: ${proof}.`
     );
-    const tx = await (merkleDropContract as ERC20MerkleDrop).redeem(
+    const tx = await(merkleDropContract as ERC20MerkleDrop).redeem(
       address,
       amount,
       proof
     );
+
     await tx.wait();
 
-    checkIfClaimed();
-  }, [merkleDropContract, registration, checkIfClaimed]);
+    await checkIfClaimed();
+  }, [registration, merkleDetails, merkleDropContract, checkIfClaimed]);
 
   return { account, registration, hasClaimed, claimAirdrop } as const;
 };
