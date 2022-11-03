@@ -15,6 +15,7 @@ export enum BackendErrors {
   INVALID_SIGNATURE_PROVIDED = "invalid_signature_provided",
   NOT_AN_HBT_OWNER = "not_an_HBT_owner",
   QUOTA_REACHED = "quota_reached",
+  ADDRESS_NOT_REGISTERED = "address_not_registered",
   INTERNAL_ERROR = "internal_error",
 }
 
@@ -41,14 +42,10 @@ export interface HumanboundContractMetadata {
   fromBlock?: number;
 }
 
-
 export type RegistrationRegistered = {
   isRegistered: boolean;
   address: string;
   amount: number;
-  leaf: any;
-  proof: string[];
-  index: number;
 };
 
 export type RegistrationNotRegistered = {
@@ -63,3 +60,5 @@ export const isAddressNotRegistered = (
 ): registration is RegistrationNotRegistered => {
   return registration.isRegistered == false;
 };
+
+export type MerkleDetails = { leaf: Buffer; proof: string[]; index: number };
