@@ -2,7 +2,12 @@ import { Signer } from "ethers";
 import { BACKEND_ENDPOINTS } from "src/config/endpoints";
 import { displayToast } from "src/utils/toast";
 import { getRegistrationMessage } from "../../../shared/config/registrationMessage";
-import { BackendErrors, EthAddress, Registration } from "../../../shared/types";
+import {
+  BackendErrors,
+  EthAddress,
+  MerkleDetails,
+  Registration,
+} from "../../../shared/types";
 
 export type RegisterAddressParams = {
   addressToRegister: string;
@@ -76,9 +81,33 @@ export const isAddressRegistered = async (
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-store",
   })
     .then((response) => response.json())
     .catch((error) => {
       console.error("Error querying if address is registered:", error);
+    });
+};
+
+export const fetchMerkleDetails = async (
+  address: EthAddress,
+  amount: number
+): Promise<MerkleDetails> => {
+  return fetch(BACKEND_ENDPOINTS.merkleDetails, {
+    method: "POST",
+    body: JSON.stringify({
+      address,
+      amount,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.error("Error querying merkle details:", error);
     });
 };
