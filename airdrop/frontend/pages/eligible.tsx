@@ -66,7 +66,9 @@ export default function Eligible() {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl my-4">Register for the airdrop</h1>
+      <h1 className="text-2xl my-4">
+        Verify your eligibility and register for the airdrop
+      </h1>
       <form className="flex flex-col items-center">
         <input
           className="eligible-address-input"
