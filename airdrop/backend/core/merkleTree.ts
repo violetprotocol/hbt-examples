@@ -1,8 +1,9 @@
 import { ethers } from "ethers";
 import keccak256 from "keccak256";
 import MerkleTree from "merkletreejs";
-import { EthAddress } from "../../shared";
-import merkleJson from "../../shared/merkle.json";
+import fs from "fs";
+import { EthAddress, MerkleDetails } from "../../shared";
+import airdropConfig from "../config/airdropConfig";
 
 export function getLeaf(account: EthAddress, amount: number) {
   const normalizedAddress = ethers.utils.getAddress(account);
@@ -15,32 +16,19 @@ export function getLeaf(account: EthAddress, amount: number) {
 }
 
 export class MerkleDrop {
-  private static instance: MerkleDrop;
+  merkleJson: any;
   tree: MerkleTree;
 
-  constructor() {
-    if (!merkleJson) {
-      console.log(
-        "Cannot instantiate MerkleDrop without generating the merkle tree first."
-      );
-    }
-    const { leaves, ...options } = merkleJson.tree;
+  constructor(merkleDump: Record<string, any>) {
+    const { leaves, ...options } = merkleDump.tree;
     this.tree = new MerkleTree(
-      merkleJson.tree.leaves.map((leaf) => Buffer.from(leaf.data)),
+      merkleDump.tree.leaves.map((leaf: any) => Buffer.from(leaf.data)),
       keccak256,
       {
         ...options,
         fillDefaultHash: options.fillDefaultHash ?? undefined,
       }
     );
-  }
-
-  public static getMerkleDrop(): MerkleDrop {
-    if (!MerkleDrop.instance) {
-      MerkleDrop.instance = new MerkleDrop();
-    }
-
-    return MerkleDrop.instance;
   }
 
   getHexProof(leaf: string | Buffer, index?: number | undefined) {
@@ -67,3 +55,48 @@ export class MerkleDrop {
     return this.tree.verify(proof, leaf, root);
   }
 }
+
+let merkleDrop: MerkleDrop;
+
+export const getMerkleDrop = () => {
+  if (!merkleDrop) {
+    let merkleJsonFile;
+    try {
+      merkleJsonFile = fs.readFileSync(airdropConfig.outputPath);
+    } catch (error) {
+      console.error("Fail to load json dump of merkle tree.");
+      throw error;
+    }
+
+    const merkleDump = JSON.parse(merkleJsonFile.toString());
+    if (!merkleDump) {
+      throw new Error("Cannot initialize MerkleDrop");
+    }
+    return new MerkleDrop(merkleDump);
+  }
+
+  return merkleDrop;
+};
+
+export const getMerkleDetails = (
+  address: EthAddress,
+  amount: number
+): MerkleDetails => {
+  const merkleDrop = getMerkleDrop();
+  if (!merkleDrop) {
+    throw new Error("Failed to get Merkle Drop");
+  }
+
+  const merkleDetails = merkleDrop.getMerkleDetails(address, amount);
+
+  const isValidProof = merkleDrop.verifyProof(
+    merkleDetails.proof,
+    merkleDetails.leaf
+  );
+
+  if (!isValidProof) {
+    throw new Error(`Invalid proof found for ${address} (amount: ${amount}).`);
+  }
+
+  return merkleDetails;
+};
