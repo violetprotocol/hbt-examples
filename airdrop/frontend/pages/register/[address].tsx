@@ -136,12 +136,14 @@ export default function Register() {
             )}
             {isLastStep && registeredAddress && (
               <>
-                <p>
+                <p className="mb-6">
                   <span className="text-green-500">{registeredAddress}</span>{" "}
                   has been registered for the airdrop! 🎉
                 </p>
-                <Link href="/eligible" className="underline mt-6">
-                  Register another address
+                <Link href="/eligible" passHref>
+                  <span className="underline cursor-pointer">
+                    Register another address
+                  </span>
                 </Link>
               </>
             )}
