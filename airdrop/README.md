@@ -1,5 +1,8 @@
 # Sybil-resistant Airdrop with Humanbound Tokens
 
+This is a proof of concept of an airdrop with Sybil-resistance built-in. Leveraging [Humanbound Tokens](https://humanbound.xyz/), it 
+allows administrators to set a limit on the number of eligible addresses one single human can claim an airdrop for.
+
 This airdrop was designed to work in 2 phases: a registration period and a claiming period.
 
 During the registration period, any address holding a Humanbound Token can register up to X eligible addresses (X being a number that can be configured in `shared -> config -> sharedConfig.ts`) for the airdrop. These addresses get added to a database along with how much token they’re entitled to claim. Signatures from both the HBT-holding address (via SIWE) and the future airdrop recipient need to be provided for a registration to complete.
@@ -130,3 +133,9 @@ And voilà!
 - Issue with nonces
 
 ⇒ Enable custom nonces in Metamask and manually enter the right nonce value when submitting a transaction.
+
+# Credits
+
+- [create-ether-dapp](https://github.com/adriandelgg/create-ether-dapp)
+- [nft-merkle-drop](https://github.com/OpenZeppelin/workshops/tree/master/06-nft-merkle-drop)
+- [merkle-airdrop-starter](https://github.com/Anish-Agnihotri/merkle-airdrop-starter)
