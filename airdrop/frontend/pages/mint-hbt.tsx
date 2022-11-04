@@ -1,29 +1,12 @@
 import { BigNumber } from "ethers";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
+import { useHbtBalance } from "src/hooks/useHbtBalance";
 import { generateRandomTokenId } from "src/utils";
 
 export default function Mint() {
   const { account, contract } = useContext(Web3Context);
-  const [hbtBalance, setHbtBalance] = useState<BigNumber | undefined>(
-    undefined
-  );
-
-  const getBalance = useCallback(async () => {
-    if (!contract || !account) return;
-    if (!contract.signer && !contract.provider) return;
-
-    try {
-      const balance = await contract.balanceOf(account);
-      setHbtBalance(balance);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [contract, account]);
-
-  useEffect(() => {
-    getBalance();
-  }, [account, contract, getBalance]);
+  const { hbtBalance, getBalance } = useHbtBalance(contract, account);
 
   const mintHBT = useCallback(async () => {
     try {

@@ -7,6 +7,7 @@ import { isAddressRegistered } from "src/services/registration";
 import { useSiwe } from "src/hooks/useSiwe";
 import { registerAddress } from "src/services/registration";
 import { displayToast } from "src/utils/toast";
+import { useHbtBalance } from "src/hooks/useHbtBalance";
 
 const stepsInitialState: Step[] = [
   {
@@ -23,7 +24,8 @@ const stepsInitialState: Step[] = [
   },
 ];
 export default function Register() {
-  const { account, signer } = useContext(Web3Context);
+  const { account, signer, contract } = useContext(Web3Context);
+  const { hbtBalance } = useHbtBalance(contract, account);
   const [signInWithEthereum] = useSiwe(signer);
   const router = useRouter();
   const { address: addressToRegister } = router.query;
@@ -36,6 +38,7 @@ export default function Register() {
     boolean | null
   >(null);
   const [registeredAddress, setRegisteredAddress] = useState("");
+  const hasNoHBT = hbtBalance?._isBigNumber && hbtBalance.eq(0);
 
   const isFirstStep = steps[0].status == StepStatus.IN_PROGRESS;
   const isSecondStep = steps[1].status == StepStatus.IN_PROGRESS;
@@ -115,11 +118,25 @@ export default function Register() {
             {isFirstStep && (
               <div>
                 {signer ? (
-                  <button className="green-btn" onClick={onSignIn}>
-                    Sign in
-                  </button>
+                  <>
+                    <p className="mb-6">
+                      HBT Balance:{" "}
+                      {hbtBalance ? hbtBalance.toString() : "unknown"}
+                    </p>
+                    <button
+                      className={hasNoHBT ? "disabled-btn" : "green-btn"}
+                      onClick={onSignIn}
+                    >
+                      Sign in
+                    </button>
+                    {hasNoHBT && (
+                      <div className="text-sm mt-4 text-yellow-500">
+                        Please connect an address with a Humanbound Token.
+                      </div>
+                    )}
+                  </>
                 ) : (
-                  "Please connect an address which owns a Humanbound Token."
+                  "Please connect an address with a Humanbound Token."
                 )}
               </div>
             )}
@@ -130,7 +147,10 @@ export default function Register() {
                     Register
                   </button>
                 ) : (
-                  <p>Please connect with {addressToRegister}</p>
+                  <p>
+                    Please connect with{" "}
+                    <span className="text-green-500">{addressToRegister}</span>
+                  </p>
                 )}
               </div>
             )}
