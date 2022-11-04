@@ -5,7 +5,7 @@
   "author": "Violet",
   "scripts": {
     "start": "node build/index.js",
-    "dev": "NODE_ENV=development nodemon --ignore './tests' -T index.ts",
+    "dev": "NODE_ENV=development nodemon --ignore './tests' -T index.ts --watch ../shared",
     "build": "tsc --build -p .",
     "generate-merkle-tree": "ts-node ./scripts/merkle-tree-generator.ts"
   },
