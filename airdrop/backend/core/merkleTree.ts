@@ -7,9 +7,16 @@ import airdropConfig from "../config/airdropConfig";
 
 export function getLeaf(account: EthAddress, amount: number) {
   const normalizedAddress = ethers.utils.getAddress(account);
+  const normalizedAmount = ethers.utils.parseUnits(
+    amount.toString(),
+    airdropConfig.decimals
+  );
   return Buffer.from(
     ethers.utils
-      .solidityKeccak256(["address", "uint256"], [normalizedAddress, amount])
+      .solidityKeccak256(
+        ["address", "uint256"],
+        [normalizedAddress, normalizedAmount]
+      )
       .slice(2),
     "hex"
   );

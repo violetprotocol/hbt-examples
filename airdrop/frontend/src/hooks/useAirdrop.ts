@@ -7,7 +7,7 @@ import {
 } from "../../../shared";
 import { Web3Context } from "src/context/Web3Context";
 import { fetchMerkleDetails } from "src/services/registration";
-import { Contract, ethers } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import {
   ERC20MerkleDrop,
   ERC20MerkleDrop__factory,
@@ -130,14 +130,16 @@ export const useAidrop = () => {
       console.log("Trying to claim without merkle proof.");
       return;
     }
-    const { address, amount } = registration;
+    const { address, amount, scaledAmount } = registration;
     const { proof } = merkleDetails;
     console.log(
-      `Redeeming with address: ${address}, amount: ${amount}, proof: ${proof}.`
+      `Redeeming with address: ${address}, scaledAmount: ${scaledAmount}, proof: ${proof}.`
     );
+
+    const bigNumberAmount = BigNumber.from(scaledAmount);
     const tx = await(merkleDropContract as ERC20MerkleDrop).redeem(
       address,
-      amount,
+      bigNumberAmount,
       proof
     );
 

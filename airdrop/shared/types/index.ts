@@ -46,6 +46,8 @@ export type RegistrationRegistered = {
   isRegistered: boolean;
   address: string;
   amount: number;
+  // Scaled number of tokens claimable based on number of decimals
+  scaledAmount: string;
 };
 
 export type RegistrationNotRegistered = {

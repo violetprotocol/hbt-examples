@@ -11,6 +11,7 @@ import { getHBTId } from "./hbt";
 import { getEligibility } from "./eligibility";
 import { validateClaim } from "../models/claim";
 import claimRepository from "../repositories/claim.repository";
+import airdropConfig from "../config/airdropConfig";
 
 export type RegisterResultSuccess = {
   registered: boolean;
@@ -125,10 +126,14 @@ export const getRegistration = async (
   if (!claim) {
     return { isRegistered: false, address };
   }
+  const scaledAmount = ethers.utils
+    .parseUnits(claim.amount.toString(), airdropConfig.decimals)
+    .toString();
 
   return {
     isRegistered: true,
     address: claim.address,
     amount: claim.amount,
+    scaledAmount,
   };
 };
