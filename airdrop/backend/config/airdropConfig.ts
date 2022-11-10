@@ -3,8 +3,8 @@ import path from "path";
 export default {
   // Number of decimals of the airdrop token.
   decimals: 18,
-  // Any address is eligible to this minimum amount, since
-  // we are restricting to claiming for 4 addresses per person maximum.
+  // For demonstration purposes, any address is eligible to this minimum amount.
+  // This is not a problem since we are restricting claiming to X addresses per person maximum.
   minAmount: 5,
   // Output path for the Merkle tree dump
   outputPath: path.join(__dirname, "../../shared/merkle.json"),
