@@ -8,7 +8,8 @@ export default {
   minAmount: 5,
   // Output path for the Merkle tree dump
   outputPath: path.join(__dirname, "../../shared/merkle.json"),
-  // These addresses are eligible to more tokens.
+  // This is where you specify the list of addresses you deemed eligble for your airdrop and
+  // how much tokens they are entitled to claim based on your criteria.
   activeAccounts: {
     "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": 8488,
     "0x70997970c51812dc3a010c7d01b50e0d17dc79c8": 5473,
