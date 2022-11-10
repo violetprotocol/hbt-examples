@@ -56,7 +56,9 @@ export const register = async ({
     };
   }
 
-  // 3. Verify quota
+  // 3. Verify quota.
+  // We check that the number of addresses registered for that HBT ID
+  // is not already `maximumNumberOfAddressesOneCanRegister`.
   const hbt = await hbtRepository.findByHbtId({ hbtId });
   if (
     hbt &&
