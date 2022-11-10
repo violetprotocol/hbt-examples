@@ -22,10 +22,12 @@ export const getHBTId = async (address: EthAddress): Promise<null | string> => {
     );
     const balance = await mockHBT.balanceOf(address);
 
+    // Verify that the address owns an HBT
     if (!balance.gt(0)) {
       return null;
     }
 
+    // Get the HBT ID using Transfer events
     const topics = mockHBT.filters.Transfer(
       ethers.constants.AddressZero,
       address

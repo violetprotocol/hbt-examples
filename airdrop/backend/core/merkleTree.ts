@@ -28,6 +28,7 @@ export class MerkleDrop {
 
   constructor(merkleDump: Record<string, any>) {
     const { leaves, ...options } = merkleDump.tree;
+    // Construct a MerkleTree instance from the merkleDump
     this.tree = new MerkleTree(
       merkleDump.tree.leaves.map((leaf: any) => Buffer.from(leaf.data)),
       keccak256,
@@ -85,6 +86,7 @@ export const getMerkleDrop = () => {
   return merkleDrop;
 };
 
+// Given an address and amount, returns the "merkle details" (proof, leaf and index)
 export const getMerkleDetails = (
   address: EthAddress,
   amount: number

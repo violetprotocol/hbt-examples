@@ -10,6 +10,7 @@ export const getEligibility = (
   address: string
 ): { isEligible: boolean; tokenAmount: number } => {
   if (!isEntitledToMoreThanMinimum(address)) {
+    // return the minimum amount
     return { isEligible: true, tokenAmount: airdropConfig.minAmount };
   }
 
