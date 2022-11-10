@@ -72,7 +72,6 @@ export default function Eligible() {
       <form className="flex flex-col items-center">
         <input
           className="eligible-address-input"
-          type="email"
           id="address"
           onChange={handleAddressToCheck}
           value={inputValue}
