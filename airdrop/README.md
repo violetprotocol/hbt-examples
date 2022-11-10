@@ -1,6 +1,6 @@
 # Sybil-resistant Airdrop with Humanbound Tokens
 
-This is a proof of concept of an airdrop with Sybil-resistance built-in. Leveraging [Humanbound Tokens](https://humanbound.xyz/), it 
+This is a proof of concept of an airdrop with Sybil-resistance built-in. Leveraging [Humanbound Tokens](https://humanbound.xyz/), it
 allows administrators to set a limit on the number of eligible addresses one single human can claim an airdrop for.
 
 This airdrop was designed to work in 2 phases: a registration period and a claiming period.
@@ -13,8 +13,8 @@ Then, the claiming period begins. The frontend exposes a new page where users ca
 
 ## Notes
 
-- The security of the system relies heavily on the entries in the database, containing addresses and amounts, being correct at the time of creation of the Merkle tree. 
-  If the database is compromised, an attacker could insert claims with their addresses and arbitrary amounts of token. 
+- The security of the system relies heavily on the entries in the database, containing addresses and amounts, being correct at the time of creation of the Merkle tree.
+  If the database is compromised, an attacker could insert claims with their addresses and arbitrary amounts of token.
 - The backend provides an endpoint to retrieve a Merkle proof out of convenience. The Merkle tree could very well be made public. This way users could construct their own proofs and potentially interact with the smart contract directly.
 
 # Testing locally
@@ -25,7 +25,30 @@ It's required that you have `yarn` installed. If you don't, simply run `npm i -g
 
 Additionally, an instance of MongoDB should be running locally on `"mongodb://localhost:27017`.
 
-If you don't have MongoDB installed, follow the instructions [here](https://www.mongodb.com/docs/manual/installation/).
+If you don't have MongoDB installed, please install it locally.
+
+
+<details>
+<summary>Mac OS installation steps with Homebrew</summary>
+Run the following commands:
+<br/>
+<code style="white-space:nowrap;">brew tap mongodb/brew</code>
+<br/>
+<code style="white-space:nowrap;">brew update</code>
+<br/>
+<code style="white-space:nowrap; margin-top: 2px;">brew install mongodb-community@6.0</code>
+<br/><br/>
+Start mongo with:
+<code style="white-space:nowrap;">brew services start mongodb-community@6.0</code>
+<br/>
+</details>
+<br/>
+<details>
+<summary>Alternative installation</summary>
+Follow the instructions here: https://www.mongodb.com/docs/manual/installation/
+</details>
+
+<br/>
 
 ## Setup
 
@@ -73,7 +96,7 @@ This will print out the address the mock HBT contract is deployed to. Make sure 
 
 We’re ready to go! 🚀
 
-## Phase 1: Registration 
+## Phase 1: Registration
 
 ### 1.1 Getting an HBT
 
@@ -126,9 +149,13 @@ And voilà!
 
 ## Troubleshooting
 
+- Balances appearing incorrect
+
+⇒ Switch network on your wallet and switch back to the local network.
+
 - "Received invalid block tag X. Latest block number is Y”
 
-⇒ Switch network and switch back to the local network. See [this answer](https://ethereum.stackexchange.com/a/112214).
+⇒ Switch network with your wallet and switch back to the local network. See [this answer](https://ethereum.stackexchange.com/a/112214).
 
 - Issue with nonces
 
