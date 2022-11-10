@@ -7,7 +7,9 @@ export default function Claim() {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl my-4">Claim your airdrop</h1>
+      <h1 className="text-2xl my-4">
+        {hasClaimed ? "Claimed!" : "Claim your airdrop"}
+      </h1>
       {!account ? (
         "Please connect your wallet"
       ) : (
