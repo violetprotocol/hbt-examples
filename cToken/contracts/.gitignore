@@ -1,5 +1,5 @@
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.*
 .pnp.js
@@ -13,6 +13,7 @@ cache
 artifacts
 typechain-types
 typechain
+src
 
 # Zero-Installs (Yarn v2)
 .yarn/*

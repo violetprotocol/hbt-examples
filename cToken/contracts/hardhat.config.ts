@@ -91,6 +91,12 @@ const config: HardhatUserConfig = {
       },
       chainId: chainIds.hardhat,
     },
+    localhost: {
+      accounts: {
+        mnemonic,
+      },
+      chainId: chainIds.hardhat,
+    },
     arbitrumOne: getChainConfig("arbitrum-mainnet"),
     arbitrumGoerli: getChainConfig("arbitrum-goerli"),
     avalanche: getChainConfig("avalanche"),
