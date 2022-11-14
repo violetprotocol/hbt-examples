@@ -13,7 +13,6 @@ cache
 artifacts
 typechain-types
 typechain
-src
 
 # Zero-Installs (Yarn v2)
 .yarn/*

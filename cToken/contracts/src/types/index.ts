@@ -34,5 +34,7 @@ export type { CERC20 } from "./contracts/CERC20";
 export { CERC20__factory } from "./factories/contracts/CERC20__factory";
 export type { IHumanboundToken } from "./contracts/IHumanboundToken";
 export { IHumanboundToken__factory } from "./factories/contracts/IHumanboundToken__factory";
+export type { MockERC20 } from "./contracts/MockERC20";
+export { MockERC20__factory } from "./factories/contracts/MockERC20__factory";
 export type { MockHBT } from "./contracts/MockHBT";
 export { MockHBT__factory } from "./factories/contracts/MockHBT__factory";

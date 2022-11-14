@@ -5,12 +5,13 @@
 // Runtime Environment's members available in the global scope.
 import hre from "hardhat";
 
-const HBTAddress = "";
+const HBTAddress = "0x581af8eaEa059cAA65A2652321aB7e2Cd3a4d423";
+const ERC20Address = "0xd66d4Fa10270Ed8DFfDB6f4c5bA3AE0e1c3DD0e6";
 
 async function main() {
   // We get the contract to deploy
   const CERC20 = await hre.ethers.getContractFactory("cERC20");
-  const cERC20 = await CERC20.deploy("Test cToken", "cERC20", HBTAddress);
+  const cERC20 = await CERC20.deploy("Test cToken", "cERC20", HBTAddress, ERC20Address);
 
   await cERC20.deployed();
 

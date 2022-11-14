@@ -2,5 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IHumanboundToken } from "./IHumanboundToken";
+export type { MockERC20 } from "./MockERC20";
 export type { MockHBT } from "./MockHBT";
 export type { CERC20 } from "./CERC20";
