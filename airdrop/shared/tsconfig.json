@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "ESNext",
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": ".",
+    "outDir": "./dist",
+    "composite": true
+  },
+  "references": []
+}
