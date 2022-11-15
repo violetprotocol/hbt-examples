@@ -1,9 +1,11 @@
 import { BigNumber } from "ethers";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
+import { useRefresh } from "./useRefresh";
 
 export const usecERC20Balance = (account: string) => {
   const { cerc20Contract } = useContext(Web3Context);
+  const { fastRefresh } = useRefresh();
   const [balance, setBalance] = useState<BigNumber | undefined>(undefined);
 
   const getBalance = useCallback(async () => {
@@ -20,7 +22,7 @@ export const usecERC20Balance = (account: string) => {
 
   useEffect(() => {
     getBalance();
-  }, [cerc20Contract, account, getBalance]);
+  }, [fastRefresh, cerc20Contract, account, getBalance]);
 
   return balance;
 };

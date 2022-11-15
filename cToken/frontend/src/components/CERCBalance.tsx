@@ -5,12 +5,12 @@ import { usecERC20Balance } from "src/hooks/usecERC20Balance";
 
 const CERCBalance: React.FC = () => {
   const { account } = useContext(Web3Context);
-  const cerc20Balance = usecERC20Balance(account);
+  const balance = usecERC20Balance(account);
 
   return (
     <>
       {account && (
-        <div className="py-3">Balance: {cerc20Balance?.toString()} CERC</div>
+        <div className="py-3">Balance: {balance?.toString()} CERC</div>
       )}
     </>
   );

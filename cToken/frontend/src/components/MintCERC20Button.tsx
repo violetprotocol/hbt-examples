@@ -5,21 +5,17 @@ import { Mining } from "src/helpers/Mining";
 import { useHasHBT } from "src/hooks/useHBT";
 import { generateRandomTokenId } from "src/utils";
 
-interface ClaimHBTProps {
-  disabled: boolean;
-}
-
-const ClaimHBTButton: React.FC<ClaimHBTProps> = ({ disabled = false }) => {
-  const { account, hbtContract } = useContext(Web3Context);
+const MintCERC20Button: React.FC = () => {
+  const { account, cerc20Contract } = useContext(Web3Context);
   const [{ isMining, txHash }, setIsMining] = useState({
     isMining: false,
     txHash: "",
   });
 
-  const onClaimClick = async () => {
-    const res = await hbtContract.safeMint(account, generateRandomTokenId());
-    setIsMining({ isMining: true, txHash: res.hash });
+  const onMintClick = async () => {
     try {
+      const res = await cerc20Contract.mint(account, 10);
+      setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
     } catch (error) {
       console.error(error);
@@ -30,16 +26,12 @@ const ClaimHBTButton: React.FC<ClaimHBTProps> = ({ disabled = false }) => {
 
   return (
     <>
-      <button
-        onClick={onClaimClick}
-        className={disabled ? "disabled-btn" : "green-btn"}
-        disabled={disabled}
-      >
-        {disabled ? "Claimed!" : "Claim"}
+      <button onClick={onMintClick} className="green-btn">
+        Claim
       </button>
       <Mining isMining={isMining} txHash={txHash} />
     </>
   );
 };
 
-export default ClaimHBTButton;
+export default MintCERC20Button;
