@@ -5,15 +5,18 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { Web3Provider } from "src/context/Web3Context";
 import Layout from "src/context/Layout";
+import { RefreshContextProvider } from "src/context/RefreshContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
-	return (
-		<Web3Provider>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
-		</Web3Provider>
-	);
+  return (
+    <Web3Provider>
+      <RefreshContextProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </RefreshContextProvider>
+    </Web3Provider>
+  );
 }
 
 export default MyApp;
