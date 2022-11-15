@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./IHumanboundToken.sol";
 
-contract cERC20 is ERC20, Ownable {
+contract cERC20 is ERC20 {
 	address humanboundToken;
 
 	address noncompliantERC20;
@@ -16,7 +16,7 @@ contract cERC20 is ERC20, Ownable {
 		_;
 	}
 
-	constructor(string memory name_, string memory symbol_, address humanboundToken_, address noncompliantERC20_) ERC20(name_, symbol_) Ownable() {
+	constructor(string memory name_, string memory symbol_, address humanboundToken_, address noncompliantERC20_) ERC20(name_, symbol_) {
 		humanboundToken = humanboundToken_;
 		noncompliantERC20 = noncompliantERC20_;
 	}
@@ -48,7 +48,7 @@ contract cERC20 is ERC20, Ownable {
         super._mint(account, amount);
     }
 
-	function mint(address account, uint256 amount) public virtual onlyOwner {
+	function mint(address account, uint256 amount) public virtual {
 		_mint(account, amount);
 	}
 }
