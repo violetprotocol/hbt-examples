@@ -3,8 +3,8 @@ import airdropConfig from "../config/airdropConfig";
 
 const isEntitledToMoreThanMinimum = (
   address: EthAddress
-): address is keyof typeof airdropConfig.activeAccounts =>
-  address in airdropConfig.activeAccounts;
+): address is keyof typeof airdropConfig.pastUsers =>
+  address in airdropConfig.pastUsers;
 
 export const getEligibility = (
   address: string
@@ -14,7 +14,7 @@ export const getEligibility = (
     return { isEligible: true, tokenAmount: airdropConfig.minAmount };
   }
 
-  const amount = airdropConfig.activeAccounts[address];
+  const amount = airdropConfig.pastUsers[address];
 
   return { isEligible: true, tokenAmount: amount };
 };

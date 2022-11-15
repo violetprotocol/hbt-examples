@@ -10,7 +10,7 @@ export default {
   outputPath: path.join(__dirname, "../../shared/merkle.json"),
   // This is where you specify the list of addresses you deemed eligble for your airdrop and
   // how much tokens they are entitled to claim based on your criteria.
-  activeAccounts: {
+  pastUsers: {
     "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266": 8488,
     "0x70997970c51812dc3a010c7d01b50e0d17dc79c8": 5473,
     "0x3a5e2bEe2f7D50242ABCE4dBCEdCc87664BD38d7": 166,
