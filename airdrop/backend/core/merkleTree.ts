@@ -3,13 +3,14 @@ import keccak256 from "keccak256";
 import MerkleTree from "merkletreejs";
 import fs from "fs";
 import { EthAddress, MerkleDetails } from "../../shared";
-import airdropConfig from "../config/airdropConfig";
+import { sharedConfig } from "../../shared/config/sharedConfig";
+import merkleDumpConfig from "../config/merkleDumpConfig";
 
 export function getLeaf(account: EthAddress, amount: number) {
   const normalizedAddress = ethers.utils.getAddress(account);
   const normalizedAmount = ethers.utils.parseUnits(
     amount.toString(),
-    airdropConfig.decimals
+    sharedConfig.decimals
   );
   return Buffer.from(
     ethers.utils
@@ -70,7 +71,7 @@ export const getMerkleDrop = () => {
   if (!merkleDrop) {
     let merkleJsonFile;
     try {
-      merkleJsonFile = fs.readFileSync(airdropConfig.outputPath);
+      merkleJsonFile = fs.readFileSync(merkleDumpConfig.outputPath);
     } catch (error) {
       console.error("Fail to load json dump of merkle tree.");
       throw error;

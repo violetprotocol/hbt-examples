@@ -1,12 +1,11 @@
 import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
 import fs from "fs";
-import path from "path";
 import mongoose from "mongoose";
 import claimRepository from "../repositories/claim.repository";
 import { EthAddress } from "../../shared";
 import { getLeaf } from "../core/merkleTree";
-import airdropConfig from "../config/airdropConfig";
+import merkleDumpConfig from "../config/merkleDumpConfig";
 
 mongoose
   .connect("mongodb://localhost:27017/hbt-airdrop")
@@ -14,7 +13,7 @@ mongoose
   .catch((err) => console.error("FAILED to connect to MongoDB: " + err));
 
 // Output file path
-const outputPath: string = airdropConfig.outputPath;
+const outputPath: string = merkleDumpConfig.outputPath;
 
 // Object containing the list of addresses and how much tokens they can claim
 // { "0x2fe4" : 562, ...}

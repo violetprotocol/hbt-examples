@@ -107,7 +107,7 @@ Note: This mock HBT is a simple ERC721 token contract which provides the interfa
 
 Now it’s time to register some addresses for the airdrop!
 
-In order to demonstrate the concept of Sybil resistance, the project is configured such that **any address** is eligible to a minimum of  5 tokens. (This value can be changed in backend → config → airdropConfig.ts)
+In order to demonstrate the concept of Sybil resistance, the project is configured such that **any address** is eligible to a minimum of  5 tokens. (This value can be changed in shared → config → sharedConfig.ts)
 
 Click on “Register” in the Nav bar to head over to http://localhost:3000/eligible.
 
