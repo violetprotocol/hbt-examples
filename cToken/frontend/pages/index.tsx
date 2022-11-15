@@ -7,27 +7,12 @@ import { useHasHBT } from "src/hooks/useHBT";
 import { generateRandomTokenId } from "src/utils";
 import { Mining } from "src/helpers/Mining";
 import Link from "next/link";
+import ClaimHBTButton from "src/components/ClaimHBTButton";
 
 const Home: NextPage = () => {
   const router = useRouter();
-  const { account, hbtContract } = useContext(Web3Context);
-  const [{ isMining, txHash }, setIsMining] = useState({
-    isMining: false,
-    txHash: "",
-  });
+  const { account } = useContext(Web3Context);
   const hbtMinted = useHasHBT(account);
-
-  const onClaimClick = async () => {
-    const res = await hbtContract.safeMint(account, generateRandomTokenId());
-    setIsMining({ isMining: true, txHash: res.hash });
-    try {
-      await res.wait();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsMining({ isMining: false, txHash: "" });
-    }
-  };
 
   return (
     <>
@@ -46,22 +31,13 @@ const Home: NextPage = () => {
         <h1 className="text-center text-2xl mb-12">
           Step 1: Claim your HBT {hbtMinted && "✅"}
         </h1>
-        {hbtMinted ? (
-          <button disabled className="disabled-btn">
-            Claimed!
-          </button>
-        ) : (
-          <>
-            <h2 className="text-lg mb-16">
-              With a HBT you are able to mint some compliant ERC20 and wrap
-              non-compliant ERC20 tokens and make them compliant!
-            </h2>
-            <button onClick={onClaimClick} className="green-btn">
-              Claim
-            </button>
-            <Mining isMining={isMining} txHash={txHash} />
-          </>
+        {hbtMinted && (
+          <h2 className="text-lg mb-16">
+            With a HBT you are able to mint some compliant ERC20 and wrap
+            non-compliant ERC20 tokens and make them compliant!
+          </h2>
         )}
+        <ClaimHBTButton disabled={hbtMinted || false} />
 
         <h1 className="text-center text-2xl mb-12">
           Step 2: Obtain some Compliant ERC20!
