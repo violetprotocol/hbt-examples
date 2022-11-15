@@ -52,7 +52,7 @@ export const humanboundContracts: Record<Web3ChainReference, ContractMetadata> =
 
 export const cERC20Contracts: Record<Web3ChainReference, ContractMetadata> = {
   [Web3ChainReference.EIP155_HARDHAT_LOCAL]: {
-    address: "0x13EC9B09c83C113a72874FA50221d0DFc0cFe90F",
+    address: "0x857D79D120842384A50F38c2367c4CD617298757",
   },
 
   [Web3ChainReference.EIP155_ETHEREUM_MAINNET]: {
@@ -102,7 +102,7 @@ export const cERC20Contracts: Record<Web3ChainReference, ContractMetadata> = {
 export const MockERC20Contracts: Record<Web3ChainReference, ContractMetadata> =
   {
     [Web3ChainReference.EIP155_HARDHAT_LOCAL]: {
-      address: "0xd66d4Fa10270Ed8DFfDB6f4c5bA3AE0e1c3DD0e6",
+      address: "0x99699724dDe872ae816Ce480775FDFce2D3fC9d4",
     },
 
     [Web3ChainReference.EIP155_ETHEREUM_MAINNET]: {

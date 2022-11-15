@@ -212,3 +212,19 @@ text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10
 .nav-elements > li {
   @apply mr-4;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  padding-left: 5px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}

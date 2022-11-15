@@ -6,9 +6,12 @@ import { MetaMask } from "./MetaMask";
 import { DarkModeToggle } from "src/helpers/DarkModeToggle";
 import { hasClaimingPeriodStarted } from "src/utils";
 import CERCBalance from "src/components/CERCBalance";
+import { useContext } from "react";
+import { Web3Context } from "../Web3Context";
 
 export const NavBar = () => {
   const { asPath: path } = useRouter();
+  const { account } = useContext(Web3Context);
 
   return (
     <>
@@ -37,7 +40,7 @@ export const NavBar = () => {
           <div className="ml-5">
             <CERCBalance />
           </div>
-          <MetaMask />
+          {account && <MetaMask />}
           <div className="ml-5">
             <DarkModeToggle />
           </div>
