@@ -194,11 +194,15 @@ text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10
 	dark:hover:bg-green-600;
 }
 
-.eligible-address-input {
+.input {
   @apply bg-white text-zinc-800 focus:outline-none
-	focus:shadow-lg border border-gray-300 rounded-lg py-2 px-4
-	block appearance-none leading-normal;
+	focus:shadow-lg mx-5 border border-gray-300 rounded-md
+	appearance-none;
   width: 28rem;
+}
+
+.inputErr {
+  @apply text-red-600 text-sm;
 }
 
 .nav-elements {
