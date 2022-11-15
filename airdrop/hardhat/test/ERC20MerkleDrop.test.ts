@@ -47,9 +47,9 @@ describe("ERC20MerkleDrop", function () {
          */
         const proof = this.merkleTree.getHexProof(getLeaf(account, amount));
         /**
-         * Redeems token using merkle proof (anyone with the proof)
+         * Claims token using merkle proof (anyone with the proof)
          */
-        await expect(this.registry.redeem(account, amount, proof))
+        await expect(this.registry.claim(account, amount, proof))
           .to.emit(this.registry, "Transfer")
           .withArgs(ethers.constants.AddressZero, account, amount);
       });
@@ -73,7 +73,7 @@ describe("ERC20MerkleDrop", function () {
 
     it("mint once - success", async function () {
       await expect(
-        this.registry.redeem(
+        this.registry.claim(
           this.token.account,
           this.token.amount,
           this.token.proof
@@ -89,7 +89,7 @@ describe("ERC20MerkleDrop", function () {
 
     it("mint twice - failure", async function () {
       await expect(
-        this.registry.redeem(
+        this.registry.claim(
           this.token.account,
           this.token.amount,
           this.token.proof
@@ -116,14 +116,14 @@ describe("ERC20MerkleDrop", function () {
     it("should guarantee the right recipient", async function () {
       const wrongAccount = this.accounts[4].address;
       await expect(
-        this.registry.redeem(wrongAccount, this.entry.amount, this.entry.proof)
+        this.registry.claim(wrongAccount, this.entry.amount, this.entry.proof)
       ).to.be.revertedWith("ERC20MerkleDrop: Valid proof required");
     });
 
     it("should guarantee the right amount", async function () {
       const wrongAmount = this.entry.amount + 1;
       await expect(
-        this.registry.redeem(this.entry.account, wrongAmount, this.entry.proof)
+        this.registry.claim(this.entry.account, wrongAmount, this.entry.proof)
       ).to.be.revertedWith("ERC20MerkleDrop: Valid proof required");
     });
   });

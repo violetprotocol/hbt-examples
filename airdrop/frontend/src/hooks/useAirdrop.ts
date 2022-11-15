@@ -130,14 +130,14 @@ export const useAidrop = () => {
       console.log("Trying to claim without merkle proof.");
       return;
     }
-    const { address, amount, scaledAmount } = registration;
+    const { address, scaledAmount } = registration;
     const { proof } = merkleDetails;
     console.log(
-      `Redeeming with address: ${address}, scaledAmount: ${scaledAmount}, proof: ${proof}.`
+      `Claiming with address: ${address}, scaledAmount: ${scaledAmount}, proof: ${proof}.`
     );
 
     const bigNumberAmount = BigNumber.from(scaledAmount);
-    const tx = await(merkleDropContract as ERC20MerkleDrop).redeem(
+    const tx = await(merkleDropContract as ERC20MerkleDrop).claim(
       address,
       bigNumberAmount,
       proof

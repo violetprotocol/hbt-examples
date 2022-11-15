@@ -19,14 +19,14 @@ contract ERC20MerkleDrop is ERC20 {
         root = merkleroot;
     }
 
-    function redeem(address recipient, uint256 amount, bytes32[] calldata merkleProof)
+    function claim(address recipient, uint256 amount, bytes32[] calldata merkleProof)
     external
     {
         bytes32 leaf = keccak256(abi.encodePacked(recipient, amount));
         (bool valid, uint256 index) = MerkleProof.verify(merkleProof, root, leaf);
         require(valid, "ERC20MerkleDrop: Valid proof required");
         require(!isClaimed(index), "ERC20MerkleDrop: Tokens already claimed");
-        
+
         claimed.set(index);
         emit Claimed(recipient, amount, index);
 
