@@ -1,18 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Web3Context } from "src/context/Web3Context";
 import { useHasHBT } from "src/hooks/useHBT";
-import { generateRandomTokenId } from "src/utils";
-import { Mining } from "src/helpers/Mining";
 import Link from "next/link";
 import ClaimHBTButton from "src/components/ClaimHBTButton";
 
 const Home: NextPage = () => {
-  const router = useRouter();
   const { account } = useContext(Web3Context);
-  const hbtMinted = useHasHBT(account);
+  const hasHBT = useHasHBT(account);
 
   return (
     <>
@@ -29,15 +25,15 @@ const Home: NextPage = () => {
         </h2>
 
         <h1 className="text-center text-2xl mb-12">
-          Step 1: Claim your HBT {hbtMinted && "✅"}
+          Step 1: Claim your HBT {hasHBT && "✅"}
         </h1>
-        {hbtMinted && (
+        {hasHBT && (
           <h2 className="text-lg mb-16">
             With a HBT you are able to mint some compliant ERC20 and wrap
             non-compliant ERC20 tokens and make them compliant!
           </h2>
         )}
-        <ClaimHBTButton disabled={hbtMinted || false} />
+        <ClaimHBTButton disabled={hasHBT || false} />
 
         <h1 className="text-center text-2xl mb-12">
           Step 2: Obtain some Compliant ERC20!
