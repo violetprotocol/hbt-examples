@@ -7,7 +7,7 @@ import hre from "hardhat";
 
 async function main() {
   // We get the contract to deploy
-  const ERC20 = await hre.ethers.getContractFactory("ERC20");
+  const ERC20 = await hre.ethers.getContractFactory("MockERC20");
   const erc20 = await ERC20.deploy("Test ERC20", "ERC20");
 
   await erc20.deployed();
