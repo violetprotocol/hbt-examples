@@ -1,8 +1,13 @@
-# Basic Sample Hardhat Project
+# Humanbound Token Airdrop - Smart Contracts
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This hardhat project contains the smart contracts used for the airdrop:
+- MockHBT.sol: For testing locally.
+- MerkleProof.sol: Library to verify Merkle proofs.
+- ERC20MerkleDrop.sol: An ERC20 smart contract with initial distribution using Merkle proofs for the airdrop.
 
-Try running some of the following tasks:
+<br/>
+
+The usual hardhat tasks are available:
 
 ```shell
 npx hardhat accounts
