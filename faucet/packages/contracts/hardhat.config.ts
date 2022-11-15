@@ -29,6 +29,11 @@ const config: HardhatUserConfig = {
       url: process.env.RPC_420 || 'https://goerli.optimism.io',
       accounts,
     },
+    arbitrumGoerli: {
+      chainId: 421613,
+      url: process.env.RPC_421613 || 'https://arb-goerli.g.alchemy.com/v2/demo',
+      accounts,
+    },
   },
   namedAccounts: {
     deployer: {

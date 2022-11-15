@@ -13,12 +13,11 @@ export const env = {
   rpcUrls: {
     1337: process.env.NEXT_PUBLIC_RPC_1337!, // Hardhat local
     420: process.env.NEXT_PUBLIC_RPC_420!, // Optimism Goerli
+    421613: process.env.NEXT_PUBLIC_RPC_421613!, // Optimism Goerli
     80001: process.env.NEXT_PUBLIC_RPC_80001!, // Polygon Mumbai
 
     1: process.env.NEXT_PUBLIC_RPC_1!, // Ethereum Mainnet
     // 5: process.env.NEXT_PUBLIC_RPC_5!, // Goerli
-
     // 137: process.env.NEXT_PUBLIC_RPC_137!, // Polygon Mainnet
-    // 80001: process.env.NEXT_PUBLIC_RPC_80001!, // Mumbai
   },
 }
