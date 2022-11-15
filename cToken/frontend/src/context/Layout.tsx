@@ -6,7 +6,7 @@ import ConnectWallet from "src/components/ConnectWallet";
 
 const Layout: React.FC = ({ children }) => {
   const { account } = useContext(Web3Context);
-  console.log(account);
+
   return (
     <>
       <Head>

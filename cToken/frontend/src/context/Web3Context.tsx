@@ -43,6 +43,7 @@ export const Web3Provider: React.FC = ({ children }) => {
       hbtContract = await getHBTContract({ signer, chainId });
       erc20 = await getERC20Contract({ signer, chainId });
       cerc20 = await getCERC20Contract({ signer, chainId });
+      console.log(cerc20);
 
       if (!hbtContract) {
         console.error("Failed to get HBT contract");
@@ -56,7 +57,6 @@ export const Web3Provider: React.FC = ({ children }) => {
         console.error("Failed to get compliant erc20 contract");
         return;
       }
-      console.log(hbtContract);
 
       setWeb3((prev: Web3) => ({
         ...prev,

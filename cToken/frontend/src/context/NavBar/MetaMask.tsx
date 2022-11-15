@@ -44,17 +44,17 @@ export const MetaMask = () => {
           signer,
         });
 
-        const erc20 = await getERC20Contract({ signer, chainId });
-        const cerc20 = await getCERC20Contract({ signer, chainId });
+        const erc20Contract = await getERC20Contract({ signer, chainId });
+        const cerc20Contract = await getCERC20Contract({ signer, chainId });
 
-        if (!hbtContract || !erc20 || !cerc20) return;
+        if (!hbtContract || !erc20Contract || !cerc20Contract) return;
 
         console.log(
           `On chain ${chainId} \n \
 		   Contracts connected:\n \
 		   HBT: ${hbtContract.address}\n \
-		   ERC20: ${erc20.address}\n \
-		   cERC20: ${cerc20.address}\n \
+		   ERC20: ${erc20Contract.address}\n \
+		   cERC20: ${cerc20Contract.address}\n \
 		   with signer ${await hbtContract.signer.getAddress()}`
         );
 
@@ -62,8 +62,8 @@ export const MetaMask = () => {
           setWeb3((prev: Web3) => ({
             ...prev,
             hbtContract,
-            erc20,
-            cerc20,
+            erc20Contract,
+            cerc20Contract,
             provider,
             account,
             signer,

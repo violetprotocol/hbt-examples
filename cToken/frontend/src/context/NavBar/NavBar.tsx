@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { MetaMask } from "./MetaMask";
 import { DarkModeToggle } from "src/helpers/DarkModeToggle";
 import { hasClaimingPeriodStarted } from "src/utils";
+import CERCBalance from "src/components/CERCBalance";
 
 export const NavBar = () => {
   const { asPath: path } = useRouter();
@@ -33,6 +34,9 @@ export const NavBar = () => {
           </ul>
         </nav>
         <div className="flex items-center">
+          <div className="ml-5">
+            <CERCBalance />
+          </div>
           <MetaMask />
           <div className="ml-5">
             <DarkModeToggle />
