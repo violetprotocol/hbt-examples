@@ -50,7 +50,7 @@ describe('Faucet', function () {
     it('Should set the right timeLock', async function () {
       const { faucet, timeLock } = await loadFixture(deployFaucetFixture)
 
-      expect(await faucet.timeLock()).to.equal(timeLock)
+      expect(await faucet.timeLockInSeconds()).to.equal(timeLock)
     })
 
     it('Should set the right dripAmount', async function () {
@@ -108,7 +108,7 @@ describe('Faucet', function () {
 
       await faucet.connect(owner).updateTimeLock(newTimeLock)
 
-      expect(await faucet.timeLock()).to.equal(newTimeLock)
+      expect(await faucet.timeLockInSeconds()).to.equal(newTimeLock)
     })
 
     it('Should ONLY let owners update the timeLock period', async function () {
