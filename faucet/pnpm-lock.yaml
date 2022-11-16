@@ -43,6 +43,8 @@ importers:
       hardhat: ^2.12.2
       hardhat-deploy: ^0.11.19
       hardhat-gas-reporter: ^1.0.9
+      prettier: ^2.7.1
+      prettier-plugin-solidity: 1.0.0-rc.1
       solhint: ^3.3.7
       solidity-coverage: ^0.8.2
       ts-node: ^10.9.1
@@ -74,6 +76,8 @@ importers:
       hardhat: 2.12.2_mwhvu7sfp6vq5ryuwb6hlbjfka
       hardhat-deploy: 0.11.19
       hardhat-gas-reporter: 1.0.9_hardhat@2.12.2
+      prettier: 2.7.1
+      prettier-plugin-solidity: 1.0.0-rc.1_prettier@2.7.1
       solhint: 3.3.7
       solidity-coverage: 0.8.2_hardhat@2.12.2
       ts-node: 10.9.1_e7yvbkxpwwqnzxz2s2bfjt7zx4
@@ -5733,6 +5737,10 @@ packages:
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
 
+  /emoji-regex/10.2.1:
+    resolution: {integrity: sha512-97g6QgOk8zlDRdgq1WxwgTMgEWGVAQvB5Fdpgc1MkNy56la5SKP9GsMXKDOdqwn90/41a8yPwIGk1Y6WVbeMQA==}
+    dev: true
+
   /emoji-regex/7.0.3:
     resolution: {integrity: sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==}
 
@@ -10095,6 +10103,21 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  /prettier-plugin-solidity/1.0.0-rc.1_prettier@2.7.1:
+    resolution: {integrity: sha512-horUGyCBbfNHWvJ44UVEcsfVySEoG2gxGs7TcBfTZWNvD4VU6rjzwAkrUtKV6VvRZWn9dh01XZ2UhhB3eVnMXQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      prettier: ^2.3.0
+    dependencies:
+      '@solidity-parser/parser': 0.14.5
+      emoji-regex: 10.2.1
+      escape-string-regexp: 4.0.0
+      prettier: 2.7.1
+      semver: 7.3.8
+      solidity-comments-extractor: 0.0.7
+      string-width: 4.2.3
+    dev: true
+
   /prettier-plugin-twin.macro/1.0.10_nm5wsfeo4qx6r53nkafkd2jgt4:
     resolution: {integrity: sha512-T0YPYOGezasddOYlgLz30g1QwYO+25ZfCYmMIecNJ9Typ6LkmVWGCBAD7yiuu+O0z5kQJw/wfdakkcYVkQX7vA==}
     peerDependencies:
@@ -11250,6 +11273,10 @@ packages:
       prettier: 1.19.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /solidity-comments-extractor/0.0.7:
+    resolution: {integrity: sha512-wciNMLg/Irp8OKGrh3S2tfvZiZ0NEyILfcRCXCD4mp7SgK/i9gzLfhY2hY7VMCQJ3kH9UB9BzNdibIVMchzyYw==}
     dev: true
 
   /solidity-coverage/0.8.2_hardhat@2.12.2:
