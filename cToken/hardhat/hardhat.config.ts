@@ -2,8 +2,9 @@ import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import { config as dotenvConfig } from "dotenv";
+import { BigNumber } from "ethers";
 import "hardhat-gas-reporter";
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, task } from "hardhat/config";
 import { NetworkUserConfig } from "hardhat/types";
 import { resolve } from "path";
 import "solidity-coverage";
@@ -12,6 +13,22 @@ import "./tasks/deploy/cerc20";
 import "./tasks/deploy/hbt";
 
 dotenvConfig({ path: resolve(__dirname, "./.env") });
+
+task("fund", "Get some ETH on your local test network")
+  .addParam("to", "The recipient's address")
+  .setAction(async (taskArgs, hre) => {
+    const { ethers } = hre;
+    const [firstSigner] = await ethers.getSigners();
+    const to = taskArgs.to;
+    const res = await firstSigner.sendTransaction({
+      value: BigNumber.from(ethers.utils.parseEther("1")),
+      to,
+    });
+    console.log(res);
+    const balance = await ethers.provider.getBalance(to);
+
+    console.log("New balance of recipient: ", ethers.utils.formatEther(balance), "ETH");
+  });
 
 // Ensure that we have all the environment variables we need.
 const mnemonic: string | undefined = process.env.MNEMONIC;

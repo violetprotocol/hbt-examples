@@ -86,6 +86,7 @@ const WrapERC20: React.FC = () => {
           >
             {isMining ? "Wrapping..." : "Wrap ERC20"}
           </button>
+          <br />
           <button
             onClick={onUnwrapClick}
             className={isMining ? "disabled-btn" : "green-btn"}

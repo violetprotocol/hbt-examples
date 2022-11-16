@@ -11,9 +11,14 @@ export default function Wrap() {
       </h1>
 
       <h2 className="text-md mb-16">
-        For ERC20 tokens that are permissionless, they are also not compliant.
+        Normal ERC20 tokens that are permissionless, are also not compliant.
         Popular tokens such as USDC will need to be converted to a compliant
         cUSDC by being wrapped in order for it to become compliant.
+      </h2>
+
+      <h2 className="text-md mb-16">
+        Claim some ERC20 tokens and convert them to cERC20 through wrapping
+        below.
       </h2>
 
       <div className="row">
