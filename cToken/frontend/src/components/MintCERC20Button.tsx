@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
+import { displayToast } from "src/utils/toast";
 
 const MintCERC20Button: React.FC = () => {
   const { account, cerc20Contract } = useContext(Web3Context);
@@ -14,8 +15,9 @@ const MintCERC20Button: React.FC = () => {
       const res = await cerc20Contract.mint(account, 10);
       setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      displayToast(error.data?.message || error.message);
     } finally {
       setIsMining({ isMining: false, txHash: "" });
     }

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
 import { useERC20Balance } from "src/hooks/useERC20Balance";
+import { displayToast } from "src/utils/toast";
 
 const ClaimERC20: React.FC = () => {
   const { account, erc20Contract } = useContext(Web3Context);
@@ -16,8 +17,9 @@ const ClaimERC20: React.FC = () => {
     setIsMining({ isMining: true, txHash: res.hash });
     try {
       await res.wait();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      displayToast(error.data?.message || error.message);
     } finally {
       setIsMining({ isMining: false, txHash: "" });
     }
