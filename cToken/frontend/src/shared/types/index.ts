@@ -2,7 +2,7 @@ export type EthAddress = string;
 
 export enum Web3ChainReference {
   // Local hardhat network
-  EIP155_HARDHAT_LOCAL = 31337,
+  EIP155_HARDHAT_LOCAL = 1337,
   // Ethereum
   EIP155_ETHEREUM_MAINNET = 1,
   EIP155_ETHEREUM_RINKEBY = 4,
