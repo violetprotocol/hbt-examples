@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useContext, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
-import { useHasHBT } from "src/hooks/useHBT";
+import { useHasHBT } from "src/hooks/useHasHBT";
 import { generateRandomTokenId } from "src/utils";
 
 interface ClaimHBTProps {

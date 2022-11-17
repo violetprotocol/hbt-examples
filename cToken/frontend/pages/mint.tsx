@@ -3,7 +3,7 @@ import MintCERC20Button from "src/components/MintCERC20Button";
 import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
 import { usecERC20Balance } from "src/hooks/usecERC20Balance";
-import { useHasHBT } from "src/hooks/useHBT";
+import { useHasHBT } from "src/hooks/useHasHBT";
 
 export default function Mint() {
   const { account } = useContext(Web3Context);
