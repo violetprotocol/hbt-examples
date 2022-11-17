@@ -7,7 +7,7 @@ The cERC20 token demonstrates 2 main implementation flows:
 - Minting/burning
 - Wrapping/Unwrapping
 
-Minting/burning follows the traditional token lifecycle where tokens are created a destroyed directly to and from wallets by the contract administrator. This is the simplest method for creating and destroying cERC20 tokens.
+Minting/burning follows the traditional token lifecycle where tokens are created and destroyed directly to and from wallets by the contract administrator. This is the simplest method for creating and destroying cERC20 tokens.
 
 Wrapping/unwrapping is a new feature made possible by cERC20. Many popular tokens already exist in the permissionless space, but are without the guarantees of being compliant. Thus it may be dangerous from a regulatory standpoint for some players to be seen transacting using these tokens. By wrapping tokens, you are able to take a token like USDC, and convert it to cUSDC through verified Humanbound users, and transact it with guarantees that the flow of the token will and always has passed through clean hands.
 

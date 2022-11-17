@@ -16,11 +16,12 @@
   },
   "homepage": "https://github.com/adriandelgg/create-ether-dapp#readme",
   "scripts": {
-    "dev": "concurrently \"[ -d hardhat ] && cd ./hardhat && npx hardhat node && cd ..\" \"[ -d frontend ] && cd ./frontend && yarn dev",
+    "dev": "concurrently \"[ -d hardhat ] && cd ./hardhat && npx hardhat node && cd ..\" \"[ -d frontend ] && cd ./frontend && yarn dev && yarn dev\"",
     "hardhat": "cd ./hardhat && npx hardhat node",
     "frontend": "cd ./frontend && yarn dev",
+    "backend": "cd ./backend && yarn dev",
     "installdeps": "concurrently \"[ -d frontend ] && cd frontend && yarn install\" \"[ -d hardhat ] && cd hardhat && yarn install\"",
-    "postinstall": "concurrently \"[ -d frontend ] && cd frontend && yarn install\" \"[ -d hardhat ] && cd hardhat && yarn install\""
+    "postinstall": "concurrently \"[ -d frontend ] && cd frontend && yarn install\" \"[ -d hardhat ] && cd hardhat && yarn install\" \"find . -type f -name .example.env -execdir mv {} .env ';'\""
   },
   "devDependencies": {
     "concurrently": "^6.2.1",

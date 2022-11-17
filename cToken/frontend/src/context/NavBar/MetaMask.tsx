@@ -8,7 +8,7 @@ import {
   getCERC20Contract,
   getERC20Contract,
   getHBTContract,
-} from "src/utils/hbtContract";
+} from "src/utils/contract";
 import { formatToDisplayEthAddress } from "src/utils";
 
 declare let window: any;
