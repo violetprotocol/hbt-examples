@@ -4,7 +4,7 @@ import {
   getCERC20Contract,
   getERC20Contract,
   getHBTContract,
-} from "src/utils/hbtContract";
+} from "src/utils/contract";
 import { CERC20, MockERC20, MockHBT } from "lib/types";
 
 declare let window: any;
