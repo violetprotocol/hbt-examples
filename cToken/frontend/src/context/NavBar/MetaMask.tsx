@@ -73,8 +73,9 @@ export const MetaMask = () => {
       } else {
         console.log("Enable MetaMask");
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      displayToast(e.data?.message || e.message);
     }
   }
 
