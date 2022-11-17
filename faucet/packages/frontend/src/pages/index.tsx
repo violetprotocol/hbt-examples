@@ -20,7 +20,7 @@ const HomePage: NextPage = () => {
   const { contracts } = useDeployments()
   const { chain } = useNetwork()
   const { hasHbt, hbtBalance, isLoading, isError } = useHbtBalance()
-  const { formattedFaucetBalance, cooldown, refreshState } = useHbtFaucet()
+  const { faucetStatus, cooldown, refreshState } = useHbtFaucet()
   // TODO: could be cleaner
   const nativeToken = chain?.id === 80001 ? 'MATIC' : 'ETH'
 
@@ -54,7 +54,9 @@ const HomePage: NextPage = () => {
       <CenterBody>
         {/* Title */}
         <div tw="flex flex-col items-center text-center">
-          <h1 tw="mb-8 font-bold text-3xl tracking-tight">Multi-network faucet for HBT holders</h1>
+          <h1 tw="mb-8 font-bold text-3xl tracking-tight">
+            Multi-network Faucet For Humanbound Token Holders
+          </h1>
           <SupportedNetworks />
           <p tw="mt-1">
             To prevent spam attacks draining the faucet, your address must own a Humanbound Token.
@@ -89,9 +91,9 @@ const HomePage: NextPage = () => {
             <Button tw="mb-6" disabled={!hasHbt || cooldown?.isInCooldown} onClick={() => getETH()}>
               GET {nativeToken}
             </Button>
-            {formattedFaucetBalance && (
+            {faucetStatus?.formattedBalance && (
               <div tw="text-sm">
-                Funds left: {formattedFaucetBalance} {nativeToken}
+                Funds left: {faucetStatus?.formattedBalance} {nativeToken}
               </div>
             )}
           </div>

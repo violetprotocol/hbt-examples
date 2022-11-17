@@ -9,6 +9,7 @@ import { BigNumber, utils } from 'ethers'
 
 type FaucetStatus = {
   balance: BigNumber
+  formattedBalance: string | null
   hbtContractAddress: string
   dripAmount: BigNumber
   timeLockInSeconds: BigNumber
@@ -21,10 +22,10 @@ export const useHbtFaucet = () => {
   const { address } = useAccount()
   const [contract, setContract] = useState<HumanboundTokenGatedFaucet | null>(null)
   const [faucetStatus, setFaucetStatus] = useState<FaucetStatus | null>(null)
-
   const [cooldown, setCooldown] = useState<{ isInCooldown?: boolean; endOfCooldownInMs?: number }>(
     {},
   )
+  const timeLockAsString = faucetStatus?.timeLockInSeconds.toString()
 
   useEffect(() => {
     if (!contracts || !signer) return
@@ -47,7 +48,7 @@ export const useHbtFaucet = () => {
       .getStatus()
       .then((b) => b)
       .catch((e) => console.error(e))
-
+    console.log('status', status)
     if (status) {
       const [balance_, hbtAddress_, dripAmount_, timeLock_, ..._rest] = status
       const faucetStatus = {
@@ -57,12 +58,14 @@ export const useHbtFaucet = () => {
         dripAmount: dripAmount_,
         timeLockInSeconds: timeLock_,
       }
+
       setFaucetStatus(faucetStatus)
     }
   }, [signer, contract])
 
   const getCooldownStatus = useCallback(async () => {
-    if (!contract || !address || address == '0x') return null
+    console.log('called cooldown')
+    if (!contract || !faucetStatus?.timeLockInSeconds || !address || address == '0x') return null
 
     const lastDrip = await contract
       .lastDrip(address)
@@ -75,8 +78,8 @@ export const useHbtFaucet = () => {
       setCooldown({ isInCooldown: false })
       return
     }
-    const timeLock = await contract.timeLock()
-    const nextDripPossibleFrom = lastDrip.add(timeLock).toNumber() * 1000
+
+    const nextDripPossibleFrom = lastDrip.add(faucetStatus.timeLockInSeconds).toNumber() * 1000
     const now = new Date().getTime()
 
     if (now < nextDripPossibleFrom) {
@@ -84,13 +87,16 @@ export const useHbtFaucet = () => {
     } else {
       setCooldown({ isInCooldown: false })
     }
-  }, [address, contract])
+  }, [address, contract, timeLockAsString])
 
   const refreshState = useCallback(() => {
     if (!contract || chain?.unsupported) return
 
     getStatus()
-    getCooldownStatus()
+      .then(() => {
+        getCooldownStatus()
+      })
+      .catch((e) => console.error(e))
   }, [getStatus, getCooldownStatus, chain])
 
   useEffect(() => {
