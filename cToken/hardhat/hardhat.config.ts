@@ -66,6 +66,9 @@ const config: HardhatUserConfig = {
     src: "./contracts",
   },
   networks: {
+    hardhat: {
+      chainId: chainIds.hardhat,
+    },
     localhost: {
       chainId: chainIds.hardhat,
     },
