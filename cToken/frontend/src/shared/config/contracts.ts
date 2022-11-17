@@ -10,7 +10,7 @@ import { ContractMetadata, Web3ChainReference } from "../types";
 export const humanboundContracts: Record<Web3ChainReference, ContractMetadata> =
   {
     [Web3ChainReference.EIP155_HARDHAT_LOCAL]: {
-      address: "0x581af8eaEa059cAA65A2652321aB7e2Cd3a4d423",
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     },
 
     [Web3ChainReference.EIP155_ETHEREUM_MAINNET]: {
@@ -109,7 +109,7 @@ export const cERC20Contracts: Record<Web3ChainReference, ContractMetadata> = {
 export const MockERC20Contracts: Record<Web3ChainReference, ContractMetadata> =
   {
     [Web3ChainReference.EIP155_HARDHAT_LOCAL]: {
-      address: "0x99699724dDe872ae816Ce480775FDFce2D3fC9d4",
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
     },
 
     [Web3ChainReference.EIP155_ETHEREUM_MAINNET]: {
