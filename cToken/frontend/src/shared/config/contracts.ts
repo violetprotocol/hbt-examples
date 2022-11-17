@@ -1,5 +1,12 @@
 import { ContractMetadata, Web3ChainReference } from "../types";
 
+/**
+ * Configuration file for:
+ *    - HBT contract
+ *    - ERC20 contract
+ *    - cERC20 contract
+ */
+
 export const humanboundContracts: Record<Web3ChainReference, ContractMetadata> =
   {
     [Web3ChainReference.EIP155_HARDHAT_LOCAL]: {

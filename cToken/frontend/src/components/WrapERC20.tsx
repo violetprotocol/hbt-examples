@@ -1,13 +1,9 @@
 import { ethers } from "ethers";
-import Head from "next/head";
 import { useCallback, useContext, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
 import { usecERC20Balance } from "src/hooks/usecERC20Balance";
 import { useERC20Allowance } from "src/hooks/useERC20Allowance";
-import { useERC20Balance } from "src/hooks/useERC20Balance";
-import { useHasHBT } from "src/hooks/useHBT";
-import { generateRandomTokenId } from "src/utils";
 
 const WrapERC20: React.FC = () => {
   const { account, erc20Contract, cerc20Contract } = useContext(Web3Context);

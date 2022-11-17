@@ -1,12 +1,13 @@
 import React, { useState, useEffect, createContext } from "react";
 
+/**
+ * RefreshContextProvider
+ *
+ * Allows other hooks to refresh the value provided by them by specifying a fast or slow refresh rate
+ */
+
 const FAST_INTERVAL = 5000;
 const SLOW_INTERVAL = 50000;
-
-interface Refresh {
-  slow: number;
-  fast: number;
-}
 
 export const RefreshContext = createContext({ slow: 0, fast: 0 });
 

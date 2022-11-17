@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useContext } from "react";
 import { Web3Context } from "src/context/Web3Context";
-import { useHasHBT } from "src/hooks/useHBT";
+import { useHasHBT } from "src/hooks/useHasHBT";
 import Link from "next/link";
 import ClaimHBTButton from "src/components/ClaimHBTButton";
 

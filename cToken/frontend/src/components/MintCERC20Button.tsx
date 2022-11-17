@@ -1,9 +1,6 @@
-import Head from "next/head";
 import { useContext, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
-import { useHasHBT } from "src/hooks/useHBT";
-import { generateRandomTokenId } from "src/utils";
 
 const MintCERC20Button: React.FC = () => {
   const { account, cerc20Contract } = useContext(Web3Context);

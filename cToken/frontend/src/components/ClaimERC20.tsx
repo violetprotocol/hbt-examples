@@ -1,10 +1,7 @@
-import Head from "next/head";
 import { useContext, useState } from "react";
 import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
 import { useERC20Balance } from "src/hooks/useERC20Balance";
-import { useHasHBT } from "src/hooks/useHBT";
-import { generateRandomTokenId } from "src/utils";
 
 const ClaimERC20: React.FC = () => {
   const { account, erc20Contract } = useContext(Web3Context);

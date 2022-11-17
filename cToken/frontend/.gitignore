@@ -13,6 +13,9 @@
 # production
 /build
 
+# typechain types
+lib/types
+
 # misc
 .DS_Store
 *.pem
