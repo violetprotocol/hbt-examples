@@ -1,7 +1,7 @@
 import { useContext, Dispatch, SetStateAction } from "react";
 import { Web3Context } from "../Web3Context";
 import { Web3Provider } from "@ethersproject/providers";
-import { CERC20, MockERC20, MockHBT } from "lib/types/index";
+import { CERC20, MockERC20, MockHBT } from "lib/index";
 import { Signer } from "ethers";
 import { displayToast } from "src/utils/toast";
 import {

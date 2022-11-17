@@ -6,7 +6,7 @@ import {
   MockERC20__factory,
   MockHBT,
   MockHBT__factory,
-} from "lib/types";
+} from "lib";
 import { verifyAddressIsASmartContract } from ".";
 import {
   cERC20Contracts,
