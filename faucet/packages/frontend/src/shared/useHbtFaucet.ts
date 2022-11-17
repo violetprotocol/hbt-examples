@@ -7,14 +7,21 @@ import {
 } from '@ethathon/contracts/typechain-types'
 import { BigNumber, utils } from 'ethers'
 
+type FaucetStatus = {
+  balance: BigNumber
+  hbtContractAddress: string
+  dripAmount: BigNumber
+  timeLockInSeconds: BigNumber
+}
+
 export const useHbtFaucet = () => {
   const { chain } = useNetwork()
   const { contracts } = useDeployments()
   const { data: signer } = useSigner()
   const { address } = useAccount()
   const [contract, setContract] = useState<HumanboundTokenGatedFaucet | null>(null)
-  const [faucetBalance, setFaucetBalance] = useState<BigNumber | null>(null)
-  const formattedFaucetBalance = faucetBalance ? utils.formatEther(faucetBalance) : null
+  const [faucetStatus, setFaucetStatus] = useState<FaucetStatus | null>(null)
+
   const [cooldown, setCooldown] = useState<{ isInCooldown?: boolean; endOfCooldownInMs?: number }>(
     {},
   )
@@ -33,16 +40,24 @@ export const useHbtFaucet = () => {
     }
   }, [contracts, signer, chain])
 
-  const getBalance = useCallback(async () => {
+  const getStatus = useCallback(async () => {
     if (!contract) return null
 
-    const balance = await signer?.provider
-      ?.getBalance(contract.address)
+    const status = await contract
+      .getStatus()
       .then((b) => b)
       .catch((e) => console.error(e))
 
-    if (balance) {
-      setFaucetBalance(balance)
+    if (status) {
+      const [balance_, hbtAddress_, dripAmount_, timeLock_, ..._rest] = status
+      const faucetStatus = {
+        balance: balance_,
+        formattedBalance: balance_ ? utils.formatEther(balance_) : null,
+        hbtContractAddress: hbtAddress_,
+        dripAmount: dripAmount_,
+        timeLockInSeconds: timeLock_,
+      }
+      setFaucetStatus(faucetStatus)
     }
   }, [signer, contract])
 
@@ -74,13 +89,13 @@ export const useHbtFaucet = () => {
   const refreshState = useCallback(() => {
     if (!contract || chain?.unsupported) return
 
-    getBalance()
+    getStatus()
     getCooldownStatus()
-  }, [getBalance, getCooldownStatus, chain])
+  }, [getStatus, getCooldownStatus, chain])
 
   useEffect(() => {
     refreshState()
   }, [refreshState])
 
-  return { faucetBalance, formattedFaucetBalance, cooldown, refreshState }
+  return { faucetStatus, cooldown, refreshState }
 }
