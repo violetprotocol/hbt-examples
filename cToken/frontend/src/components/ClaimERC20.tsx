@@ -13,9 +13,9 @@ const ClaimERC20: React.FC = () => {
   });
 
   const onClaimClick = async () => {
-    const res = await erc20Contract.mint(account, 10);
-    setIsMining({ isMining: true, txHash: res.hash });
     try {
+      const res = await erc20Contract.mint(account, 10);
+      setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
     } catch (error: any) {
       console.error(error);

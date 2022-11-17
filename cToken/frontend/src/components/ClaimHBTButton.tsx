@@ -18,9 +18,9 @@ const ClaimHBTButton: React.FC<ClaimHBTProps> = ({ disabled = false }) => {
   });
 
   const onClaimClick = async () => {
-    const res = await hbtContract.safeMint(account, generateRandomTokenId());
-    setIsMining({ isMining: true, txHash: res.hash });
     try {
+      const res = await hbtContract.safeMint(account, generateRandomTokenId());
+      setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
     } catch (error: any) {
       console.error(error);
