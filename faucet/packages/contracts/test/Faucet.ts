@@ -70,6 +70,19 @@ describe('Faucet', function () {
 
       expect(await faucet.getBalance()).to.equal(initialBalance)
     })
+
+    it('Should return the contract status', async function () {
+      const { faucet, initialBalance, hbtAddress, dripAmount, timeLock } = await loadFixture(
+        deployFaucetFixture,
+      )
+      const [initialBalance_, hbtAddress_, dripAmount_, timeLock_, ...rest] =
+        await faucet.getStatus()
+
+      expect(initialBalance_).to.eq(initialBalance)
+      expect(hbtAddress_).to.eq(hbtAddress)
+      expect(dripAmount_).to.eq(dripAmount)
+      expect(timeLock_).to.eq(BigNumber.from(timeLock))
+    })
   })
 
   describe('Deposits', function () {
