@@ -30,25 +30,14 @@ task("fund", "Get some ETH on your local test network")
     console.log("New balance of recipient: ", ethers.utils.formatEther(balance), "ETH");
   });
 
-// Ensure that we have all the environment variables we need.
-const mnemonic: string | undefined = process.env.MNEMONIC;
-const privateKey: string | undefined = process.env.PRIVATE_KEY;
-
-if (!privateKey && !mnemonic) {
-  throw new Error("Please set your PRIVATE_KEY or MNEMONIC in a .env file");
-}
-
-const infuraApiKey: string | undefined = process.env.INFURA_API_KEY;
-if (!infuraApiKey) {
-  throw new Error("Please set your INFURA_API_KEY in a .env file");
-}
+const infuraApiKey = process.env.INFURA_API_KEY;
 
 const chainIds = {
   "arbitrum-goerli": 421613,
   "arbitrum-mainnet": 42161,
   avalanche: 43114,
   bsc: 56,
-  hardhat: 31337,
+  hardhat: 1337,
   mainnet: 1,
   "optimism-mainnet": 10,
   "optimism-goerli": 420,
@@ -61,19 +50,8 @@ const chainIds = {
 
 function getChainConfig(network: keyof typeof chainIds): NetworkUserConfig {
   const url: string = "https://" + network + ".infura.io/v3/" + infuraApiKey;
-  let accounts;
-
-  // Prioritise private key if it is available
-  if (privateKey) accounts = [`0x${process.env.PRIVATE_KEY}`];
-  else if (mnemonic)
-    accounts = {
-      count: 20,
-      mnemonic,
-      path: "m/44'/60'/0'/0",
-    };
 
   return {
-    accounts,
     chainId: chainIds[network],
     url,
   };
@@ -87,31 +65,8 @@ const config: HardhatUserConfig = {
     excludeContracts: [],
     src: "./contracts",
   },
-  etherscan: {
-    apiKey: {
-      arbitrumOne: process.env.ARBISCAN_API_KEY || "",
-      avalanche: process.env.SNOWTRACE_API_KEY || "",
-      bsc: process.env.BSCSCAN_API_KEY || "",
-      mainnet: process.env.ETHERSCAN_API_KEY || "",
-      optimisticEthereum: process.env.OPTIMISM_API_KEY || "",
-      polygon: process.env.POLYGONSCAN_API_KEY || "",
-      polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
-      rinkeby: process.env.ETHERSCAN_API_KEY || "",
-      kovan: process.env.ETHERSCAN_API_KEY || "",
-      goerli: process.env.ETHERSCAN_API_KEY || "",
-    },
-  },
   networks: {
-    hardhat: {
-      accounts: {
-        mnemonic,
-      },
-      chainId: chainIds.hardhat,
-    },
     localhost: {
-      accounts: {
-        mnemonic,
-      },
       chainId: chainIds.hardhat,
     },
     arbitrumOne: getChainConfig("arbitrum-mainnet"),
