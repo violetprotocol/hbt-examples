@@ -12,6 +12,7 @@ import { useDeployments } from '@shared/useDeployments'
 import { useHbtBalance } from '@shared/useHbtBalance'
 import { useHbtFaucet } from '@shared/useHbtFaucet'
 import { SupportedNetworks } from '@components/SupportedNetworks'
+import { formatSeconds } from '@shared/formatSeconds'
 
 const Button = tw.button`m-2 rounded-lg border border-current px-2 py-1 font-semibold text-xl text-white disabled:text-gray-400`
 
@@ -20,7 +21,7 @@ const HomePage: NextPage = () => {
   const { contracts } = useDeployments()
   const { chain } = useNetwork()
   const { hasHbt, hbtBalance, isLoading, isError } = useHbtBalance()
-  const { faucetStatus, cooldown, refreshState } = useHbtFaucet()
+  const { faucetStatus, cooldown, getCooldownStatus } = useHbtFaucet()
   // TODO: could be cleaner
   const nativeToken = chain?.id === 80001 ? 'MATIC' : 'ETH'
 
@@ -45,7 +46,7 @@ const HomePage: NextPage = () => {
         toast.error('Error while trying to get ETH')
       }
     } finally {
-      refreshState()
+      getCooldownStatus()
     }
   }
 
@@ -58,10 +59,16 @@ const HomePage: NextPage = () => {
             Multi-network Faucet For Humanbound Token Holders
           </h1>
           <SupportedNetworks />
-          <p tw="mt-1">
-            To prevent spam attacks draining the faucet, your address must own a Humanbound Token.
+          <Link tw="mt-8" href="https://docs.humanbound.xyz/">
+            <span tw="text-pink-400 underline underline-offset-2">
+              What&lsquo;s a Humanbound Token?
+            </span>
+          </Link>
+          <p tw="mt-2">
+            To prevent spam attacks draining the faucet,{' '}
+            <b>your address must own a Humanbound Token</b>.
           </p>
-          <p tw="mt-1">
+          <p tw="mt-2">
             Head over{' '}
             <Link href="https://sandbox.humanbound.xyz/">
               <span tw="underline decoration-white decoration-solid underline-offset-4">here</span>
@@ -88,14 +95,23 @@ const HomePage: NextPage = () => {
 
         {signer && (
           <div tw="mt-6 flex flex-col items-center">
-            <Button tw="mb-6" disabled={!hasHbt || cooldown?.isInCooldown} onClick={() => getETH()}>
+            <Button tw="mb-7" disabled={!hasHbt || cooldown?.isInCooldown} onClick={() => getETH()}>
               GET {nativeToken}
             </Button>
-            {faucetStatus?.formattedBalance && (
-              <div tw="text-sm">
-                Funds left: {faucetStatus?.formattedBalance} {nativeToken}
-              </div>
-            )}
+            <>
+              {faucetStatus?.formattedDripAmount && faucetStatus.timeLockInSeconds && (
+                <div tw="mb-2">
+                  This faucet allows you to get {faucetStatus.formattedDripAmount} {nativeToken}{' '}
+                  with a cooldown period of{' '}
+                  {formatSeconds(faucetStatus.timeLockInSeconds?.toNumber())}.
+                </div>
+              )}
+              {faucetStatus?.formattedBalance && (
+                <div>
+                  Funds left: {faucetStatus?.formattedBalance} {nativeToken}
+                </div>
+              )}
+            </>
           </div>
         )}
       </CenterBody>

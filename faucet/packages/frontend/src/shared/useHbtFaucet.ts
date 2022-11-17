@@ -12,6 +12,7 @@ type FaucetStatus = {
   formattedBalance: string | null
   hbtContractAddress: string
   dripAmount: BigNumber
+  formattedDripAmount: string | null
   timeLockInSeconds: BigNumber
 }
 
@@ -22,6 +23,7 @@ export const useHbtFaucet = () => {
   const { address } = useAccount()
   const [contract, setContract] = useState<HumanboundTokenGatedFaucet | null>(null)
   const [faucetStatus, setFaucetStatus] = useState<FaucetStatus | null>(null)
+  const [isLoadingStatus, setIsLoadingStatus] = useState<boolean>(false)
   const [cooldown, setCooldown] = useState<{ isInCooldown?: boolean; endOfCooldownInMs?: number }>(
     {},
   )
@@ -35,6 +37,7 @@ export const useHbtFaucet = () => {
       signer,
     )
     setContract(contract)
+    setFaucetStatus(null)
 
     return () => {
       setContract(null)
@@ -42,13 +45,15 @@ export const useHbtFaucet = () => {
   }, [contracts, signer, chain])
 
   const getStatus = useCallback(async () => {
-    if (!contract) return null
+    if (!contract || faucetStatus || isLoadingStatus) return null
 
+    setIsLoadingStatus(true)
     const status = await contract
       .getStatus()
       .then((b) => b)
       .catch((e) => console.error(e))
-    console.log('status', status)
+      .finally(() => setIsLoadingStatus(false))
+
     if (status) {
       const [balance_, hbtAddress_, dripAmount_, timeLock_, ..._rest] = status
       const faucetStatus = {
@@ -56,15 +61,15 @@ export const useHbtFaucet = () => {
         formattedBalance: balance_ ? utils.formatEther(balance_) : null,
         hbtContractAddress: hbtAddress_,
         dripAmount: dripAmount_,
+        formattedDripAmount: dripAmount_ ? utils.formatEther(dripAmount_) : null,
         timeLockInSeconds: timeLock_,
       }
 
       setFaucetStatus(faucetStatus)
     }
-  }, [signer, contract])
+  }, [contract])
 
   const getCooldownStatus = useCallback(async () => {
-    console.log('called cooldown')
     if (!contract || !faucetStatus?.timeLockInSeconds || !address || address == '0x') return null
 
     const lastDrip = await contract
@@ -89,19 +94,13 @@ export const useHbtFaucet = () => {
     }
   }, [address, contract, timeLockAsString])
 
-  const refreshState = useCallback(() => {
-    if (!contract || chain?.unsupported) return
-
+  useEffect(() => {
     getStatus()
-      .then(() => {
-        getCooldownStatus()
-      })
-      .catch((e) => console.error(e))
-  }, [getStatus, getCooldownStatus, chain])
+  }, [getStatus])
 
   useEffect(() => {
-    refreshState()
-  }, [refreshState])
+    getCooldownStatus()
+  }, [timeLockAsString, chain])
 
-  return { faucetStatus, cooldown, refreshState }
+  return { faucetStatus, cooldown, getCooldownStatus }
 }
