@@ -116,13 +116,13 @@ Once you're done with cERC20 and you want them back in ERC20 to trade them on pe
 
 ## Step 3: Trading your cERC20
 
-Next we will trade some cERC20 tokens.
+Next we will send some cERC20 tokens.
 
 Note: Your trade recipient must also be a HBT owner or your trade will fail!
 
-Go to the swap page [http://localhost:3000/swap](http://localhost:3000/swap).
+Go to the send page [http://localhost:3000/send](http://localhost:3000/send).
 
-This page allows you to send some tokens to a recipient, and so although this isn't strictly a 'swap', this can be easily implemented by exchanges to allow swaps between different cERC20 tokens such as cUSDC or cDAI.
+This page allows you to send some tokens to a recipient, this can be easily implemented by exchanges to allow swaps between different cERC20 tokens such as cUSDC or cDAI.
 
 Simply input the recipient address and the amount of cERC20 you wish to send, and click "Transfer".
 

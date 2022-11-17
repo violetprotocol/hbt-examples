@@ -58,14 +58,14 @@ const Home: NextPage = () => {
         </ul>
 
         <h1 className="text-center text-2xl mb-12">
-          Step 3: Trade your cERC20 token
+          Step 3: Send your cERC20 token
         </h1>
         <h2 className="text-md mb-16">
-          cERC20 tokens can only be traded to and from accounts with Humanbound
+          cERC20 tokens can only be sent to and from accounts with Humanbound
           tokens
         </h2>
         <h2 className="link text-center text-xl mb-12">
-          <Link href="/swap">Send some tokens →</Link>
+          <Link href="/send">Send some tokens →</Link>
         </h2>
       </div>
     </>

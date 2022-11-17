@@ -31,8 +31,8 @@ export const NavBar = () => {
             <li className={path === "/wrap" ? "active-nav" : "nav-item"}>
               <Link href="/wrap">Wrap</Link>
             </li>
-            <li className={path === "/swap" ? "active-nav" : "nav-item"}>
-              <Link href="/swap">Swap</Link>
+            <li className={path === "/send" ? "active-nav" : "nav-item"}>
+              <Link href="/send">Send</Link>
             </li>
           </ul>
         </nav>

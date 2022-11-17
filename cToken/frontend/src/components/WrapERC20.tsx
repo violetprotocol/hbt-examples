@@ -4,6 +4,7 @@ import { Web3Context } from "src/context/Web3Context";
 import { Mining } from "src/helpers/Mining";
 import { usecERC20Balance } from "src/hooks/usecERC20Balance";
 import { useERC20Allowance } from "src/hooks/useERC20Allowance";
+import { displayToast } from "src/utils/toast";
 
 const WrapERC20: React.FC = () => {
   const { account, erc20Contract, cerc20Contract } = useContext(Web3Context);
@@ -24,8 +25,9 @@ const WrapERC20: React.FC = () => {
         const res = await func(...params);
         setIsMining({ isMining: true, txHash: res.hash });
         await res.wait();
-      } catch (error) {
+      } catch (error: any) {
         console.error(error);
+        displayToast(error?.data?.message || error?.message);
       } finally {
         setIsMining({ isMining: false, txHash: "" });
       }

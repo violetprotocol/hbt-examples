@@ -24,7 +24,7 @@ const MintCERC20Button: React.FC = () => {
   return (
     <>
       <button onClick={onMintClick} className="green-btn">
-        Claim
+        Mint
       </button>
       <Mining isMining={isMining} txHash={txHash} />
     </>

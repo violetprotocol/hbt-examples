@@ -5,7 +5,7 @@ import { Mining } from "src/helpers/Mining";
 import { usecERC20Balance } from "src/hooks/usecERC20Balance";
 import { displayToast } from "src/utils/toast";
 
-export const SwapCERC20: React.FC = () => {
+export const SendCERC20: React.FC = () => {
   const { account, cerc20Contract, hbtContract } = useContext(Web3Context);
   const balance = usecERC20Balance(account);
   const [recipient, setRecipient] = useState("");
