@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useAccount, useNetwork, useSigner } from 'wagmi'
+import { useAccount, useSigner } from 'wagmi'
 import { useDeployments } from './useDeployments'
 import {
   HumanboundTokenGatedFaucet,
@@ -17,44 +17,40 @@ type FaucetStatus = {
 }
 
 export const useHbtFaucet = () => {
-  const { chain } = useNetwork()
   const { contracts } = useDeployments()
   const { data: signer } = useSigner()
   const { address } = useAccount()
   const [contract, setContract] = useState<HumanboundTokenGatedFaucet | null>(null)
   const [faucetStatus, setFaucetStatus] = useState<FaucetStatus | null>(null)
   const [isLoadingStatus, setIsLoadingStatus] = useState<boolean>(false)
-  const [cooldown, setCooldown] = useState<{ isInCooldown?: boolean; endOfCooldownInMs?: number }>(
-    {},
-  )
+  const [cooldown, setCooldown] = useState<{
+    isInCooldown?: boolean
+    endOfCooldownInMs?: number
+  } | null>({})
   const timeLockAsString = faucetStatus?.timeLockInSeconds.toString()
 
   useEffect(() => {
     if (!contracts || !signer) return
-
-    const contract = HumanboundTokenGatedFaucet__factory.connect(
+    const contract: HumanboundTokenGatedFaucet = HumanboundTokenGatedFaucet__factory.connect(
       contracts.HumanboundTokenGatedFaucet.address,
       signer,
     )
     setContract(contract)
-    setFaucetStatus(null)
-
-    return () => {
-      setContract(null)
-    }
-  }, [contracts, signer, chain])
+  }, [contracts, signer])
 
   const getStatus = useCallback(async () => {
-    if (!contract || faucetStatus || isLoadingStatus) return null
-
+    if (!contract || isLoadingStatus) return null
+    let active = true
     setIsLoadingStatus(true)
     const status = await contract
       .getStatus()
       .then((b) => b)
       .catch((e) => console.error(e))
-      .finally(() => setIsLoadingStatus(false))
+      .finally(() => {
+        setIsLoadingStatus(false)
+      })
 
-    if (status) {
+    if (status && active) {
       const [balance_, hbtAddress_, dripAmount_, timeLock_, ..._rest] = status
       const faucetStatus = {
         balance: balance_,
@@ -67,7 +63,11 @@ export const useHbtFaucet = () => {
 
       setFaucetStatus(faucetStatus)
     }
-  }, [contract])
+
+    return () => {
+      active = false
+    }
+  }, [contract, isLoadingStatus, setIsLoadingStatus])
 
   const getCooldownStatus = useCallback(async () => {
     if (!contract || !faucetStatus?.timeLockInSeconds || !address || address == '0x') return null
@@ -92,15 +92,15 @@ export const useHbtFaucet = () => {
     } else {
       setCooldown({ isInCooldown: false })
     }
-  }, [address, contract, timeLockAsString])
+  }, [contract, address, timeLockAsString])
 
   useEffect(() => {
     getStatus()
-  }, [getStatus])
+  }, [contract])
 
   useEffect(() => {
     getCooldownStatus()
-  }, [timeLockAsString, chain])
+  }, [contract, timeLockAsString])
 
   return { faucetStatus, cooldown, getCooldownStatus }
 }
