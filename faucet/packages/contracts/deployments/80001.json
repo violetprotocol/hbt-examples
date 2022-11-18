@@ -2,76 +2,8 @@
   "name": "mumbai",
   "chainId": "80001",
   "contracts": {
-    "Lock": {
-      "address": "0xa99b845DdfB69E54782934b1eD867ed31b751fea",
-      "abi": [
-        {
-          "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "_unlockTime",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "payable",
-          "type": "constructor"
-        },
-        {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "when",
-              "type": "uint256"
-            }
-          ],
-          "name": "Withdrawal",
-          "type": "event"
-        },
-        {
-          "inputs": [],
-          "name": "owner",
-          "outputs": [
-            {
-              "internalType": "address payable",
-              "name": "",
-              "type": "address"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "unlockTime",
-          "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
-          ],
-          "stateMutability": "view",
-          "type": "function"
-        },
-        {
-          "inputs": [],
-          "name": "withdraw",
-          "outputs": [],
-          "stateMutability": "nonpayable",
-          "type": "function"
-        }
-      ]
-    },
     "HumanboundTokenGatedFaucet": {
-      "address": "0x22A57d3482bE72a4d97347cCEc06B959d3Fb3760",
+      "address": "0x748f8e92b94bACFB18b53619bA501a5c93724a3d",
       "abi": [
         {
           "inputs": [
@@ -81,14 +13,14 @@
               "type": "address"
             },
             {
-              "internalType": "uint256",
+              "internalType": "uint128",
               "name": "dripAmount_",
-              "type": "uint256"
+              "type": "uint128"
             },
             {
-              "internalType": "uint256",
-              "name": "timeLockInSeconds",
-              "type": "uint256"
+              "internalType": "uint128",
+              "name": "timeLockInSeconds_",
+              "type": "uint128"
             }
           ],
           "stateMutability": "payable",
@@ -167,9 +99,9 @@
           "name": "dripAmount",
           "outputs": [
             {
-              "internalType": "uint256",
+              "internalType": "uint128",
               "name": "",
-              "type": "uint256"
+              "type": "uint128"
             }
           ],
           "stateMutability": "view",
@@ -183,6 +115,34 @@
               "internalType": "uint256",
               "name": "",
               "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getStatus",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "balance_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "hbtContract_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "dripAmount_",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "timeLockInSeconds_",
+              "type": "uint128"
             }
           ],
           "stateMutability": "view",
@@ -242,12 +202,12 @@
         },
         {
           "inputs": [],
-          "name": "timeLock",
+          "name": "timeLockInSeconds",
           "outputs": [
             {
-              "internalType": "uint256",
+              "internalType": "uint128",
               "name": "",
-              "type": "uint256"
+              "type": "uint128"
             }
           ],
           "stateMutability": "view",
@@ -269,9 +229,9 @@
         {
           "inputs": [
             {
-              "internalType": "uint256",
+              "internalType": "uint128",
               "name": "newAmount",
-              "type": "uint256"
+              "type": "uint128"
             }
           ],
           "name": "updateDripAmount",
@@ -295,9 +255,9 @@
         {
           "inputs": [
             {
-              "internalType": "uint256",
+              "internalType": "uint128",
               "name": "newTimeLock",
-              "type": "uint256"
+              "type": "uint128"
             }
           ],
           "name": "updateTimeLock",
@@ -328,6 +288,74 @@
         {
           "stateMutability": "payable",
           "type": "receive"
+        }
+      ]
+    },
+    "Lock": {
+      "address": "0xa99b845DdfB69E54782934b1eD867ed31b751fea",
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_unlockTime",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "when",
+              "type": "uint256"
+            }
+          ],
+          "name": "Withdrawal",
+          "type": "event"
+        },
+        {
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address payable",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "unlockTime",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "withdraw",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
         }
       ]
     }

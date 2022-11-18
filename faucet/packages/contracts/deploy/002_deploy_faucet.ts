@@ -11,10 +11,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts()
   console.log(`Deploying as ${deployer}…`)
 
-  const initialFunding = parseEther('0.03')
-
+  // SET THE FOLLOWING PARAMETERS
+  const initialFunding = parseEther('0.02')
   const dripAmount = utils.parseEther('0.01')
-  const timeLock = 60 * 60 * 24 // 24 hours
+  const timeLock = 60 * 60 * 24 * 14 // 14 days
 
   let hbtContract
   if (hre.network.live) {
