@@ -13,6 +13,7 @@ import { useHbtBalance } from '@shared/useHbtBalance'
 import { useHbtFaucet } from '@shared/useHbtFaucet'
 import { SupportedNetworks } from '@components/SupportedNetworks'
 import { formatSeconds } from '@shared/formatSeconds'
+import { useEffect, useState } from 'react'
 
 const Button = tw.button`m-2 rounded-lg border border-current px-2 py-1 font-semibold text-xl text-white disabled:text-gray-400`
 
@@ -20,10 +21,19 @@ const HomePage: NextPage = () => {
   const { data: signer } = useSigner()
   const { contracts } = useDeployments()
   const { chain } = useNetwork()
+  const [currentChainId, setCurrentChainId] = useState(chain?.id)
   const { hasHbt, hbtBalance, isLoading, isError } = useHbtBalance()
   const { faucetStatus, cooldown, getCooldownStatus } = useHbtFaucet()
   // TODO: could be cleaner
   const nativeToken = chain?.id === 80001 ? 'MATIC' : 'ETH'
+
+  useEffect(() => {
+    if (!currentChainId && chain?.id) {
+      setCurrentChainId(chain.id)
+    } else if (chain?.id !== currentChainId) {
+      window.location.reload()
+    }
+  }, [chain?.id])
 
   const getETH = async () => {
     if (!signer || !contracts) return
@@ -46,7 +56,7 @@ const HomePage: NextPage = () => {
         toast.error('Error while trying to get ETH')
       }
     } finally {
-      getCooldownStatus()
+      await getCooldownStatus()
     }
   }
 
@@ -59,7 +69,7 @@ const HomePage: NextPage = () => {
             Multi-network Faucet For Humanbound Token Holders
           </h1>
           <SupportedNetworks />
-          <Link tw="mt-8" href="https://docs.humanbound.xyz/">
+          <Link tw="mt-8" href="https://docs.humanbound.xyz/" target="_blank">
             <span tw="text-pink-400 underline underline-offset-2">
               What&lsquo;s a Humanbound Token?
             </span>
