@@ -14,6 +14,8 @@ import { useHbtFaucet } from '@shared/useHbtFaucet'
 import { SupportedNetworks } from '@components/SupportedNetworks'
 import { formatSeconds } from '@shared/formatSeconds'
 import { useEffect, useState } from 'react'
+import { Footer } from '@components/layout/Footer'
+import { StyledLinkContent } from '@components/StyledLink'
 
 const Button = tw.button`m-2 rounded-lg border border-current px-2 py-1 font-semibold text-xl text-white disabled:text-gray-400`
 
@@ -81,7 +83,7 @@ const HomePage: NextPage = () => {
           <p tw="mt-2">
             Head over{' '}
             <Link href="https://sandbox.humanbound.xyz/">
-              <span tw="underline decoration-white decoration-solid underline-offset-4">here</span>
+              <StyledLinkContent>here</StyledLinkContent>
             </Link>{' '}
             to get one.
           </p>
@@ -125,6 +127,15 @@ const HomePage: NextPage = () => {
           </div>
         )}
       </CenterBody>
+      <Footer>
+        <div tw="my-6 text-center">
+          Disclaimer: No warranty is made of any kind. See more{' '}
+          <Link href="https://github.com/violetprotocol/hbt-examples/blob/main/faucet/LICENSE.md">
+            <StyledLinkContent>here</StyledLinkContent>
+          </Link>
+          .
+        </div>
+      </Footer>
     </>
   )
 }
