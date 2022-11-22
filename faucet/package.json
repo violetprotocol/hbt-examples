@@ -1,7 +1,7 @@
 {
-  "name": "@ethathon/monorepo",
+  "name": "hbt-faucet",
   "version": "0.0.1",
-  "license": "MIT",
+  "license": "GPL-3",
   "private": true,
   "workspaces": [
     "packages/*"
