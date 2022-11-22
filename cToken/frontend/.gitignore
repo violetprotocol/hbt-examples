@@ -14,7 +14,7 @@
 /build
 
 # typechain types
-lib/types
+lib
 
 # misc
 .DS_Store
