@@ -25,7 +25,7 @@ const HomePage: NextPage = () => {
   const { chain } = useNetwork()
   const [currentChainId, setCurrentChainId] = useState(chain?.id)
   const { hasHbt, hbtBalance, isLoading, isError } = useHbtBalance()
-  const { faucetStatus, cooldown, getCooldownStatus } = useHbtFaucet()
+  const { faucetStatus, cooldown, getCooldownStatus, getStatus } = useHbtFaucet()
   // TODO: could be cleaner
   const nativeToken = chain?.id === 80001 ? 'MATIC' : 'ETH'
 
@@ -44,7 +44,7 @@ const HomePage: NextPage = () => {
       signer,
     )
     try {
-      const tx = await contract.drip()
+      const tx = await contract.dripNativeTokens()
       const receipt = await tx.wait()
       console.log('Drip successful: ', receipt)
     } catch (e: unknown) {
@@ -59,6 +59,31 @@ const HomePage: NextPage = () => {
       }
     } finally {
       await getCooldownStatus()
+    }
+  }
+
+  const getTestUSDC = async () => {
+    if (!signer || !contracts) return
+    const contract = HumanboundTokenGatedFaucet__factory.connect(
+      contracts.HumanboundTokenGatedFaucet.address,
+      signer,
+    )
+    try {
+      const tx = await contract.dripERC20Tokens()
+      const receipt = await tx.wait()
+      console.log('ERC20 Drip successful: ', receipt)
+    } catch (e: unknown) {
+      console.error(e)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const message = e?.data?.message
+      if (message) {
+        toast.error(message)
+      } else {
+        toast.error('Error while trying to get Test USDC')
+      }
+    } finally {
+      await getStatus()
     }
   }
 
@@ -77,8 +102,8 @@ const HomePage: NextPage = () => {
             </span>
           </Link>
           <p tw="mt-2">
-            To prevent spam attacks draining the faucet,{' '}
-            <b>your address must own a Humanbound Token</b>.
+            In order to get {nativeToken}, <b>your address must own a Humanbound Token</b> (this
+            doesn&lsquo;t apply for Test USDC).
           </p>
           <p tw="mt-2">
             Head over{' '}
@@ -87,43 +112,58 @@ const HomePage: NextPage = () => {
             </Link>{' '}
             to get one.
           </p>
-          <div tw="mt-14 mb-8">
-            <HBTBalance
-              isError={isError}
-              isLoading={isLoading}
-              hbtBalance={hbtBalance?.toString()}
-            />
+          <div tw="mt-14 mb-8 flex flex-col items-center">
+            {/* Rainbowkit Connect Button */}
+            <ConnectButton />
+            <HBTBalance isError={isError} isLoading={isLoading} hbtBalance={hbtBalance} tw="mt-4" />
           </div>
-          {cooldown?.isInCooldown && (
-            <div tw="mb-8">
-              You reached your quota! Please come back in{' '}
-              <Countdown date={cooldown?.endOfCooldownInMs} />
-            </div>
-          )}
         </div>
 
-        {/* Rainbowkit Connect Button */}
-        <ConnectButton />
+        {signer && !chain?.unsupported && (
+          <div tw="mt-14 flex">
+            <div id="left-container" tw="flex flex-1 flex-col justify-start px-12 text-center">
+              <Button
+                tw="mx-auto mb-6"
+                disabled={!hasHbt || cooldown?.isInCooldown}
+                onClick={() => getETH()}
+              >
+                {cooldown?.isInCooldown ? (
+                  <Countdown date={cooldown?.endOfCooldownInMs} />
+                ) : (
+                  <>GET {nativeToken}</>
+                )}
+              </Button>
 
-        {signer && (
-          <div tw="mt-6 flex flex-col items-center">
-            <Button tw="mb-7" disabled={!hasHbt || cooldown?.isInCooldown} onClick={() => getETH()}>
-              GET {nativeToken}
-            </Button>
-            <>
-              {faucetStatus?.formattedDripAmount && faucetStatus.timeLockInSeconds && (
-                <div tw="mb-2">
-                  This faucet allows you to get {faucetStatus.formattedDripAmount} {nativeToken}{' '}
-                  with a cooldown period of{' '}
-                  {formatSeconds(faucetStatus.timeLockInSeconds?.toNumber())}.
-                </div>
-              )}
-              {faucetStatus?.formattedBalance && (
-                <div>
-                  Funds left: {faucetStatus?.formattedBalance} {nativeToken}
-                </div>
-              )}
-            </>
+              <div tw="max-w-lg">
+                {faucetStatus?.formattedNativeTokenDripAmount && faucetStatus.timeLockInSeconds && (
+                  <div tw="mb-4">
+                    Dripping {faucetStatus.formattedNativeTokenDripAmount} {nativeToken} with a
+                    cooldown period of {formatSeconds(faucetStatus.timeLockInSeconds?.toNumber())}.
+                  </div>
+                )}
+                {faucetStatus?.formattedBalance && (
+                  <div>
+                    Funds left: {faucetStatus?.formattedBalance} {nativeToken}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div id="right-container" tw="flex flex-1 flex-col justify-start px-12 text-center">
+              <Button tw="mx-auto mb-6" onClick={() => getTestUSDC()}>
+                GET tUSDC
+              </Button>
+              <div tw="max-w-lg">
+                {faucetStatus?.formattedErc20TokenDripAmount && (
+                  <>
+                    Dripping {faucetStatus?.formattedErc20TokenDripAmount} Test USDC with no
+                    cooldown period. No HBT required.
+                  </>
+                )}
+                {faucetStatus?.erc20ContractAddress && (
+                  <div tw="mt-4">Test USDC contract: {faucetStatus?.erc20ContractAddress}</div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </CenterBody>

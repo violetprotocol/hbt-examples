@@ -23,6 +23,10 @@ const customStyles = css`
   #nprogress > .spinner {
     ${tw`hidden!`}
   }
+
+  #right-container {
+    ${tw`border-gray-100/50 border-l-2`}
+  }
 `
 
 const GlobalStyles = () => (

@@ -10,9 +10,11 @@ import { BigNumber, utils } from 'ethers'
 type FaucetStatus = {
   balance: BigNumber
   formattedBalance: string | null
-  hbtContractAddress: string
-  dripAmount: BigNumber
-  formattedDripAmount: string | null
+  erc20ContractAddress: string
+  nativeTokenDripAmount: BigNumber
+  formattedNativeTokenDripAmount: string | null
+  erc20TokenDripAmount: BigNumber
+  formattedErc20TokenDripAmount: string | null
   timeLockInSeconds: BigNumber
 }
 
@@ -51,13 +53,26 @@ export const useHbtFaucet = () => {
       })
 
     if (status && active) {
-      const [balance_, hbtAddress_, dripAmount_, timeLock_, ..._rest] = status
+      const [
+        balance_,
+        erc20ContractAddress_,
+        nativeTokenDripAmount_,
+        erc20TokenDripAmount_,
+        timeLock_,
+        ..._rest
+      ] = status
       const faucetStatus = {
         balance: balance_,
         formattedBalance: balance_ ? utils.formatEther(balance_) : null,
-        hbtContractAddress: hbtAddress_,
-        dripAmount: dripAmount_,
-        formattedDripAmount: dripAmount_ ? utils.formatEther(dripAmount_) : null,
+        erc20ContractAddress: erc20ContractAddress_,
+        nativeTokenDripAmount: nativeTokenDripAmount_,
+        formattedNativeTokenDripAmount: nativeTokenDripAmount_
+          ? utils.formatEther(nativeTokenDripAmount_)
+          : null,
+        erc20TokenDripAmount: erc20TokenDripAmount_,
+        formattedErc20TokenDripAmount: erc20TokenDripAmount_
+          ? utils.formatEther(erc20TokenDripAmount_)
+          : null,
         timeLockInSeconds: timeLock_,
       }
 
@@ -102,5 +117,5 @@ export const useHbtFaucet = () => {
     getCooldownStatus()
   }, [contract, timeLockAsString])
 
-  return { faucetStatus, cooldown, getCooldownStatus }
+  return { faucetStatus, cooldown, getCooldownStatus, getStatus }
 }
