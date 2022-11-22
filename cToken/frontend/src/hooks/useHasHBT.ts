@@ -1,11 +1,10 @@
 import { BigNumber } from "ethers";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { RefreshContext } from "src/context/RefreshContext";
-import { Web3Context } from "src/context/Web3Context";
+import { useCallback, useEffect, useState } from "react";
 import { useRefresh } from "./useRefresh";
+import { useHBTContract } from "./useHBTContract";
 
-export const useHasHBT = (account: string) => {
-  const { hbtContract } = useContext(Web3Context);
+export const useHasHBT = (account: string | undefined) => {
+  const hbtContract = useHBTContract();
   const { fastRefresh } = useRefresh();
   const [hbtBalance, setHbtBalance] = useState<BigNumber | undefined>(
     undefined
@@ -21,11 +20,11 @@ export const useHasHBT = (account: string) => {
     } catch (error) {
       console.error(error);
     }
-  }, [hbtContract, account]);
+  }, [account, hbtContract]);
 
   useEffect(() => {
     getHBTBalance();
-  }, [fastRefresh, hbtContract, account, getHBTBalance]);
+  }, [fastRefresh, account, hbtContract, getHBTBalance]);
 
   return hbtBalance?.gt(0);
 };

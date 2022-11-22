@@ -1,10 +1,10 @@
 import { BigNumber } from "ethers";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Web3Context } from "src/context/Web3Context";
+import { usecERC20Contract } from "./usecERC20Contract";
 import { useRefresh } from "./useRefresh";
 
-export const usecERC20Balance = (account: string) => {
-  const { cerc20Contract } = useContext(Web3Context);
+export const usecERC20Balance = (account: string | undefined) => {
+  const cerc20Contract = usecERC20Contract();
   const { fastRefresh } = useRefresh();
   const [balance, setBalance] = useState<BigNumber | undefined>(undefined);
 

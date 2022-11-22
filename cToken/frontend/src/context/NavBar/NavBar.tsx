@@ -2,15 +2,13 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { ToastContainer } from "react-toastify";
-import { MetaMask } from "./MetaMask";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+
 import { DarkModeToggle } from "src/helpers/DarkModeToggle";
 import CERCBalance from "src/components/CERCBalance";
-import { useContext } from "react";
-import { Web3Context } from "../Web3Context";
 
 export const NavBar = () => {
   const { asPath: path } = useRouter();
-  const { account } = useContext(Web3Context);
 
   return (
     <>
@@ -39,7 +37,7 @@ export const NavBar = () => {
           <div className="ml-5">
             <CERCBalance />
           </div>
-          {account && <MetaMask />}
+          <ConnectButton />
           <div className="ml-5">
             <DarkModeToggle />
           </div>

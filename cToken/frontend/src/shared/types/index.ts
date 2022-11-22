@@ -18,6 +18,16 @@ export enum Web3ChainReference {
   EIP155_POLYGON_MUMBAI = 80001,
 }
 
+export interface NetworkMetadata {
+  displayName: string;
+  deployment: "mainnet" | "testnet" | "depreciated";
+  layer: "ethereum" | "arbitrum" | "optimism" | "polygon";
+  rpcUrl: string;
+  blockExplorer: { name: string; url: string };
+  currency: { name: string; symbol: string; decimals: number };
+  iconImage: string;
+}
+
 export interface ContractMetadata {
   address: string;
   fromBlock?: number;

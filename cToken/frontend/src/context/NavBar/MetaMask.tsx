@@ -3,6 +3,7 @@ import { Web3Context } from "../Web3Context";
 import { Web3Provider } from "@ethersproject/providers";
 import { CERC20, MockERC20, MockHBT } from "lib/index";
 import { Signer } from "ethers";
+import { Chain } from "@rainbow-me/rainbowkit";
 import { displayToast } from "src/utils/toast";
 import {
   getCERC20Contract,
@@ -14,6 +15,7 @@ import { formatToDisplayEthAddress } from "src/utils";
 declare let window: any;
 
 export interface Web3 {
+  chains: Chain[];
   hbtContract: MockHBT;
   erc20Contract: MockERC20;
   cerc20Contract: CERC20;

@@ -13,7 +13,15 @@ export const Web3Context = createContext<Web3>(null!);
 
 export const Web3Provider: React.FC = ({ children }) => {
   const [
-    { hbtContract, erc20Contract, cerc20Contract, provider, account, signer },
+    {
+      chains,
+      hbtContract,
+      erc20Contract,
+      cerc20Contract,
+      provider,
+      account,
+      signer,
+    },
     setWeb3,
   ] = useState<Web3>({} as Web3);
 
@@ -37,9 +45,9 @@ export const Web3Provider: React.FC = ({ children }) => {
       }
       const signer = provider.getSigner(accounts[0]);
       const chainId = await signer.getChainId();
-      let hbtContract: MockHBT | null;
-      let erc20: MockERC20 | null;
-      let cerc20: CERC20 | null;
+      let hbtContract: MockHBT | undefined;
+      let erc20: MockERC20 | undefined;
+      let cerc20: CERC20 | undefined;
       hbtContract = await getHBTContract({ signer, chainId });
       erc20 = await getERC20Contract({ signer, chainId });
       cerc20 = await getCERC20Contract({ signer, chainId });
@@ -77,6 +85,7 @@ export const Web3Provider: React.FC = ({ children }) => {
   return (
     <Web3Context.Provider
       value={{
+        chains,
         hbtContract,
         erc20Contract,
         cerc20Contract,

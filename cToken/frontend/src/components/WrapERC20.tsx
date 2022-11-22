@@ -1,14 +1,18 @@
 import { ethers } from "ethers";
 import { useCallback, useContext, useState } from "react";
-import { Web3Context } from "src/context/Web3Context";
+import { useAccount } from "wagmi";
 import { Mining } from "src/helpers/Mining";
 import { usecERC20Balance } from "src/hooks/usecERC20Balance";
 import { useERC20Allowance } from "src/hooks/useERC20Allowance";
 import { displayToast } from "src/utils/toast";
+import { useERC20Contract } from "src/hooks/useERC20Contract";
+import { usecERC20Contract } from "src/hooks/usecERC20Contract";
 
 const WrapERC20: React.FC = () => {
-  const { account, erc20Contract, cerc20Contract } = useContext(Web3Context);
-  const cerc20balance = usecERC20Balance(account);
+  const { address } = useAccount();
+  const erc20Contract = useERC20Contract();
+  const cerc20Contract = usecERC20Contract();
+  const cerc20balance = usecERC20Balance(address);
   const allowance = useERC20Allowance();
   const [amount, setAmount] = useState(0);
   const [{ isMining, txHash }, setIsMining] = useState({
@@ -36,6 +40,9 @@ const WrapERC20: React.FC = () => {
   );
 
   const onApproveClick = async () => {
+    if (!erc20Contract) throw new Error("erc20Contract is undefined");
+    if (!cerc20Contract) throw new Error("cerc20Contract is undefined");
+
     await mineTransaction(
       erc20Contract.approve,
       cerc20Contract.address,
@@ -44,10 +51,12 @@ const WrapERC20: React.FC = () => {
   };
 
   const onWrapClick = async () => {
+    if (!cerc20Contract) throw new Error("cerc20Contract is undefined");
     await mineTransaction(cerc20Contract.wrap, amount);
   };
 
   const onUnwrapClick = async () => {
+    if (!cerc20Contract) throw new Error("cerc20Contract is undefined");
     await mineTransaction(cerc20Contract.unwrap, amount);
   };
 

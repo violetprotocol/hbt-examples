@@ -3,9 +3,10 @@ import Head from "next/head";
 import { Web3Context } from "./Web3Context";
 import { useContext } from "react";
 import ConnectWallet from "src/components/ConnectWallet";
+import { useAccount } from "wagmi";
 
 const Layout: React.FC = ({ children }) => {
-  const { account } = useContext(Web3Context);
+  const { address } = useAccount();
 
   return (
     <>
@@ -14,7 +15,7 @@ const Layout: React.FC = ({ children }) => {
         {/* <link rel="shortcut icon" href="" /> */}
       </Head>
       <NavBar />
-      <main>{account != undefined ? children : <ConnectWallet />}</main>
+      <main>{address != undefined ? children : <ConnectWallet />}</main>
     </>
   );
 };

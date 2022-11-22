@@ -1,14 +1,13 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useContext } from "react";
-import { Web3Context } from "src/context/Web3Context";
+import { useAccount } from "wagmi";
 import { useHasHBT } from "src/hooks/useHasHBT";
 import Link from "next/link";
 import ClaimHBTButton from "src/components/ClaimHBTButton";
 
 const Home: NextPage = () => {
-  const { account } = useContext(Web3Context);
-  const hasHBT = useHasHBT(account);
+  const { address } = useAccount();
+  const hasHBT = useHasHBT(address);
 
   return (
     <>

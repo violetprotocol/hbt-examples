@@ -1,17 +1,19 @@
 import Head from "next/head";
 import { useContext, useState } from "react";
-import { Web3Context } from "src/context/Web3Context";
+import { useAccount } from "wagmi";
 import { Mining } from "src/helpers/Mining";
 import { useHasHBT } from "src/hooks/useHasHBT";
 import { generateRandomTokenId } from "src/utils";
 import { displayToast } from "src/utils/toast";
+import { useHBTContract } from "src/hooks/useHBTContract";
 
 interface ClaimHBTProps {
   disabled: boolean;
 }
 
 const ClaimHBTButton: React.FC<ClaimHBTProps> = ({ disabled = false }) => {
-  const { account, hbtContract } = useContext(Web3Context);
+  const hbtContract = useHBTContract();
+  const { address } = useAccount();
   const [{ isMining, txHash }, setIsMining] = useState({
     isMining: false,
     txHash: "",
@@ -19,7 +21,10 @@ const ClaimHBTButton: React.FC<ClaimHBTProps> = ({ disabled = false }) => {
 
   const onClaimClick = async () => {
     try {
-      const res = await hbtContract.safeMint(account, generateRandomTokenId());
+      if (!hbtContract) throw new Error("hbtContract is undefined");
+      if (!address) throw new Error("connected address is undefined");
+
+      const res = await hbtContract.safeMint(address, generateRandomTokenId());
       setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
     } catch (error: any) {

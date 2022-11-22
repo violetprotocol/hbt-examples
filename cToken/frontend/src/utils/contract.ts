@@ -1,4 +1,4 @@
-import { ethers, Signer } from "ethers";
+import { ContractFactory, ethers, Signer } from "ethers";
 import {
   CERC20,
   CERC20__factory,
@@ -20,11 +20,7 @@ export type GetContractParams = {
   signer: Signer;
 };
 
-const getContract = async <ContractType>(
-  abi: any,
-  signer: any,
-  contractAddress: any
-) => {
+const getContract = async (factory: any, signer: any, contractAddress: any) => {
   if (!contractAddress) {
     throw new Error("Unsupported network");
   }
@@ -40,11 +36,7 @@ const getContract = async <ContractType>(
 
   if (!isContract) return null;
 
-  const contract = new ethers.Contract(
-    contractAddress,
-    abi,
-    signer
-  ) as ContractType;
+  const contract = factory.connect(contractAddress, signer);
 
   return contract;
 };
@@ -56,9 +48,24 @@ export const getHBTContract = async ({
   const contractAddress =
     humanboundContracts[chainId as Web3ChainReference]?.address;
 
-  return <MockHBT>(
-    await getContract(MockHBT__factory.abi, signer, contractAddress)
+  if (!contractAddress) {
+    throw new Error("Unsupported network");
+  }
+
+  if (!signer.provider) {
+    throw new Error("Signer has no provider");
+  }
+
+  const isContract = await verifyAddressIsASmartContract(
+    contractAddress,
+    signer
   );
+
+  if (!isContract) return undefined;
+
+  const contract = <MockHBT>MockHBT__factory.connect(contractAddress, signer);
+
+  return contract;
 };
 
 export const getERC20Contract = async ({
@@ -68,9 +75,26 @@ export const getERC20Contract = async ({
   const contractAddress =
     MockERC20Contracts[chainId as Web3ChainReference]?.address;
 
-  return <MockERC20>(
-    await getContract(MockERC20__factory.abi, signer, contractAddress)
+  if (!contractAddress) {
+    throw new Error("Unsupported network");
+  }
+
+  if (!signer.provider) {
+    throw new Error("Signer has no provider");
+  }
+
+  const isContract = await verifyAddressIsASmartContract(
+    contractAddress,
+    signer
   );
+
+  if (!isContract) return undefined;
+
+  const contract = <MockERC20>(
+    MockERC20__factory.connect(contractAddress, signer)
+  );
+
+  return contract;
 };
 
 export const getCERC20Contract = async ({
@@ -79,8 +103,22 @@ export const getCERC20Contract = async ({
 }: GetContractParams) => {
   const contractAddress =
     cERC20Contracts[chainId as Web3ChainReference]?.address;
+  if (!contractAddress) {
+    throw new Error("Unsupported network");
+  }
 
-  return <CERC20>(
-    await getContract(CERC20__factory.abi, signer, contractAddress)
+  if (!signer.provider) {
+    throw new Error("Signer has no provider");
+  }
+
+  const isContract = await verifyAddressIsASmartContract(
+    contractAddress,
+    signer
   );
+
+  if (!isContract) return undefined;
+
+  const contract = <CERC20>CERC20__factory.connect(contractAddress, signer);
+
+  return contract;
 };

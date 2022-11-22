@@ -1,13 +1,11 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import MintCERC20Button from "src/components/MintCERC20Button";
-import { Web3Context } from "src/context/Web3Context";
-import { Mining } from "src/helpers/Mining";
-import { usecERC20Balance } from "src/hooks/usecERC20Balance";
+import { useAccount } from "wagmi";
 import { useHasHBT } from "src/hooks/useHasHBT";
 
 export default function Mint() {
-  const { account } = useContext(Web3Context);
-  const hasHBT = useHasHBT(account);
+  const { address } = useAccount();
+  const hasHBT = useHasHBT(address);
 
   return (
     <div className="text-center">

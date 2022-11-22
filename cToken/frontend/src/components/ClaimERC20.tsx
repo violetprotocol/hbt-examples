@@ -1,12 +1,14 @@
 import { useContext, useState } from "react";
-import { Web3Context } from "src/context/Web3Context";
+import { useAccount } from "wagmi";
 import { Mining } from "src/helpers/Mining";
 import { useERC20Balance } from "src/hooks/useERC20Balance";
 import { displayToast } from "src/utils/toast";
+import { useERC20Contract } from "src/hooks/useERC20Contract";
 
 const ClaimERC20: React.FC = () => {
-  const { account, erc20Contract } = useContext(Web3Context);
-  const balance = useERC20Balance(account);
+  const { address } = useAccount();
+  const erc20Contract = useERC20Contract();
+  const balance = useERC20Balance(address);
   const [{ isMining, txHash }, setIsMining] = useState({
     isMining: false,
     txHash: "",
@@ -14,7 +16,10 @@ const ClaimERC20: React.FC = () => {
 
   const onClaimClick = async () => {
     try {
-      const res = await erc20Contract.mint(account, 10);
+      if (!erc20Contract) throw new Error("erc20Contract is undefined");
+      if (!address) throw new Error("connected address is undefined");
+
+      const res = await erc20Contract.mint(address, 10);
       setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
     } catch (error: any) {

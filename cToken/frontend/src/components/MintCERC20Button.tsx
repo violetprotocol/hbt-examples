@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
-import { Web3Context } from "src/context/Web3Context";
+import { useAccount } from "wagmi";
 import { Mining } from "src/helpers/Mining";
 import { displayToast } from "src/utils/toast";
+import { usecERC20Contract } from "src/hooks/usecERC20Contract";
 
 const MintCERC20Button: React.FC = () => {
-  const { account, cerc20Contract } = useContext(Web3Context);
+  const { address } = useAccount();
+  const cerc20Contract = usecERC20Contract();
   const [{ isMining, txHash }, setIsMining] = useState({
     isMining: false,
     txHash: "",
@@ -12,7 +14,10 @@ const MintCERC20Button: React.FC = () => {
 
   const onMintClick = async () => {
     try {
-      const res = await cerc20Contract.mint(account, 10);
+      if (!cerc20Contract) throw new Error("cerc20Contract is undefined");
+      if (!address) throw new Error("connected address is undefined");
+
+      const res = await cerc20Contract.mint(address, 10);
       setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
     } catch (error: any) {

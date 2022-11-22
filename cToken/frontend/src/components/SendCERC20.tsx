@@ -1,13 +1,17 @@
 import { BigNumber } from "ethers";
 import { useContext, useState } from "react";
-import { Web3Context } from "src/context/Web3Context";
+import { useAccount } from "wagmi";
 import { Mining } from "src/helpers/Mining";
 import { usecERC20Balance } from "src/hooks/usecERC20Balance";
 import { displayToast } from "src/utils/toast";
+import { usecERC20Contract } from "src/hooks/usecERC20Contract";
+import { useHBTContract } from "src/hooks/useHBTContract";
 
 export const SendCERC20: React.FC = () => {
-  const { account, cerc20Contract, hbtContract } = useContext(Web3Context);
-  const balance = usecERC20Balance(account);
+  const { address } = useAccount();
+  const cerc20Contract = usecERC20Contract();
+  const hbtContract = useHBTContract();
+  const balance = usecERC20Balance(address);
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState<number>(0);
   const [validRecipient, setValidRecipient] = useState<boolean>(false);
@@ -26,6 +30,7 @@ export const SendCERC20: React.FC = () => {
     } else if (value.length == 42) {
       setRecipient(value);
       try {
+        if (!hbtContract) throw new Error("hbtContract is undefined");
         const recipientHBTBalance = await hbtContract.callStatic.balanceOf(
           value
         );
@@ -49,6 +54,7 @@ export const SendCERC20: React.FC = () => {
 
   const onTransferClick = async () => {
     try {
+      if (!cerc20Contract) throw new Error("cerc20Contract is undefined");
       const res = await cerc20Contract.transfer(
         recipient,
         BigNumber.from(amount)
