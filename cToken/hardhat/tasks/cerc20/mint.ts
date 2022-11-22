@@ -1,16 +1,16 @@
 import { task } from "hardhat/config";
 import { TaskArguments } from "hardhat/types";
 
-import { MockHBT, MockHBT__factory } from "../../src/types";
-import { HBTAddress } from "../contracts";
+import { CERC20 } from "../../src/types";
 
-task("hbt:mint")
-  .addParam("recipient", "Recipient of HBT")
-  .addParam("id", "Token ID of HBT")
+task("cerc20:mint")
+  .addParam("address", "Address of CERC20 contract")
+  .addParam("recipient", "Recipient of CERC20 tokens")
+  .addParam("amount", "Amount of CERC20 to mint")
   .setAction(async function (taskArguments: TaskArguments, { ethers }) {
-    const contract = <MockHBT>await ethers.getContractAt("MockHBT", HBTAddress);
-    const tx = await contract.safeMint(taskArguments.recipient, taskArguments.id);
+    const contract = <CERC20>await ethers.getContractAt("CERC20", taskArguments.address);
+    const tx = await contract.mint(taskArguments.recipient, taskArguments.amount);
     await tx.wait();
 
-    console.log(`HBT ${taskArguments.id} minted to: ${taskArguments.recipient}`);
+    console.log(`${taskArguments.amount} CERC20 minted to: ${taskArguments.recipient}`);
   });
