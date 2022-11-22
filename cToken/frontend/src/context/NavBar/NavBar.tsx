@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ToastContainer } from "react-toastify";
 import { MetaMask } from "./MetaMask";
 import { DarkModeToggle } from "src/helpers/DarkModeToggle";
-import { hasClaimingPeriodStarted } from "src/utils";
 import CERCBalance from "src/components/CERCBalance";
 import { useContext } from "react";
 import { Web3Context } from "../Web3Context";
