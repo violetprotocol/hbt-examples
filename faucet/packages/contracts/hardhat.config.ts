@@ -8,7 +8,7 @@ dotenv.config()
 const accounts = [...(process.env.PRIVATE_KEY_01 ? [`${process.env.PRIVATE_KEY_01}`] : [])]
 
 const config: HardhatUserConfig = {
-  solidity: '0.8.9',
+  solidity: '0.8.14',
   networks: {
     hardhat: {
       chainId: 1337,

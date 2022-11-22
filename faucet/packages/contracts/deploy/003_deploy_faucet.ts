@@ -13,9 +13,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // SET THE FOLLOWING PARAMETERS
   const initialFunding = parseEther('0.02')
-  const dripAmount = utils.parseEther('0.01')
+  const nativeTokenDripAmount = utils.parseEther('0.01')
+  const erc20TokenDripAmount = utils.parseEther('10000')
   const timeLock = 60 * 60 * 24 * 14 // 14 days
 
+  // GET HBT contract address
   let hbtContract
   if (hre.network.live) {
     const chainId = await hre.getChainId()
@@ -28,9 +30,25 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     hbtContract = mockHbt.address
   }
 
+  // Get ERC20 contract address
+  let erc20ContractAddress
+  try {
+    const erc20Contract = await deployments.get('TestERC20')
+    erc20ContractAddress = erc20Contract.address
+  } catch (error) {
+    console.error(error)
+    throw new Error('Failed to get TestERC20 contract address')
+  }
+
   const deployResult = await deploy('HumanboundTokenGatedFaucet', {
     from: deployer,
-    args: [hbtContract, dripAmount, timeLock],
+    args: [
+      hbtContract,
+      erc20ContractAddress,
+      nativeTokenDripAmount,
+      erc20TokenDripAmount,
+      timeLock,
+    ],
     value: initialFunding,
     log: true,
   })

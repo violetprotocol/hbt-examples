@@ -10,7 +10,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts()
   console.log(`Deploying as ${deployer}…`)
-  hre.hardhatArguments
+
   const deployResult = await deploy('MockHBT', {
     from: deployer,
     log: true,
