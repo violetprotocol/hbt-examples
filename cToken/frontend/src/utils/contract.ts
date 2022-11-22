@@ -20,13 +20,11 @@ export type GetContractParams = {
   signer: Signer;
 };
 
-export const getHBTContract = async ({
-  chainId,
-  signer,
-}: GetContractParams) => {
-  const contractAddress =
-    humanboundContracts[chainId as Web3ChainReference]?.address;
-
+const getContract = async <ContractType>(
+  abi: any,
+  signer: any,
+  contractAddress: any
+) => {
   if (!contractAddress) {
     throw new Error("Unsupported network");
   }
@@ -44,11 +42,23 @@ export const getHBTContract = async ({
 
   const contract = new ethers.Contract(
     contractAddress,
-    MockHBT__factory.abi,
+    abi,
     signer
-  ) as MockHBT;
+  ) as ContractType;
 
   return contract;
+};
+
+export const getHBTContract = async ({
+  chainId,
+  signer,
+}: GetContractParams) => {
+  const contractAddress =
+    humanboundContracts[chainId as Web3ChainReference]?.address;
+
+  return <MockHBT>(
+    await getContract(MockHBT__factory.abi, signer, contractAddress)
+  );
 };
 
 export const getERC20Contract = async ({
@@ -58,28 +68,9 @@ export const getERC20Contract = async ({
   const contractAddress =
     MockERC20Contracts[chainId as Web3ChainReference]?.address;
 
-  if (!contractAddress) {
-    throw new Error("Unsupported network");
-  }
-
-  if (!signer.provider) {
-    throw new Error("Signer has no provider");
-  }
-
-  const isContract = await verifyAddressIsASmartContract(
-    contractAddress,
-    signer
+  return <MockERC20>(
+    await getContract(MockERC20__factory.abi, signer, contractAddress)
   );
-
-  if (!isContract) return null;
-
-  const contract = new ethers.Contract(
-    contractAddress,
-    MockERC20__factory.abi,
-    signer
-  ) as MockERC20;
-
-  return contract;
 };
 
 export const getCERC20Contract = async ({
@@ -89,26 +80,7 @@ export const getCERC20Contract = async ({
   const contractAddress =
     cERC20Contracts[chainId as Web3ChainReference]?.address;
 
-  if (!contractAddress) {
-    throw new Error("Unsupported network");
-  }
-
-  if (!signer.provider) {
-    throw new Error("Signer has no provider");
-  }
-
-  const isContract = await verifyAddressIsASmartContract(
-    contractAddress,
-    signer
+  return <CERC20>(
+    await getContract(CERC20__factory.abi, signer, contractAddress)
   );
-
-  if (!isContract) return null;
-
-  const contract = new ethers.Contract(
-    contractAddress,
-    CERC20__factory.abi,
-    signer
-  ) as CERC20;
-
-  return contract;
 };
