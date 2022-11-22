@@ -9,10 +9,6 @@ export function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export function hasClaimingPeriodStarted() {
-  return process.env.NEXT_PUBLIC_CLAIMING_PERIOD_STARTED === "true";
-}
-
 export const formatToDisplayEthAddress = (address: string): string =>
   `${address.substring(0, 8)}...${address.substring(37, 42)}`;
 
