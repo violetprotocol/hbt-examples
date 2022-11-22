@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+// This import of tw is needed
 import tw from 'twin.macro'
 import { useNetwork, useSigner } from 'wagmi'
 import Countdown from 'react-countdown'
@@ -16,8 +17,8 @@ import { formatSeconds } from '@shared/formatSeconds'
 import { useEffect, useState } from 'react'
 import { Footer } from '@components/layout/Footer'
 import { StyledLinkContent } from '@components/StyledLink'
-
-const Button = tw.button`m-2 rounded-lg border border-current px-2 py-1 font-semibold text-xl text-white disabled:text-gray-400`
+import { Spinner } from '@components/Spinner'
+import { Button } from '@components/Button'
 
 const HomePage: NextPage = () => {
   const { data: signer } = useSigner()
@@ -26,6 +27,8 @@ const HomePage: NextPage = () => {
   const [currentChainId, setCurrentChainId] = useState(chain?.id)
   const { hasHbt, hbtBalance, isLoading, isError } = useHbtBalance()
   const { faucetStatus, cooldown, getCooldownStatus, getStatus } = useHbtFaucet()
+  const [isDrippingNativeToken, setIsDrippingNativeToken] = useState(false)
+  const [isDrippingERC20, setIsDrippingERC20] = useState(false)
   // TODO: could be cleaner
   const nativeToken = chain?.id === 80001 ? 'MATIC' : 'ETH'
 
@@ -39,11 +42,12 @@ const HomePage: NextPage = () => {
 
   const getETH = async () => {
     if (!signer || !contracts) return
-    const contract = HumanboundTokenGatedFaucet__factory.connect(
-      contracts.HumanboundTokenGatedFaucet.address,
-      signer,
-    )
     try {
+      setIsDrippingNativeToken(true)
+      const contract = HumanboundTokenGatedFaucet__factory.connect(
+        contracts.HumanboundTokenGatedFaucet.address,
+        signer,
+      )
       const tx = await contract.dripNativeTokens()
       const receipt = await tx.wait()
       console.log('Drip successful: ', receipt)
@@ -58,17 +62,19 @@ const HomePage: NextPage = () => {
         toast.error('Error while trying to get ETH')
       }
     } finally {
+      setIsDrippingNativeToken(false)
       await getCooldownStatus()
     }
   }
 
   const getTestUSDC = async () => {
     if (!signer || !contracts) return
-    const contract = HumanboundTokenGatedFaucet__factory.connect(
-      contracts.HumanboundTokenGatedFaucet.address,
-      signer,
-    )
     try {
+      setIsDrippingERC20(true)
+      const contract = HumanboundTokenGatedFaucet__factory.connect(
+        contracts.HumanboundTokenGatedFaucet.address,
+        signer,
+      )
       const tx = await contract.dripERC20Tokens()
       const receipt = await tx.wait()
       console.log('ERC20 Drip successful: ', receipt)
@@ -83,6 +89,7 @@ const HomePage: NextPage = () => {
         toast.error('Error while trying to get Test USDC')
       }
     } finally {
+      setIsDrippingERC20(false)
       await getStatus()
     }
   }
@@ -129,6 +136,8 @@ const HomePage: NextPage = () => {
               >
                 {cooldown?.isInCooldown ? (
                   <Countdown date={cooldown?.endOfCooldownInMs} />
+                ) : isDrippingNativeToken ? (
+                  <Spinner />
                 ) : (
                   <>GET {nativeToken}</>
                 )}
@@ -150,12 +159,12 @@ const HomePage: NextPage = () => {
             </div>
             <div id="right-container" tw="flex flex-1 flex-col justify-start px-12 text-center">
               <Button tw="mx-auto mb-6" onClick={() => getTestUSDC()}>
-                GET tUSDC
+                {isDrippingERC20 ? <Spinner /> : 'Get tUSDC'}
               </Button>
               <div tw="max-w-lg">
                 {faucetStatus?.formattedErc20TokenDripAmount && (
                   <>
-                    Dripping {faucetStatus?.formattedErc20TokenDripAmount} Test USDC with no
+                    Dripping {faucetStatus?.formattedErc20TokenDripAmount} Test USDC (ERC20) with no
                     cooldown period. No HBT required.
                   </>
                 )}
