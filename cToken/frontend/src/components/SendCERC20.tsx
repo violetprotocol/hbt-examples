@@ -70,7 +70,7 @@ export const SendCERC20: React.FC = () => {
 
   return (
     <>
-      Receipient address:
+      Recipient address:
       <input
         className="input"
         id="address"
