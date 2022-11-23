@@ -42,7 +42,7 @@ export const humanboundContracts: Record<Web3ChainReference, ContractMetadata> =
     },
 
     [Web3ChainReference.EIP155_ARBITRUM_GOERLI]: {
-      address: "0x8d39fe83ed158f1b7e21a6434e0878d6c11f02b9",
+      address: "0x8d39Fe83eD158F1B7e21A6434e0878D6c11F02B9",
       fromBlock: 542444,
     },
 
@@ -81,8 +81,8 @@ export const cERC20Contracts: Record<Web3ChainReference, ContractMetadata> = {
   },
 
   [Web3ChainReference.EIP155_OPTIMISM_GOERLI]: {
-    address: "",
-    fromBlock: 0,
+    address: "0x4Fd25044BB47Ff9a2E1a66182Aa2129FE08569fA",
+    fromBlock: 2894712,
   },
 
   [Web3ChainReference.EIP155_ARBITRUM_ONE]: {
@@ -91,8 +91,8 @@ export const cERC20Contracts: Record<Web3ChainReference, ContractMetadata> = {
   },
 
   [Web3ChainReference.EIP155_ARBITRUM_GOERLI]: {
-    address: "",
-    fromBlock: 0,
+    address: "0x154261910f46FBeaE4e04142a624bFAB157dCcda",
+    fromBlock: 1568010,
   },
 
   [Web3ChainReference.EIP155_POLYGON_MAINNET]: {
@@ -101,8 +101,8 @@ export const cERC20Contracts: Record<Web3ChainReference, ContractMetadata> = {
   },
 
   [Web3ChainReference.EIP155_POLYGON_MUMBAI]: {
-    address: "",
-    fromBlock: 0,
+    address: "0x8910Cfb44A8BE4d883029B0D2Ab0AD90fD94a0da",
+    fromBlock: 29296910,
   },
 };
 
@@ -131,7 +131,7 @@ export const MockERC20Contracts: Record<Web3ChainReference, ContractMetadata> =
     },
 
     [Web3ChainReference.EIP155_OPTIMISM_GOERLI]: {
-      address: "",
+      address: "0x1888649D566908E0A4Ac17978740F6A04f600a51",
       fromBlock: 0,
     },
 
@@ -141,8 +141,8 @@ export const MockERC20Contracts: Record<Web3ChainReference, ContractMetadata> =
     },
 
     [Web3ChainReference.EIP155_ARBITRUM_GOERLI]: {
-      address: "",
-      fromBlock: 0,
+      address: "0x880058Ba98E914760545fedfe8C52a8EAb3054Ab",
+      fromBlock: 1567476,
     },
 
     [Web3ChainReference.EIP155_POLYGON_MAINNET]: {
@@ -151,7 +151,7 @@ export const MockERC20Contracts: Record<Web3ChainReference, ContractMetadata> =
     },
 
     [Web3ChainReference.EIP155_POLYGON_MUMBAI]: {
-      address: "",
+      address: "0x7D07CCCB7E78867bB36f34345aCcc4DF7A188E59",
       fromBlock: 0,
     },
   };
