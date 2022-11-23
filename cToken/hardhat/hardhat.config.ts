@@ -32,6 +32,9 @@ task("fund", "Get some ETH on your local test network")
 
 const infuraApiKey = process.env.INFURA_API_KEY;
 
+const mnemonic: string | undefined = process.env.MNEMONIC;
+const privateKey: string | undefined = process.env.PRIVATE_KEY;
+
 const chainIds = {
   "arbitrum-goerli": 421613,
   "arbitrum-mainnet": 42161,
@@ -50,10 +53,20 @@ const chainIds = {
 
 function getChainConfig(network: keyof typeof chainIds): NetworkUserConfig {
   const url: string = "https://" + network + ".infura.io/v3/" + infuraApiKey;
+  let accounts;
+
+  if (privateKey) accounts = [`0x${process.env.PRIVATE_KEY}`];
+  else if (mnemonic)
+    accounts = {
+      count: 20,
+      mnemonic,
+      path: "m/44'/60'/0'/0",
+    };
 
   return {
     chainId: chainIds[network],
     url,
+    accounts,
   };
 }
 
@@ -64,6 +77,22 @@ const config: HardhatUserConfig = {
     enabled: process.env.REPORT_GAS ? true : false,
     excludeContracts: [],
     src: "./contracts",
+  },
+  etherscan: {
+    apiKey: {
+      arbitrumOne: process.env.ARBISCAN_API_KEY || "",
+      arbitrumGoerli: process.env.ARBISCAN_API_KEY || "",
+      avalanche: process.env.SNOWTRACE_API_KEY || "",
+      bsc: process.env.BSCSCAN_API_KEY || "",
+      mainnet: process.env.ETHERSCAN_API_KEY || "",
+      optimisticEthereum: process.env.OPTIMISM_API_KEY || "",
+      optimisticGoerli: process.env.OPTIMISM_API_KEY || "",
+      polygon: process.env.POLYGONSCAN_API_KEY || "",
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY || "",
+      rinkeby: process.env.ETHERSCAN_API_KEY || "",
+      kovan: process.env.ETHERSCAN_API_KEY || "",
+      goerli: process.env.ETHERSCAN_API_KEY || "",
+    },
   },
   networks: {
     hardhat: {
