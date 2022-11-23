@@ -5,8 +5,8 @@
 // Runtime Environment's members available in the global scope.
 import hre from "hardhat";
 
-const HBTAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const ERC20Address = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const HBTAddress = "0x8d39Fe83eD158F1B7e21A6434e0878D6c11F02B9";
+const ERC20Address = "0x880058Ba98E914760545fedfe8C52a8EAb3054Ab";
 const premintERC20 = 1000000;
 
 async function main() {
