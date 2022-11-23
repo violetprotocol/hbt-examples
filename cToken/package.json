@@ -17,7 +17,7 @@
   "homepage": "https://github.com/violetprotocol/hbt-examples/cToken#readme",
   "scripts": {
     "dev": "concurrently \"[ -d hardhat ] && cd ./hardhat && npx hardhat node && cd ..\" \"[ -d frontend ] && cd ./frontend && yarn dev && yarn dev\"",
-    "build": "concurrently \"[ -d hardhat ] && cd ./hardhat yarn typechain && cd ..\" \"[ -d frontend ] && cd ./frontend && yarn build\"",
+    "build": "cd ./hardhat yarn typechain && cd .. && cd ./frontend && yarn build",
     "hardhat": "cd ./hardhat && npx hardhat node",
     "frontend": "cd ./frontend && yarn dev",
     "backend": "cd ./backend && yarn dev",
