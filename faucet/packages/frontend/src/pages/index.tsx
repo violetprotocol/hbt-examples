@@ -114,7 +114,7 @@ const HomePage: NextPage = () => {
           </p>
           <p tw="mt-2">
             Head over{' '}
-            <Link href="https://sandbox.humanbound.xyz/">
+            <Link href="https://sandbox.humanbound.xyz/" target="_blank">
               <StyledLinkContent>here</StyledLinkContent>
             </Link>{' '}
             to get one.
@@ -179,7 +179,10 @@ const HomePage: NextPage = () => {
       <Footer>
         <div tw="my-3 text-center text-sm">
           Disclaimer: No warranty is made of any kind. See more{' '}
-          <Link href="https://github.com/violetprotocol/hbt-examples/blob/main/faucet/LICENSE.md">
+          <Link
+            href="https://github.com/violetprotocol/hbt-examples/blob/main/faucet/LICENSE.md"
+            target="_blank"
+          >
             <StyledLinkContent>here</StyledLinkContent>
           </Link>
           .
