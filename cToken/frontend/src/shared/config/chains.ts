@@ -2,7 +2,6 @@ import { NetworkMetadata, Web3ChainReference } from "../types";
 
 export const SupportedChains: Web3ChainReference[] = [
   Web3ChainReference.EIP155_HARDHAT_LOCAL,
-  Web3ChainReference.EIP155_ETHEREUM_KOVAN,
   Web3ChainReference.EIP155_ARBITRUM_GOERLI,
   Web3ChainReference.EIP155_OPTIMISM_GOERLI,
   Web3ChainReference.EIP155_POLYGON_MUMBAI,
