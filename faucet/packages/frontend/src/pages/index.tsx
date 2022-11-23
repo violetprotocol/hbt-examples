@@ -127,7 +127,7 @@ const HomePage: NextPage = () => {
         </div>
 
         {signer && !chain?.unsupported && (
-          <div tw="mt-14 flex">
+          <div tw="mt-6 flex">
             <div id="left-container" tw="flex flex-1 flex-col justify-start px-12 text-center">
               <Button
                 tw="mx-auto mb-6"
@@ -177,7 +177,7 @@ const HomePage: NextPage = () => {
         )}
       </CenterBody>
       <Footer>
-        <div tw="my-6 text-center">
+        <div tw="my-3 text-center text-sm">
           Disclaimer: No warranty is made of any kind. See more{' '}
           <Link href="https://github.com/violetprotocol/hbt-examples/blob/main/faucet/LICENSE.md">
             <StyledLinkContent>here</StyledLinkContent>
