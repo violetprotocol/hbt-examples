@@ -1,5 +1,5 @@
 {
-  "name": "hbt-faucet",
+  "name": "@hbt-faucet/monorepo",
   "version": "0.0.1",
   "license": "GPL-3",
   "private": true,

@@ -4,7 +4,7 @@ import { useDeployments } from './useDeployments'
 import {
   HumanboundTokenGatedFaucet,
   HumanboundTokenGatedFaucet__factory,
-} from '@ethathon/contracts/typechain-types'
+} from '@hbt-faucet/contracts/typechain-types'
 import { BigNumber, utils } from 'ethers'
 
 type FaucetStatus = {

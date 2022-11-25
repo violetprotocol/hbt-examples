@@ -7,6 +7,6 @@
 const nextConfig = {}
 
 // eslint-disable-next-line
-const withTM = require('next-transpile-modules')(['@ethathon/contracts'])
+const withTM = require('next-transpile-modules')(['@hbt-faucet/contracts'])
 
 module.exports = withTM(nextConfig)

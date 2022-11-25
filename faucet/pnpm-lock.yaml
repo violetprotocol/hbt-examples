@@ -94,7 +94,7 @@ importers:
       '@emotion/react': ^11.10.5
       '@emotion/server': ^11.10.0
       '@emotion/styled': ^11.10.5
-      '@ethathon/contracts': workspace:*
+      '@hbt-faucet/contracts': workspace:*
       '@ethersproject/abi': ^5.7.0
       '@ethersproject/providers': ^5.7.2
       '@rainbow-me/rainbowkit': ^0.7.4
@@ -133,7 +133,7 @@ importers:
       '@emotion/react': 11.10.5_5ihuxrpe4zse4p4tf6ubxcyzuu
       '@emotion/server': 11.10.0_@emotion+css@11.10.5
       '@emotion/styled': 11.10.5_z7x6wqqd37fzu777gq3gq2bxru
-      '@ethathon/contracts': link:../contracts
+      '@hbt-faucet/contracts': link:../contracts
       '@rainbow-me/rainbowkit': 0.7.4_cd7jy7ygju2xdnzfwcijpup3tq
       ethers: 5.7.2
       next: 13.0.1_afkme7j4tdqggmfp5oigvz3wqy

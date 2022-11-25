@@ -44,7 +44,7 @@ export const {
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'Ethathon',
+  appName: 'HBT Faucet',
   chains,
 })
 
