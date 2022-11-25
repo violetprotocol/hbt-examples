@@ -1,7 +1,7 @@
 {
   "name": "@hbt-faucet/monorepo",
   "version": "0.0.1",
-  "license": "GPL-3",
+  "license": "GPL-3.0-only",
   "private": true,
   "workspaces": [
     "packages/*"
