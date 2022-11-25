@@ -25,12 +25,16 @@ const HomePage: NextPage = () => {
   const { contracts } = useDeployments()
   const { chain } = useNetwork()
   const [currentChainId, setCurrentChainId] = useState(chain?.id)
+  const [nativeToken, setNativeToken] = useState('ETH')
   const { hasHbt, hbtBalance, isLoading, isError } = useHbtBalance()
-  const { faucetStatus, cooldown, getCooldownStatus, getStatus } = useHbtFaucet()
+  const { faucetStatus, cooldown, getCooldownStatus, getStatus, faucetAddress } = useHbtFaucet()
   const [isDrippingNativeToken, setIsDrippingNativeToken] = useState(false)
   const [isDrippingERC20, setIsDrippingERC20] = useState(false)
-  // TODO: could be cleaner
-  const nativeToken = chain?.id === 80001 ? 'MATIC' : 'ETH'
+
+  useEffect(() => {
+    const token = chain?.id === 80001 ? 'MATIC' : 'ETH'
+    setNativeToken(token)
+  }, [chain?.id])
 
   useEffect(() => {
     if (!currentChainId && chain?.id) {
@@ -127,7 +131,7 @@ const HomePage: NextPage = () => {
         </div>
 
         {signer && !chain?.unsupported && (
-          <div tw="mt-6 flex">
+          <div tw="mt-4 flex">
             <div id="left-container" tw="flex flex-1 flex-col justify-start px-12 text-center">
               <Button
                 tw="mx-auto mb-6"
@@ -178,6 +182,7 @@ const HomePage: NextPage = () => {
       </CenterBody>
       <Footer>
         <div tw="my-3 text-center text-sm">
+          {faucetAddress && <div>Faucet address: {faucetAddress}</div>}
           Disclaimer: No warranty is made of any kind. See more{' '}
           <Link
             href="https://github.com/violetprotocol/hbt-examples/blob/main/faucet/LICENSE.md"

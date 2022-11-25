@@ -30,6 +30,7 @@ export const useHbtFaucet = () => {
     endOfCooldownInMs?: number
   } | null>({})
   const timeLockAsString = faucetStatus?.timeLockInSeconds.toString()
+  const faucetAddress = contract?.address
 
   useEffect(() => {
     if (!contracts || !signer) return
@@ -117,5 +118,5 @@ export const useHbtFaucet = () => {
     getCooldownStatus()
   }, [contract, timeLockAsString])
 
-  return { faucetStatus, cooldown, getCooldownStatus, getStatus }
+  return { faucetStatus, cooldown, getCooldownStatus, getStatus, faucetAddress }
 }
