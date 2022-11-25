@@ -6,6 +6,7 @@ import { displayToast } from "src/utils/toast";
 import { useERC20Contract } from "src/hooks/useERC20Contract";
 import { Web3ChainReference } from "src/shared";
 import { useRouter } from "next/router";
+import { BigNumber, ethers } from "ethers";
 
 const ClaimERC20: React.FC = () => {
   const { address } = useAccount();
@@ -13,6 +14,9 @@ const ClaimERC20: React.FC = () => {
   const router = useRouter();
   const erc20Contract = useERC20Contract();
   const balance = useERC20Balance(address);
+  const balanceDecimalShifted = BigNumber.from(
+    parseInt(ethers.utils.formatEther(balance || 0))
+  );
   const [{ isMining, txHash }, setIsMining] = useState({
     isMining: false,
     txHash: "",
@@ -28,7 +32,10 @@ const ClaimERC20: React.FC = () => {
       if (!erc20Contract) throw new Error("erc20Contract is undefined");
       if (!address) throw new Error("connected address is undefined");
 
-      const res = await erc20Contract.mint(address, 10);
+      const res = await erc20Contract.mint(
+        address,
+        ethers.utils.parseEther("10")
+      );
       setIsMining({ isMining: true, txHash: res.hash });
       await res.wait();
     } catch (error: any) {
@@ -41,7 +48,7 @@ const ClaimERC20: React.FC = () => {
 
   return (
     <>
-      <h2>ERC20 Balance: {balance?.toNumber() || 0}</h2>
+      <h2>ERC20 Balance: {balanceDecimalShifted?.toString() || 0}</h2>
       <br />
       <button
         onClick={onClaimClick}

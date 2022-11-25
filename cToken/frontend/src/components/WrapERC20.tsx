@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useCallback, useContext, useState } from "react";
 import { useAccount } from "wagmi";
 import { Mining } from "src/helpers/Mining";
@@ -13,6 +13,9 @@ const WrapERC20: React.FC = () => {
   const erc20Contract = useERC20Contract();
   const cerc20Contract = usecERC20Contract();
   const cerc20balance = usecERC20Balance(address);
+  const balanceDecimalShifted = BigNumber.from(
+    parseInt(ethers.utils.formatEther(cerc20balance || 0))
+  );
   const allowance = useERC20Allowance();
   const [amount, setAmount] = useState(0);
   const [{ isMining, txHash }, setIsMining] = useState({
@@ -52,12 +55,18 @@ const WrapERC20: React.FC = () => {
 
   const onWrapClick = async () => {
     if (!cerc20Contract) throw new Error("cerc20Contract is undefined");
-    await mineTransaction(cerc20Contract.wrap, amount);
+    await mineTransaction(
+      cerc20Contract.wrap,
+      ethers.utils.parseEther(amount.toString())
+    );
   };
 
   const onUnwrapClick = async () => {
     if (!cerc20Contract) throw new Error("cerc20Contract is undefined");
-    await mineTransaction(cerc20Contract.unwrap, amount);
+    await mineTransaction(
+      cerc20Contract.unwrap,
+      ethers.utils.parseEther(amount.toString())
+    );
   };
 
   const handleAmount = (event: React.FormEvent<HTMLInputElement>) => {
@@ -75,7 +84,7 @@ const WrapERC20: React.FC = () => {
 
   return (
     <>
-      <h2>cERC20 Balance: {cerc20balance?.toNumber() || 0}</h2>
+      <h2>cERC20 Balance: {balanceDecimalShifted?.toString()}</h2>
       {isApproved ? (
         <>
           <input
