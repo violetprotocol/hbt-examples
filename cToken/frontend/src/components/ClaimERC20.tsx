@@ -1,12 +1,16 @@
-import { useContext, useState } from "react";
-import { useAccount } from "wagmi";
+import { useState } from "react";
+import { useAccount, useNetwork } from "wagmi";
 import { Mining } from "src/helpers/Mining";
 import { useERC20Balance } from "src/hooks/useERC20Balance";
 import { displayToast } from "src/utils/toast";
 import { useERC20Contract } from "src/hooks/useERC20Contract";
+import { Web3ChainReference } from "src/shared";
+import { useRouter } from "next/router";
 
 const ClaimERC20: React.FC = () => {
   const { address } = useAccount();
+  const { chain } = useNetwork();
+  const router = useRouter();
   const erc20Contract = useERC20Contract();
   const balance = useERC20Balance(address);
   const [{ isMining, txHash }, setIsMining] = useState({
@@ -15,6 +19,11 @@ const ClaimERC20: React.FC = () => {
   });
 
   const onClaimClick = async () => {
+    if (chain?.id !== Web3ChainReference.EIP155_HARDHAT_LOCAL) {
+      router.push("https://hbtfaucet.xyz/");
+      return;
+    }
+
     try {
       if (!erc20Contract) throw new Error("erc20Contract is undefined");
       if (!address) throw new Error("connected address is undefined");
