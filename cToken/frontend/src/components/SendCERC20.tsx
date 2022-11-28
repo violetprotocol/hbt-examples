@@ -69,7 +69,7 @@ export const SendCERC20: React.FC = () => {
     }
   };
 
-  const enoughFunds = amount <= (balance?.toNumber() || 0);
+  const enoughFunds = BigNumber.from(amount).lte(balance || 0);
 
   const readyToTransfer =
     enoughFunds && amount > 0 && validRecipient && !isMining;
