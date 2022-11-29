@@ -2,7 +2,6 @@ import Head from "next/head";
 import { useContext, useState } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import { Mining } from "src/helpers/Mining";
-import { useHasHBT } from "src/hooks/useHasHBT";
 import { generateRandomTokenId } from "src/utils";
 import { displayToast } from "src/utils/toast";
 import { useHBTContract } from "src/hooks/useHBTContract";
