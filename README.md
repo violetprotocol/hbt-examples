@@ -1,6 +1,6 @@
 # Humanbound Token Demo Examples
 
-This repository is dedicated to examples of projects leveraging [Humanboun Tokens](https://humanbound.xyz).
+This repository is dedicated to examples of projects leveraging [Humanbound Tokens](https://humanbound.xyz).
 
 
 The following project examples are hosted in this repository:
