@@ -1,0 +1,38 @@
+import React, { useState, useEffect, createContext } from "react";
+
+/**
+ * RefreshContextProvider
+ *
+ * Allows other hooks to refresh the value provided by them by specifying a fast or slow refresh rate
+ */
+
+const FAST_INTERVAL = 5000;
+const SLOW_INTERVAL = 50000;
+
+export const RefreshContext = createContext({ slow: 0, fast: 0 });
+
+// This context maintain 2 counters that can be used as a dependencies on other hooks to force a periodic refresh
+export const RefreshContextProvider: React.FC = ({ children }) => {
+  const [slow, setSlow] = useState(0);
+  const [fast, setFast] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      setFast((prev) => prev + 1);
+    }, FAST_INTERVAL);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      setSlow((prev) => prev + 1);
+    }, SLOW_INTERVAL);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <RefreshContext.Provider value={{ slow, fast }}>
+      {children}
+    </RefreshContext.Provider>
+  );
+};

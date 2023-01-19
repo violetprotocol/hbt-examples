@@ -1,0 +1,40 @@
+{
+  "name": "cerc20",
+  "description": "cERC20: Compliant ERC20 Token",
+  "version": "1.0.0",
+  "author": {
+    "name": "Violet"
+  },
+  "license": "GPL-3.0",
+  "repository": {
+    "name": "violetprotocol/hbt-examples",
+    "type": "git",
+    "url": "https://github.com/violetprotocol/hbt-examples.git"
+  },
+  "bugs": {
+    "url": "https://github.com/violetprotocol/hbt-examples/issues"
+  },
+  "homepage": "https://github.com/violetprotocol/hbt-examples/cToken#readme",
+  "scripts": {
+    "dev": "concurrently \"[ -d hardhat ] && cd ./hardhat && npx hardhat node && cd ..\" \"[ -d frontend ] && cd ./frontend && yarn dev && yarn dev\"",
+    "build": "cd ./hardhat && yarn typechain && cd .. && cd ./frontend && yarn build",
+    "hardhat": "cd ./hardhat && npx hardhat node",
+    "frontend": "cd ./frontend && yarn dev",
+    "backend": "cd ./backend && yarn dev",
+    "installdeps": "concurrently \"[ -d frontend ] && cd frontend && yarn install\" \"[ -d hardhat ] && cd hardhat && yarn install\"",
+    "postinstall": "concurrently \"[ -d frontend ] && cd frontend && yarn install\" \"[ -d hardhat ] && cd hardhat && yarn install\" \"find . -type f -name .example.env -execdir mv {} .env ';'\""
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.1",
+    "husky": "^7.0.4",
+    "next": "12.0.8"
+  },
+  "keywords": [
+    "ethers",
+    "ethereum",
+    "react",
+    "web3",
+    "typescript",
+    "hardhat"
+  ]
+}
